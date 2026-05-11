@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://drjgenpdkktfb"]
+
+[ext_resource type="Script" uid="uid://dl1ykefp71pgj" path="res://script/kill.cpp" id="1_it5pd"]
+
+[node name="kill" type="Area2D" unique_id=166560945]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_it5pd")

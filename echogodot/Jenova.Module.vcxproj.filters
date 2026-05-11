@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="script">
+      <UniqueIdentifier>{3205c0de-d576-131e-a255-ad2bd38b0fb2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="script\collectible.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\knightscript.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

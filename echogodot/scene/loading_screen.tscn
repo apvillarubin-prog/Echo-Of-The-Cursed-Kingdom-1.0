@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c8lg1w0vwfe80"]
+
+[ext_resource type="Script" uid="uid://ygfqs0c5i7sh" path="res://script/loading_screen.cpp" id="1_126je"]
+
+[node name="Loading screen" type="Control" unique_id=1257926674]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_126je")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1357888920]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 41.0
+offset_bottom = 41.0
+scale = Vector2(32.554855, 23.761127)
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="ColorRect" unique_id=322179261]
+texture_filter = 1
+layout_mode = 0
+offset_left = 5.4676943
+offset_top = 5.092351
+offset_right = 67.4677
+offset_bottom = 28.09235
+scale = Vector2(0.4073417, 0.63089657)
+text = "Loading"

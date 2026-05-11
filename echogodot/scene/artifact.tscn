@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://nth4a6yrmftx"]
+
+[ext_resource type="Texture2D" uid="uid://6leaymj6rsib" path="res://asset/Untitled design (2).png" id="1_r34cq"]
+[ext_resource type="Script" uid="uid://g1e62kwvavjp" path="res://script/artifact.cpp" id="1_s00m8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s00m8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s00m8"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(30, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fwyhk"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(98, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yn04c"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(166, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3dh2"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(234, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtbtv"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(302, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ah3e"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(370, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3o3io"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(438, 300, 68, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gowhg"]
+atlas = ExtResource("1_r34cq")
+region = Rect2(506, 300, 68, 300)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wcw1b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s00m8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fwyhk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yn04c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3dh2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtbtv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5ah3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3o3io")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gowhg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D" unique_id=48608864]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_s00m8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=619787865]
+position = Vector2(2, -12)
+scale = Vector2(1.7223908, 1.573064)
+shape = SubResource("CapsuleShape2D_s00m8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1491647642]
+texture_filter = 1
+position = Vector2(4, 106)
+sprite_frames = SubResource("SpriteFrames_wcw1b")
+autoplay = "default"
+frame_progress = 0.18574405

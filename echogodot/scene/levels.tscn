@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://d4b7adrbo0dh5"]
+
+[ext_resource type="Script" uid="uid://w7dk0e6s1sn4" path="res://script/level_manager.cpp" id="1_k7kto"]
+
+[node name="Levels" type="Node2D" unique_id=1692722474]
+
+[node name="level manager" type="Control" parent="." unique_id=298557268]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_k7kto")
+
+[node name="Button" type="Button" parent="level manager" unique_id=280742836]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 195.99998
+offset_right = 106.0
+offset_bottom = 226.99998
+scale = Vector2(10.799999, 8.117647)
+text = "1
+"
+
+[node name="Button2" type="Button" parent="level manager" unique_id=2073879502]
+layout_mode = 0
+offset_left = 450.0
+offset_top = 184.0
+offset_right = 468.0
+offset_bottom = 215.0
+scale = Vector2(10.511647, 8.650772)
+text = "2"
+
+[node name="Button3" type="Button" parent="level manager" unique_id=1664851731]
+layout_mode = 0
+offset_left = 795.0
+offset_top = 189.00002
+offset_right = 813.0
+offset_bottom = 220.00002
+scale = Vector2(10.986776, 8.135634)
+text = "3
+"
