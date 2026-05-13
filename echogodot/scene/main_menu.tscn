@@ -2,39 +2,39 @@
 
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
 
-[node name="Main menu" type="Node2D" unique_id=923651937]
-
-[node name="Button manager" type="Control" parent="." unique_id=1555147489]
+[node name="Button manager" type="Control" unique_id=1229567989]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_3er1b")
 
-[node name="start" type="Button" parent="Button manager" unique_id=174596899]
+[node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -254.0
+offset_top = -266.0
+offset_right = -192.0
+offset_bottom = -165.0
+grow_horizontal = 2
+scale = Vector2(6.7473083, 4.9243784)
+
+[node name="menu" type="Button" parent="MenuButtons" unique_id=690158773]
+layout_mode = 2
+size_flags_horizontal = 0
+text = " Menu "
+
+[node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
 texture_filter = 1
-layout_mode = 0
-offset_left = 247.99998
-offset_top = 40.000008
-offset_right = 294.0
-offset_bottom = 71.00001
-scale = Vector2(11.065826, 6.072133)
+layout_mode = 2
 text = "Start"
 
-[node name="option" type="Button" parent="Button manager" unique_id=619920857]
-layout_mode = 0
-offset_left = 281.99997
-offset_top = 263.0
-offset_right = 343.99997
-offset_bottom = 294.0
-scale = Vector2(7.2912517, 5.253672)
+[node name="option" type="Button" parent="MenuButtons" unique_id=619920857]
+layout_mode = 2
 text = "Option"
-
-[node name="menu" type="Button" parent="Button manager" unique_id=690158773]
-layout_mode = 0
-offset_left = 278.0
-offset_top = 455.0
-offset_right = 331.0
-offset_bottom = 486.0
-scale = Vector2(9.001579, 5.4378333)
-text = "Menu"

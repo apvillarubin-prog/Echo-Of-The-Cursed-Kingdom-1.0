@@ -3,39 +3,57 @@
 [ext_resource type="Script" uid="uid://w7dk0e6s1sn4" path="res://script/level_manager.cpp" id="1_k7kto"]
 
 [node name="Levels" type="Node2D" unique_id=1692722474]
+position = Vector2(550, 344)
 
 [node name="level manager" type="Control" parent="." unique_id=298557268]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -4.0000014
+offset_top = 1.0
+offset_right = 36.0
+offset_bottom = 41.0
+scale = Vector2(0.9668671, 1.0647773)
 script = ExtResource("1_k7kto")
 
 [node name="Button" type="Button" parent="level manager" unique_id=280742836]
 layout_mode = 0
-offset_left = 88.0
-offset_top = 195.99998
-offset_right = 106.0
-offset_bottom = 226.99998
+offset_left = -498.30255
+offset_top = -314.20523
+offset_right = -480.30255
+offset_bottom = -283.20523
 scale = Vector2(10.799999, 8.117647)
 text = "1
 "
 
 [node name="Button2" type="Button" parent="level manager" unique_id=2073879502]
 layout_mode = 0
-offset_left = 450.0
-offset_top = 184.0
-offset_right = 468.0
-offset_bottom = 215.0
+offset_left = -252.36147
+offset_top = -33.809906
+offset_right = -234.36147
+offset_bottom = -2.809906
 scale = Vector2(10.511647, 8.650772)
 text = "2"
 
 [node name="Button3" type="Button" parent="level manager" unique_id=1664851731]
 layout_mode = 0
-offset_left = 795.0
-offset_top = 189.00002
-offset_right = 813.0
-offset_bottom = 220.00002
+offset_left = 50.679108
+offset_top = -305.22812
+offset_right = 68.67911
+offset_bottom = -274.22812
 scale = Vector2(10.986776, 8.135634)
 text = "3
 "
+
+[node name="Button4" type="Button" parent="level manager" unique_id=1235372618]
+layout_mode = 0
+offset_left = 293.7322
+offset_top = -8.452467
+offset_right = 311.7322
+offset_bottom = 22.547533
+scale = Vector2(10.986776, 8.135634)
+text = "4
+"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=92133859]
+position = Vector2(15, -15)
+zoom = Vector2(1.5, 1.5)
