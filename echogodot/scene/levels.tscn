@@ -53,7 +53,3 @@ offset_bottom = 22.547533
 scale = Vector2(10.986776, 8.135634)
 text = "4
 "
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=92133859]
-position = Vector2(15, -15)
-zoom = Vector2(1.5, 1.5)
