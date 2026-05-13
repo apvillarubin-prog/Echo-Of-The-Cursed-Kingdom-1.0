@@ -7,25 +7,34 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 148.0
+offset_bottom = 304.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_126je")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1357888920]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 41.0
-offset_bottom = 41.0
-scale = Vector2(32.554855, 23.761127)
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1088865089]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="ColorRect" unique_id=322179261]
-texture_filter = 1
-layout_mode = 0
-offset_left = 5.4676943
-offset_top = 5.092351
-offset_right = 67.4677
-offset_bottom = 28.09235
-scale = Vector2(0.4073417, 0.63089657)
-text = "Loading"
+[node name="Label" type="Label" parent="." unique_id=975334752]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -389.0
+offset_top = -244.0
+offset_right = -327.0
+offset_bottom = -195.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(10.41784, 8.718004)
+text = "Loading
+"

@@ -14,6 +14,10 @@ config/name="echogodot"
 run/main_scene="uid://bu53u1sa3548b"
 config/features=PackedStringArray("4.6", "Mobile")
 
+[autoload]
+
+Global="*uid://dw74uvd58qyju"
+
 [global_group]
 
 player=""

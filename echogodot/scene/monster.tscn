@@ -76,10 +76,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wjvvu"]
-size = Vector2(13.424515, 48.5)
+size = Vector2(13.424515, 36)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bratd"]
-size = Vector2(21.100151, 50.5)
+size = Vector2(17.154778, 58.24718)
 
 [node name="monster" type="CharacterBody2D" unique_id=1451605658]
 collision_layer = 4
@@ -92,7 +92,7 @@ autoplay = "default"
 frame_progress = 0.29534748
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2116557754]
-position = Vector2(7.0409956, -25.75)
+position = Vector2(7.0409956, -23)
 scale = Vector2(1.0489757, 1)
 shape = SubResource("RectangleShape2D_wjvvu")
 
@@ -102,6 +102,6 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="kill" unique_id=1409987578]
-position = Vector2(8.454887, 6)
+position = Vector2(6.499999, 8.7000065)
 scale = Vector2(0.9909777, 0.69702923)
 shape = SubResource("RectangleShape2D_bratd")

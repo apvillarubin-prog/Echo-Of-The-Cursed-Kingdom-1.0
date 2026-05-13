@@ -5,6 +5,7 @@
 #include <Godot/classes/input.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/scene_tree_timer.hpp>
+#include <Godot/classes/engine.hpp>
 #include <Godot/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -27,7 +28,12 @@ float BLOCK_DURATION = 2.0f;
 int player_health = 50;
 int last_attack_frame = -1;
 
-enum HeroType { KNIGHT = 0, ARCHER = 1 };
+// Hero unlock flags
+bool unlocked_knight = true;
+bool unlocked_archer = false;
+bool unlocked_priest = false;
+
+enum HeroType { KNIGHT = 0, ARCHER = 1, PRIEST = 2 };
 HeroType current_hero = KNIGHT;
 
 float speed = 70.0f;
@@ -39,7 +45,7 @@ void unlock_sword() {
 		has_sword = true;
 		UtilityFunctions::print("Sword Unlocked for the Knight!");
 	} else {
-		UtilityFunctions::print("Archer found a sword, but doesn't know how to use it.");
+		UtilityFunctions::print("This hero can't use a sword.");
 	}
 }
 
@@ -48,7 +54,7 @@ void unlock_shield() {
 		has_shield = true;
 		UtilityFunctions::print("Shield Unlocked for the Knight!");
 	} else {
-		UtilityFunctions::print("Archer found a shield, but doesn't know how to use it.");
+		UtilityFunctions::print("This hero can't use a shield.");
 	}
 }
 
@@ -58,7 +64,8 @@ void respawn() {
 	if (is_dead) return;
 	is_dead = true;
 	if (sprite) {
-		String prefix = (current_hero == KNIGHT) ? "knight_" : "archer_";
+		String prefix = (current_hero == KNIGHT) ? "knight_" :
+						(current_hero == ARCHER)  ? "archer_" : "priest_";
 		sprite->play(prefix + "death");
 	}
 	if (self) self->set_velocity(Vector2(0, 0));
@@ -118,6 +125,32 @@ void OnReady(Caller* instance) {
 		is_blocking = false;
 		block_timer = 0.0f;
 		block_cooldown = 0.0f;
+
+		// Get current level from Engine meta
+		int current_level = 1;
+		if (Engine::get_singleton()->has_meta("next_level")) {
+			current_level = (int)Engine::get_singleton()->get_meta("next_level");
+		}
+
+		// Reset all first
+		unlocked_knight = true;
+		unlocked_archer = false;
+		unlocked_priest = false;
+
+		// Unlock based on level
+		if (current_level >= 2) unlocked_archer = true;
+		if (current_level >= 3) unlocked_priest = true;
+
+		UtilityFunctions::print("=== HERO UNLOCKS ===");
+		UtilityFunctions::print("Level: ", current_level);
+		UtilityFunctions::print("Knight: ", unlocked_knight);
+		UtilityFunctions::print("Archer: ", unlocked_archer);
+		UtilityFunctions::print("Priest: ", unlocked_priest);
+		UtilityFunctions::print("====================");
+
+		// Always start as knight
+		current_hero = KNIGHT;
+
 		UtilityFunctions::print("Hero script active. Inventory reset.");
 	}
 }
@@ -127,8 +160,19 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	Input* input = Input::get_singleton();
 
-	if (input->is_action_just_pressed("hero_1")) current_hero = KNIGHT;
-	else if (input->is_action_just_pressed("hero_2")) current_hero = ARCHER;
+	// Hero switching with unlock check
+	if (input->is_action_just_pressed("hero_1") && unlocked_knight) {
+		current_hero = KNIGHT;
+		UtilityFunctions::print("Switched to Knight");
+	}
+	if (input->is_action_just_pressed("hero_2") && unlocked_archer) {
+		current_hero = ARCHER;
+		UtilityFunctions::print("Switched to Archer");
+	}
+	if (input->is_action_just_pressed("hero_3") && unlocked_priest) {
+		current_hero = PRIEST;
+		UtilityFunctions::print("Switched to Priest");
+	}
 
 	Vector2 velocity = self->get_velocity();
 
@@ -148,22 +192,19 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
 	}
 
-	
+	// Block logic (Knight only)
 	if (current_hero == KNIGHT && has_shield) {
-		
 		if (block_cooldown > 0.0f) {
 			block_cooldown -= (float)delta;
 			if (block_cooldown < 0.0f) block_cooldown = 0.0f;
 		}
 
-		
 		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown <= 0.0f) {
 			is_blocking = true;
 			block_timer = BLOCK_DURATION;
 			UtilityFunctions::print("DEBUG [Knight] Block started! Duration: ", BLOCK_DURATION, "s");
 		}
 
-		
 		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown > 0.0f) {
 			UtilityFunctions::print("DEBUG [Knight] Block on cooldown! Remaining: ", block_cooldown, "s");
 		}
@@ -174,19 +215,25 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				is_blocking = false;
 				block_timer = 0.0f;
 				block_cooldown = 2.0f;
-				UtilityFunctions::print("DEBUG [Knight] Block ended. Cooldown started: 5s");
+				UtilityFunctions::print("DEBUG [Knight] Block ended. Cooldown started.");
 			}
 		}
+	} else {
+		// Reset block if not knight
+		is_blocking = false;
 	}
 
-	
+	// Attack logic
 	bool is_attacking = false;
-	if (current_hero == KNIGHT && has_sword && !is_blocking && input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT)) {
+	if (current_hero == KNIGHT && has_sword && !is_blocking &&
+		input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT)) {
 		is_attacking = true;
 	}
 
+	// Animation
 	if (sprite) {
-		String prefix = (current_hero == KNIGHT) ? "knight_" : "archer_";
+		String prefix = (current_hero == KNIGHT) ? "knight_" :
+						(current_hero == ARCHER)  ? "archer_" : "priest_";
 
 		if (is_blocking) {
 			sprite->play("knight_block");

@@ -2,9 +2,9 @@
 #include <Godot/godot.hpp>
 #include <Godot/classes/control.hpp>
 #include <Godot/classes/scene_tree.hpp>
-#include <Godot/classes/scene_tree_timer.hpp> // Critical for create_timer
+#include <Godot/classes/scene_tree_timer.hpp>
+#include <Godot/classes/engine.hpp>
 #include <Godot/variant/utility_functions.hpp>
-
 using namespace godot;
 using namespace jenova::sdk;
 
@@ -14,25 +14,28 @@ void OnReady(Caller* instance)
 {
 	Control* self = GetSelf<Control>(instance);
 	if (!self) return;
-
 	UtilityFunctions::print("Loading Screen: Initialized.");
-
-
 	self->get_tree()->create_timer(1.5)->connect("timeout", Callable(self, "on_timeout"));
 }
 
-// This function is triggered once the 1.5 seconds are up
 void on_timeout(Caller* instance)
 {
 	Control* self = GetSelf<Control>(instance);
 	if (!self) return;
 
-	UtilityFunctions::print("Loading Screen: Transitioning to Level 1...");
-	
-	/* CRITICAL: Replace the path below with your ACTUAL level file path.
-	   Right-click your level scene in Gox`dot's FileSystem and select 'Copy Path'.
-	*/
-	self->get_tree()->change_scene_to_file("res://scene/level1.tscn");
+	// Default to level 1 if nothing is set
+	int level = 1;
+
+	if (Engine::get_singleton()->has_meta("next_level"))
+	{
+		level = (int)Engine::get_singleton()->get_meta("next_level");
+	}
+
+	// Builds the path automatically e.g. "res://scene/level2.tscn"
+	String scene_path = "res://scene/level" + String::num_int64(level) + ".tscn";
+
+	UtilityFunctions::print("Loading Screen: Going to " + scene_path);
+	self->get_tree()->change_scene_to_file(scene_path);
 }
 
 JENOVA_SCRIPT_END
