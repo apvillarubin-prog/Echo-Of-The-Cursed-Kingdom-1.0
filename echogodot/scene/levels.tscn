@@ -7,11 +7,11 @@ position = Vector2(550, 344)
 
 [node name="level manager" type="Control" parent="." unique_id=298557268]
 layout_mode = 3
-anchors_preset = 0
-offset_left = -4.0000014
-offset_top = 1.0
-offset_right = 36.0
-offset_bottom = 41.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.9668671, 1.0647773)
 script = ExtResource("1_k7kto")
 
@@ -53,3 +53,6 @@ offset_bottom = 22.547533
 scale = Vector2(10.986776, 8.135634)
 text = "4
 "
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2110164139]
+position = Vector2(23, -14)
