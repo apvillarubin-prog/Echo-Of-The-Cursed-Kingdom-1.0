@@ -19,16 +19,6 @@
       "pkgType": 1,
       "pkgUninstallScript": false,
       "pkgVersion": "4.6.2 (x64)"
-    },
-    {
-      "pkgDestination": "res://Jenova/Packages/GodotSDK-4.5.3",
-      "pkgHash": "6b6394f2583d578b2bfaf82d2602d4a6",
-      "pkgInstallScript": false,
-      "pkgName": "Godot SDK 4.5.3 (MSVC)",
-      "pkgPlatform": 0,
-      "pkgType": 1,
-      "pkgUninstallScript": false,
-      "pkgVersion": "4.5.3 (x64)"
     }
   ]
 }
