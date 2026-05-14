@@ -39,8 +39,8 @@
 [ext_resource type="PackedScene" uid="uid://cgwxv4bbuhgwt" path="res://scene/lights.tscn" id="37_4kvql"]
 [ext_resource type="PackedScene" uid="uid://va4h47qpoueq" path="res://scene/fire.tscn" id="38_jx217"]
 [ext_resource type="PackedScene" uid="uid://c67xkswlunv33" path="res://scene/chandelier.tscn" id="39_r4a64"]
-[ext_resource type="PackedScene" uid="uid://b067y1amb6wdh" path="res://scene/torch.tscn" id="40_7715s"]
-[ext_resource type="PackedScene" uid="uid://cxn047ix4wu2o" path="res://scene/lava.tscn" id="41_obhj3"]
+[ext_resource type="PackedScene" path="res://scene/torch.tscn" id="40_7715s"]
+[ext_resource type="PackedScene" path="res://scene/lava.tscn" id="41_obhj3"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_itxqv"]
 distance = 130.46869
@@ -21888,7 +21888,7 @@ tile_map_data = PackedByteArray("AAAGAAQABAAWAB4AAAAHAAQAAgAMAAIAAAAIAAQAAgAMAAI
 tile_set = SubResource("TileSet_itxqv")
 
 [node name="kill" parent="." unique_id=166560945 instance=ExtResource("14_hybxs")]
-position = Vector2(-3.9988265, 217.00906)
+position = Vector2(51.98474, 104.971825)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="kill" unique_id=1383634671]
 position = Vector2(0, 226.09311)
@@ -22101,7 +22101,167 @@ z_index = 11
 position = Vector2(58, 144)
 scale = Vector2(1.668, 1.478)
 
+[node name="lava2" parent="Node" unique_id=2125018081 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(84, 144)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava3" parent="Node" unique_id=104810939 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(84, 144)
+scale = Vector2(1.668, 1.478)
+
 [node name="lava7" parent="Node" unique_id=1586369208 instance=ExtResource("41_obhj3")]
 z_index = 11
 position = Vector2(33, 144)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava8" parent="Node" unique_id=1458455492 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33, 168)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava9" parent="Node" unique_id=1204678157 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(59.999996, 167)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava10" parent="Node" unique_id=2064674630 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 166)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava11" parent="Node" unique_id=1745219928 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(34, 166)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava12" parent="Node" unique_id=1029971535 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33, 190)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava13" parent="Node" unique_id=117532087 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(57.999996, 190)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava14" parent="Node" unique_id=203337879 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(85, 190)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava15" parent="Node" unique_id=2037848131 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(85, 188)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava16" parent="Node" unique_id=2100641546 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(72, 189)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava17" parent="Node" unique_id=47898966 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33.000004, 214)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava18" parent="Node" unique_id=990515463 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(58.999996, 213)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava19" parent="Node" unique_id=1194705256 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33.000004, 212)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava20" parent="Node" unique_id=861286340 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(83.99999, 213)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava21" parent="Node" unique_id=783884215 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 212)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava22" parent="Node" unique_id=1340851650 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(85.99999, 192)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava23" parent="Node" unique_id=1985526592 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 168)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava24" parent="Node" unique_id=1297064113 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(85.99999, 144)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava25" parent="Node" unique_id=204029253 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33.000008, 237)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava26" parent="Node" unique_id=1415438854 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(58.999996, 236)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava27" parent="Node" unique_id=1698805548 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(85, 236)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava28" parent="Node" unique_id=810017674 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 236)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava29" parent="Node" unique_id=313527341 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33, 255)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava30" parent="Node" unique_id=982652102 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(58.999996, 255)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava31" parent="Node" unique_id=1368473468 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(84, 255)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava32" parent="Node" unique_id=792544399 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 255)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava33" parent="Node" unique_id=43707734 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(49.999996, 271)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava34" parent="Node" unique_id=1457114600 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(77, 271)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava35" parent="Node" unique_id=1125638093 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(86, 270)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava36" parent="Node" unique_id=164854937 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(69.99999, 271)
+scale = Vector2(1.668, 1.478)
+
+[node name="lava37" parent="Node" unique_id=127764097 instance=ExtResource("41_obhj3")]
+z_index = 11
+position = Vector2(33.000004, 272)
 scale = Vector2(1.668, 1.478)
