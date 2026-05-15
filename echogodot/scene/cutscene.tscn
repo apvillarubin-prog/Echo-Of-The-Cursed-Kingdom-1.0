@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bqbcdo1rxk5yx"]
+
+[node name="cutscene" type="CanvasLayer" unique_id=1138204758]
+layer = 100
+
+[node name="videoplayer" type="VideoStreamPlayer" parent="." unique_id=438021511]
+offset_right = 40.0
+offset_bottom = 40.0
