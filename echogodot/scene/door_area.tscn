@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://buatistq2sfms"]
+
+[ext_resource type="Script" uid="uid://debr26a5m70yp" path="res://script/doorarea.cpp" id="1_66vn3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y0y7f"]
+size = Vector2(27, 38)
+
+[node name="DoorArea" type="Area2D" unique_id=39519444]
+script = ExtResource("1_66vn3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1999070513]
+position = Vector2(0.5, -9)
+shape = SubResource("RectangleShape2D_y0y7f")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1128097292]
+
+[node name="WinUI" type="Control" parent="CanvasLayer" unique_id=1189893325]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/WinUI" unique_id=1888475604]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/WinUI" unique_id=668406824]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/WinUI/CenterContainer" unique_id=1527460311]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/WinUI/CenterContainer/VBoxContainer" unique_id=874395395]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "You Win! Would you like to
+ proceed to level 2?"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/WinUI/CenterContainer/VBoxContainer" unique_id=348802722]
+layout_mode = 2
+theme_override_constants/separation = 500
+
+[node name="YesButton" type="Button" parent="CanvasLayer/WinUI/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1191882479]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Yes"
+
+[node name="NoButton" type="Button" parent="CanvasLayer/WinUI/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1281666478]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "No"
