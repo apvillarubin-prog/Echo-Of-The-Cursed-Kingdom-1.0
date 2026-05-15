@@ -65,7 +65,7 @@ void respawn() {
 	is_dead = true;
 	if (sprite) {
 		String prefix = (current_hero == KNIGHT) ? "knight_" :
-						(current_hero == ARCHER)  ? "archer_" : "priest_";
+						(current_hero == ARCHER) ? "archer_" : "priest_";
 		sprite->play(prefix + "death");
 	}
 	if (self) self->set_velocity(Vector2(0, 0));
@@ -85,9 +85,16 @@ void take_damage(int amount) {
 	}
 }
 
-void increase_inventory(Caller* instance) {
+// UPDATED: Now returns the new total back to the collectible
+int increase_inventory(Caller* instance) {
 	inventory_count += 1;
 	UtilityFunctions::print("Item Collected! Total: ", inventory_count);
+	return inventory_count;
+}
+
+// NEW: Allows the door to ask the player how many items they have
+int get_inventory_count(Caller* instance) {
+	return inventory_count;
 }
 
 void actually_teleport(Caller* instance) {
@@ -233,7 +240,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	// Animation
 	if (sprite) {
 		String prefix = (current_hero == KNIGHT) ? "knight_" :
-						(current_hero == ARCHER)  ? "archer_" : "priest_";
+						(current_hero == ARCHER) ? "archer_" : "priest_";
 
 		if (is_blocking) {
 			sprite->play("knight_block");
