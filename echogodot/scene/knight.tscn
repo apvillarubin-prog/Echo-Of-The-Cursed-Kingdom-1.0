@@ -99,27 +99,27 @@ region = Rect2(512, 704, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q623n"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(0, 4089, 192, 87)
+region = Rect2(0, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ox5ft"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(192, 4089, 192, 87)
+region = Rect2(192, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l3hbp"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(384, 4089, 192, 87)
+region = Rect2(384, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yuisc"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(576, 4089, 192, 87)
+region = Rect2(576, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_usgbi"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(768, 4089, 192, 87)
+region = Rect2(768, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xppak"]
 atlas = ExtResource("3_8lpmn")
-region = Rect2(960, 4089, 192, 87)
+region = Rect2(960, 4096, 192, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l2ndq"]
 atlas = ExtResource("4_buwha")
@@ -505,5 +505,5 @@ texture_filter = 1
 position = Vector2(-0.5, 0)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"knight_block"
-frame_progress = 0.17598094
+animation = &"knight_walk"
+frame_progress = 0.55265826

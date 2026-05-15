@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://d31u3nyqblfth"]
+
+[ext_resource type="Texture2D" uid="uid://bhra3haj043ne" path="res://asset/Untitled design (7).png" id="1_mxnu5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxnu5"]
+atlas = ExtResource("1_mxnu5")
+region = Rect2(240, 0, 240, 399)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sc3e1"]
+atlas = ExtResource("1_mxnu5")
+region = Rect2(480, 0, 240, 399)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcv5h"]
+atlas = ExtResource("1_mxnu5")
+region = Rect2(720, 0, 240, 399)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4tooh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxnu5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sc3e1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcv5h")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="poor chandelier" type="AnimatedSprite2D" unique_id=389351589]
+sprite_frames = SubResource("SpriteFrames_4tooh")
+autoplay = "default"
+frame_progress = 0.971768

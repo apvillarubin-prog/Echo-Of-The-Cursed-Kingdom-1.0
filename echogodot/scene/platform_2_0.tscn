@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://1oyw4ryc0nhb"]
+
+[ext_resource type="Texture2D" uid="uid://i4foc1qjwdwo" path="res://asset/mainlevbuildwhite.png" id="1_xqro2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_04mid"]
+size = Vector2(36, 11)
+
+[node name="platform2_0" type="AnimatableBody2D" unique_id=1568414577]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1929980220]
+texture = ExtResource("1_xqro2")
+region_enabled = true
+region_rect = Rect2(208.33015, 114.46358, 30.711472, 13.267357)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1816941792]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_04mid")
