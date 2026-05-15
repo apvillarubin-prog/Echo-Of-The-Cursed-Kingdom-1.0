@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cve0rs785glde" path="res://script/knight.cpp" id="1_igyo2"]
 [ext_resource type="Texture2D" uid="uid://e1tlc2n6hodo" path="res://asset/character-spritesheet (4).png" id="2_fvtld"]
 [ext_resource type="Texture2D" uid="uid://c25kyr0xxl74n" path="res://asset/character-spritesheet (2).png" id="2_igyo2"]
+[ext_resource type="Texture2D" uid="uid://cfj42kyig5qeq" path="res://asset/character-spritesheet (9).png" id="3_4unx2"]
 [ext_resource type="Texture2D" uid="uid://cwooywdp5w62n" path="res://asset/character-spritesheet (6).png" id="3_8lpmn"]
 [ext_resource type="Texture2D" uid="uid://o5rqivaukage" path="res://asset/character-spritesheet (7).png" id="4_buwha"]
 
@@ -33,13 +34,13 @@ region = Rect2(256, 1280, 64, 64)
 atlas = ExtResource("2_fvtld")
 region = Rect2(320, 1280, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ml7e8"]
-atlas = ExtResource("2_fvtld")
-region = Rect2(0, 1536, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_u32pg"]
+atlas = ExtResource("3_4unx2")
+region = Rect2(0, 1600, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ihjo1"]
-atlas = ExtResource("2_fvtld")
-region = Rect2(64, 1536, 64, 64)
+[sub_resource type="AtlasTexture" id="AtlasTexture_rlbjw"]
+atlas = ExtResource("3_4unx2")
+region = Rect2(64, 1600, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dk1vr"]
 atlas = ExtResource("2_fvtld")
@@ -280,10 +281,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ml7e8")
+"texture": SubResource("AtlasTexture_u32pg")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ihjo1")
+"texture": SubResource("AtlasTexture_rlbjw")
 }],
 "loop": true,
 "name": &"archer_idle",
@@ -505,5 +506,5 @@ texture_filter = 1
 position = Vector2(-0.5, 0)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"knight_walk"
-frame_progress = 0.55265826
+animation = &"knight_idle"
+frame_progress = 0.27692148
