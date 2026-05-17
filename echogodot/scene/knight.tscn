@@ -602,5 +602,4 @@ texture_filter = 1
 position = Vector2(-0.5, 0)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_jump"
-frame_progress = 0.34318596
+animation = &"knight_idle"

@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://byah7hgs333fu"]
+
+[ext_resource type="Texture2D" uid="uid://b50l34xkqvv2n" path="res://asset/Untitled design (11).png" id="1_3q165"]
+[ext_resource type="Script" uid="uid://cl0u8ejy4nrv4" path="res://script/lever.cpp" id="1_5p3dk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5p3dk"]
+atlas = ExtResource("1_3q165")
+region = Rect2(0, 0, 600, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5u48r"]
+atlas = ExtResource("1_3q165")
+region = Rect2(600, 0, 600, 600)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_deghs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5p3dk")
+}],
+"loop": false,
+"name": &"left",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5u48r")
+}],
+"loop": false,
+"name": &"right",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06rtk"]
+size = Vector2(79, 241)
+
+[node name="lever" type="StaticBody2D" unique_id=2125279504 groups=["lever"]]
+collision_layer = 4
+script = ExtResource("1_5p3dk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=752873888]
+sprite_frames = SubResource("SpriteFrames_deghs")
+animation = &"left"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=903832691]
+position = Vector2(-1.5, -4)
+shape = SubResource("RectangleShape2D_06rtk")

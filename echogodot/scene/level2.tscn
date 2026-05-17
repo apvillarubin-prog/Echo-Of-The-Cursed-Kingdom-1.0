@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="10_sp4lc"]
 [ext_resource type="PackedScene" uid="uid://0g4r7mo8dhty" path="res://scene/enemy.tscn" id="10_vwck2"]
 [ext_resource type="Script" uid="uid://2s3ox6g5f1gw" path="res://script/EliteEnemy.cpp" id="11_68ptg"]
+[ext_resource type="PackedScene" uid="uid://dm7wupb7qccv5" path="res://scene/bridge.tscn" id="12_cmtua"]
 [ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="13_g3rbi"]
+[ext_resource type="PackedScene" uid="uid://byah7hgs333fu" path="res://scene/lever.tscn" id="13_nx5n0"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qhexg"]
 
@@ -437,6 +439,25 @@ sources/0 = SubResource("TileSetAtlasSource_lnfv4")
 
 [node name="level2" type="Node2D" unique_id=1264825657]
 
+[node name="Node" type="Node" parent="." unique_id=497720344]
+
+[node name="enemy3" parent="Node" unique_id=906854867 instance=ExtResource("10_vwck2")]
+position = Vector2(1008, 8.000008)
+scale = Vector2(0.46459648, 0.42889586)
+
+[node name="enemy4" parent="Node" unique_id=1231114963 instance=ExtResource("10_vwck2")]
+position = Vector2(1008, 8.000008)
+scale = Vector2(0.46459648, 0.42889586)
+
+[node name="enemy2" parent="Node" unique_id=1016429137 instance=ExtResource("10_vwck2")]
+position = Vector2(1016, 8)
+scale = Vector2(0.52006257, 0.37997362)
+
+[node name="EliteEnemy" parent="Node" unique_id=878717896 instance=ExtResource("10_vwck2")]
+position = Vector2(1008, 0)
+scale = Vector2(1.0002935, 0.990742)
+script = ExtResource("11_68ptg")
+
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=340242871]
 position = Vector2(24, 440)
 
@@ -449,7 +470,7 @@ tile_set = SubResource("TileSet_nluny")
 format = 2
 
 [node name="TileMapLayer" type="TileMapLayer" parent="TileMap" unique_id=1644647071]
-tile_map_data = PackedByteArray("AAACAAMAAAAKAAgAAAADAAMAAAAKAAgAAAAEAAMAAAAKAAgAAAAFAAMAAAAKAAgAAAAGAAMAAAAKAAgAAAAHAAMAAAAKAAgAAAAIAAMAAAAKAAgAAAAJAAMAAAAKAAgAAAAKAAMAAAAKAAgAAAALAAMAAAAKAAgAAAAMAAMAAAAKAAgAAAANAAMAAAAKAAgAAAAOAAMAAAAKAAgAAAAPAAMAAAAKAAgAAAAQAAMAAAAKAAgAAAARAAMAAAAKAAgAAAASAAMAAAAKAAgAAAATAAMAAAAKAAgAAAAUAAMAAAAKAAgAAAACAAIAAAAKAAcAAAADAAIAAAALAAcAAAAEAAIAAAAMAAcAAAAFAAIAAAAMAAcAAAAGAAIAAAAMAAcAAAAHAAIAAAAMAAcAAAAIAAIAAAAMAAcAAAAJAAIAAAAMAAcAAAAKAAIAAAAMAAcAAAALAAIAAAAMAAcAAAAMAAIAAAAMAAcAAAANAAIAAAAMAAcAAAAOAAIAAAAMAAcAAAAPAAIAAAANAAcAAAAQAAIAAAANAAcAAAAUAAIAAAANAAcAAAARAAIAAAAMAAcAAAASAAIAAAAMAAcAAAATAAIAAAAMAAcAAADh//X/FAAHAAgAAADh//b/FAAHAAkAAADh//f/FAAHAAoAAADh//j/FAAHAAsAAADi//X/FAAIAAgAAADi//b/FAAIAAkAAADi//f/FAAIAAoAAADi//j/FAAIAAsAAAAVAAMAAAAKAAgAAAAWAAMAAAAKAAgAAAAXAAMAAAAKAAgAAAAVAAIAAAAMAAcAAAAWAAIAAAANAAcAAAAaAAMAAAAKAAgAAAAbAAMAAAAKAAgAAAAcAAMAAAAMAAgAAAAdAAMAAAAMAAgAAAAeAAMAAAAKAAgAAAAfAAMAAAAKAAgAAAAgAAMAAAAKAAgAAAAhAAMAAAAKAAgAAAAiAAMAAAAKAAgAAAAjAAMAAAAKAAgAAAAkAAMAAAAKAAgAAAAlAAMAAAAKAAgAAAAmAAMAAAAKAAgAAAAnAAMAAAAKAAgAAAAoAAMAAAAKAAgAAAApAAMAAAAKAAgAAAAqAAMAAAAKAAgAAAArAAMAAAAKAAgAAAAsAAMAAAAKAAgAAAAtAAMAAAAKAAgAAAAuAAMAAAAMAAgAAAAvAAMAAAAMAAgAAAAYAAMAAAAKAAgAAAAZAAMAAAAKAAgAAAA=")
+tile_map_data = PackedByteArray("AAACAAMAAAAKAAgAAAADAAMAAAAKAAgAAAAEAAMAAAAKAAgAAAAFAAMAAAAKAAgAAAAGAAMAAAAKAAgAAAAHAAMAAAAKAAgAAAAIAAMAAAAKAAgAAAAJAAMAAAAKAAgAAAAKAAMAAAAKAAgAAAALAAMAAAAKAAgAAAAMAAMAAAAKAAgAAAANAAMAAAAKAAgAAAAOAAMAAAAKAAgAAAAPAAMAAAAKAAgAAAAQAAMAAAAKAAgAAAARAAMAAAAKAAgAAAASAAMAAAAKAAgAAAATAAMAAAAKAAgAAAACAAIAAAAKAAcAAAADAAIAAAALAAcAAAAEAAIAAAAMAAcAAAAFAAIAAAAMAAcAAAAGAAIAAAAMAAcAAAAHAAIAAAAMAAcAAAAIAAIAAAAMAAcAAAAJAAIAAAAMAAcAAAAKAAIAAAAMAAcAAAALAAIAAAAMAAcAAAAMAAIAAAAMAAcAAAANAAIAAAAMAAcAAAAOAAIAAAAMAAcAAAAPAAIAAAANAAcAAAAQAAIAAAANAAcAAAARAAIAAAAMAAcAAAASAAIAAAAMAAcAAAATAAIAAAAMAAcAAADh//X/FAAHAAgAAADh//b/FAAHAAkAAADh//f/FAAHAAoAAADh//j/FAAHAAsAAADi//X/FAAIAAgAAADi//b/FAAIAAkAAADi//f/FAAIAAoAAADi//j/FAAIAAsAAAAeAAMAAAAKAAgAAAAfAAMAAAAKAAgAAAAgAAMAAAAKAAgAAAAhAAMAAAAKAAgAAAAiAAMAAAAKAAgAAAAjAAMAAAAKAAgAAAAkAAMAAAAKAAgAAAAlAAMAAAAKAAgAAAAmAAMAAAAKAAgAAAAnAAMAAAAKAAgAAAAoAAMAAAAKAAgAAAApAAMAAAAKAAgAAAAqAAMAAAAKAAgAAAArAAMAAAAKAAgAAAAsAAMAAAAKAAgAAAAtAAMAAAAKAAgAAAAuAAMAAAAKAAgAAAAvAAMAAAAKAAgAAAAwAAMAAAAKAAgAAAAxAAMAAAAKAAgAAAAyAAMAAAAKAAgAAAAzAAMAAAAKAAgAAAA0AAMAAAAKAAgAAAA1AAMAAAAKAAgAAAA2AAMAAAAKAAgAAAA3AAMAAAAKAAgAAAA4AAMAAAAKAAgAAAA5AAMAAAAKAAgAAAA6AAMAAAAKAAgAAAA7AAMAAAAKAAgAAAA8AAMAAAAKAAgAAAA9AAMAAAAKAAgAAAA+AAMAAAAKAAgAAAA/AAMAAAAKAAgAAABAAAMAAAAKAAgAAABBAAMAAAAKAAgAAABCAAMAAAAKAAgAAABDAAMAAAAKAAgAAABEAAMAAAAKAAgAAABFAAMAAAAKAAgAAABGAAMAAAAKAAgAAABHAAMAAAAKAAgAAABIAAMAAAAKAAgAAAAdAAMAAAAKAAgAAAAcAAMAAAAKAAgAAAAbAAMAAAAKAAgAAAAaAAMAAAAKAAgAAAA=")
 tile_set = SubResource("TileSet_lnov8")
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_qhexg")]
@@ -468,35 +489,26 @@ limit_smoothed = true
 position_smoothing_enabled = true
 
 [node name="DoorArea" parent="." unique_id=39519444 instance=ExtResource("4_if17c")]
-position = Vector2(704, 32)
+position = Vector2(1152, 40)
 
 [node name="orb" parent="." unique_id=1976635752 instance=ExtResource("5_lnov8")]
-position = Vector2(104, 8)
+position = Vector2(64, 8)
 
 [node name="Gem" parent="." unique_id=1868344911 instance=ExtResource("6_kj7ci")]
 position = Vector2(64, 0)
 
 [node name="Area2D" parent="." unique_id=48608864 instance=ExtResource("7_yilmc")]
-position = Vector2(152, 24)
+position = Vector2(72, 24)
 scale = Vector2(0.9350241, 1.3270309)
 
 [node name="Chest" parent="." unique_id=2059035529 instance=ExtResource("8_yilmc")]
 position = Vector2(248, 32)
 script = ExtResource("9_epjhv")
 
-[node name="enemy3" parent="." unique_id=906854867 instance=ExtResource("10_vwck2")]
-position = Vector2(560.00006, 39.999977)
-scale = Vector2(0.46459648, 0.42889586)
+[node name="Bridge" parent="." unique_id=226939324 instance=ExtResource("12_cmtua")]
+position = Vector2(368, 41)
 
-[node name="enemy4" parent="." unique_id=1231114963 instance=ExtResource("10_vwck2")]
-position = Vector2(536.00006, 39.999985)
-scale = Vector2(0.46459648, 0.42889586)
-
-[node name="enemy2" parent="." unique_id=1016429137 instance=ExtResource("10_vwck2")]
-position = Vector2(463.99997, 32)
-scale = Vector2(0.52006257, 0.37997362)
-
-[node name="EliteEnemy" parent="." unique_id=878717896 instance=ExtResource("10_vwck2")]
-position = Vector2(640, 32)
-scale = Vector2(1.0002935, 0.990742)
-script = ExtResource("11_68ptg")
+[node name="lever" parent="." unique_id=2125279504 instance=ExtResource("13_nx5n0")]
+position = Vector2(432, 40)
+scale = Vector2(0.059471633, 0.06496977)
+metadata/puzzle_id = 1
