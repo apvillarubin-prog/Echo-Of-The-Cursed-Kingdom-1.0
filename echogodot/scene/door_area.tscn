@@ -47,7 +47,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "You Win! Would you like to
- proceed to level 2?"
+ proceed to the next level?"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/WinUI/CenterContainer/VBoxContainer" unique_id=348802722]

@@ -25055,6 +25055,9 @@ _data = {
 position = Vector2(4, -2)
 scale = Vector2(1.0002935, 0.990742)
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=581343641]
+color = Color(0.5529412, 0.5686275, 0.8352941, 1)
+
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_itxqv")]
 z_index = 5
 position = Vector2(-80.976234, -1.1920929e-07)
@@ -25219,15 +25222,15 @@ position = Vector2(1464, -104)
 scale = Vector2(0.52006257, 0.37997362)
 
 [node name="enemy5" parent="killable enemies" unique_id=1928276716 instance=ExtResource("21_6ow0t")]
-position = Vector2(1990, -345)
+position = Vector2(1993, -342.00003)
 scale = Vector2(0.46459648, 0.42889586)
 
 [node name="enemy6" parent="killable enemies" unique_id=1753437590 instance=ExtResource("21_6ow0t")]
-position = Vector2(1966, -345)
+position = Vector2(1952.0001, -348.00003)
 scale = Vector2(0.46459648, 0.42889586)
 
 [node name="enemy7" parent="killable enemies" unique_id=228402124 instance=ExtResource("21_6ow0t")]
-position = Vector2(1894, -353)
+position = Vector2(1923.9999, -345.00003)
 scale = Vector2(0.52006257, 0.37997362)
 
 [node name="EliteEnemy" parent="killable enemies" unique_id=648736593 instance=ExtResource("21_6ow0t")]
@@ -25236,7 +25239,7 @@ scale = Vector2(1.0002935, 0.990742)
 script = ExtResource("22_eah8l")
 
 [node name="EliteEnemy2" parent="killable enemies" unique_id=1184515007 instance=ExtResource("21_6ow0t")]
-position = Vector2(1791, -349)
+position = Vector2(1797.0001, -350)
 scale = Vector2(1.0002935, 0.990742)
 script = ExtResource("22_eah8l")
 

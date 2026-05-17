@@ -1,12 +1,18 @@
-/* Jenova C++ Node Base Script (Meteora - Fully Merged) */
+/* Jenova C++ Node Base Script (Meteora - Master Player Script) */
 #include <Godot/godot.hpp>
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
+#include <Godot/classes/sprite2d.hpp> 
 #include <Godot/classes/input.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/scene_tree_timer.hpp>
 #include <Godot/classes/engine.hpp>
+#include <Godot/classes/resource_loader.hpp>
+#include <Godot/classes/packed_scene.hpp>
+#include <Godot/classes/area2d.hpp>
+#include <Godot/classes/node.hpp>
 #include <Godot/variant/utility_functions.hpp>
+#include <Godot/variant/string.hpp>
 
 using namespace godot;
 using namespace jenova::sdk;
@@ -19,14 +25,17 @@ Vector2 start_pos;
 int inventory_count = 0;
 bool is_dead = false;
 
+// --- Combat Variables ---
 bool has_sword = false;
 bool has_shield = false;
+bool has_bow = false; 
 bool is_blocking = false;
 float block_timer = 0.0f;
 float block_cooldown = 0.0f;
 float BLOCK_DURATION = 2.0f;
 int player_health = 50;
 int last_attack_frame = -1;
+int knight_damage = 10;
 
 // Hero unlock flags
 bool unlocked_knight = true;
@@ -40,22 +49,25 @@ float speed = 70.0f;
 float jump_velocity = -253.0f;
 float gravity = 980.0f;
 
-void unlock_sword() {
-	if (current_hero == KNIGHT) {
-		has_sword = true;
-		UtilityFunctions::print("Sword Unlocked for the Knight!");
-	} else {
-		UtilityFunctions::print("This hero can't use a sword.");
-	}
+// ==========================================
+// UNLOCK CONFIGURATION ROUTINES
+// ==========================================
+void unlock_sword(Caller* instance) { 
+	has_sword = true; 
+	Engine::get_singleton()->set_meta("save_has_sword", true);
+	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Sword!"); 
 }
 
-void unlock_shield() {
-	if (current_hero == KNIGHT) {
-		has_shield = true;
-		UtilityFunctions::print("Shield Unlocked for the Knight!");
-	} else {
-		UtilityFunctions::print("This hero can't use a shield.");
-	}
+void unlock_shield(Caller* instance) { 
+	has_shield = true; 
+	Engine::get_singleton()->set_meta("save_has_shield", true);
+	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Shield!"); 
+}
+
+void unlock_bow(Caller* instance) { 
+	has_bow = true; 
+	Engine::get_singleton()->set_meta("save_has_bow", true);
+	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Bow!"); 
 }
 
 void actually_teleport(Caller* instance);
@@ -63,9 +75,9 @@ void actually_teleport(Caller* instance);
 void respawn() {
 	if (is_dead) return;
 	is_dead = true;
+	UtilityFunctions::print("[COMBAT MONITOR] Player health dropped to 0! Respawning...");
 	if (sprite) {
-		String prefix = (current_hero == KNIGHT) ? "knight_" :
-						(current_hero == ARCHER) ? "archer_" : "priest_";
+		String prefix = (current_hero == KNIGHT) ? "knight_" : (current_hero == ARCHER) ? "archer_" : "priest_";
 		sprite->play(prefix + "death");
 	}
 	if (self) self->set_velocity(Vector2(0, 0));
@@ -74,28 +86,20 @@ void respawn() {
 
 void take_damage(int amount) {
 	if (is_dead) return;
-	if (is_blocking) {
-		UtilityFunctions::print("DEBUG [Knight] Blocked! Damage ignored.");
+	
+	if (is_blocking && current_hero == KNIGHT) {
+		UtilityFunctions::print("[COMBAT MONITOR] SHIELD BLOCKED! Damage completely absorbed.");
 		return;
 	}
+	
 	player_health -= amount;
-	UtilityFunctions::print("Player Health: ", player_health);
-	if (player_health <= 0) {
-		respawn();
-	}
+	UtilityFunctions::print("[COMBAT MONITOR] Player hit! HP Left: ", player_health);
+	
+	if (player_health <= 0) respawn();
 }
 
-// UPDATED: Now returns the new total back to the collectible
-int increase_inventory(Caller* instance) {
-	inventory_count += 1;
-	UtilityFunctions::print("Item Collected! Total: ", inventory_count);
-	return inventory_count;
-}
-
-// NEW: Allows the door to ask the player how many items they have
-int get_inventory_count(Caller* instance) {
-	return inventory_count;
-}
+int increase_inventory(Caller* instance) { inventory_count += 1; return inventory_count; }
+int get_inventory_count(Caller* instance) { return inventory_count; }
 
 void actually_teleport(Caller* instance) {
 	CharacterBody2D* player = GetSelf<CharacterBody2D>(instance);
@@ -104,9 +108,7 @@ void actually_teleport(Caller* instance) {
 		is_dead = false;
 		player_health = 50;
 		is_blocking = false;
-		block_timer = 0.0f;
 		block_cooldown = 0.0f;
-		UtilityFunctions::print("DEBUG [Knight] Respawned. Block state reset.");
 	}
 }
 
@@ -126,39 +128,34 @@ void OnAwake(Caller* instance) {
 
 void OnReady(Caller* instance) {
 	if (self) {
+		// FIXED: Collectibles counter explicitly reset to 0 upon every fresh level lifecycle load
+		inventory_count = 0; 
+
 		start_pos = self->get_global_position();
 		is_dead = false;
 		player_health = 50;
-		is_blocking = false;
-		block_timer = 0.0f;
-		block_cooldown = 0.0f;
 
-		// Get current level from Engine meta
-		int current_level = 1;
-		if (Engine::get_singleton()->has_meta("next_level")) {
-			current_level = (int)Engine::get_singleton()->get_meta("next_level");
+		Engine* engine = Engine::get_singleton();
+		has_sword = engine->has_meta("save_has_sword") ? (bool)engine->get_meta("save_has_sword") : false;
+		has_shield = engine->has_meta("save_has_shield") ? (bool)engine->get_meta("save_has_shield") : false;
+		has_bow = engine->has_meta("save_has_bow") ? (bool)engine->get_meta("save_has_bow") : false;
+		
+		String scene_name = self->get_tree()->get_current_scene()->get_name();
+		
+		if (scene_name == "level2" || scene_name == "Level2") {
+			unlocked_archer = true; 
+			if (!has_sword) {
+				UtilityFunctions::print("DEV CHEAT: Giving testing gear layout.");
+				has_sword = true;
+				has_shield = true;
+			}
+		} else {
+			unlocked_archer = false; 
 		}
 
-		// Reset all first
+		unlocked_priest = false; 
 		unlocked_knight = true;
-		unlocked_archer = false;
-		unlocked_priest = false;
-
-		// Unlock based on level
-		if (current_level >= 2) unlocked_archer = true;
-		if (current_level >= 3) unlocked_priest = true;
-
-		UtilityFunctions::print("=== HERO UNLOCKS ===");
-		UtilityFunctions::print("Level: ", current_level);
-		UtilityFunctions::print("Knight: ", unlocked_knight);
-		UtilityFunctions::print("Archer: ", unlocked_archer);
-		UtilityFunctions::print("Priest: ", unlocked_priest);
-		UtilityFunctions::print("====================");
-
-		// Always start as knight
 		current_hero = KNIGHT;
-
-		UtilityFunctions::print("Hero script active. Inventory reset.");
 	}
 }
 
@@ -166,30 +163,14 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	if (!self || is_dead) return;
 
 	Input* input = Input::get_singleton();
-
-	// Hero switching with unlock check
-	if (input->is_action_just_pressed("hero_1") && unlocked_knight) {
-		current_hero = KNIGHT;
-		UtilityFunctions::print("Switched to Knight");
-	}
-	if (input->is_action_just_pressed("hero_2") && unlocked_archer) {
-		current_hero = ARCHER;
-		UtilityFunctions::print("Switched to Archer");
-	}
-	if (input->is_action_just_pressed("hero_3") && unlocked_priest) {
-		current_hero = PRIEST;
-		UtilityFunctions::print("Switched to Priest");
-	}
-
 	Vector2 velocity = self->get_velocity();
 
-	if (!self->is_on_floor()) {
-		velocity.y += gravity * (float)delta;
-	}
+	if (input->is_action_just_pressed("hero_1") && unlocked_knight) current_hero = KNIGHT;
+	if (input->is_action_just_pressed("hero_2") && unlocked_archer) current_hero = ARCHER;
+	if (input->is_action_just_pressed("hero_3") && unlocked_priest) current_hero = PRIEST;
 
-	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) {
-		velocity.y = jump_velocity;
-	}
+	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
+	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) velocity.y = jump_velocity;
 
 	float direction = input->get_axis("ui_left", "ui_right");
 	if (direction != 0) {
@@ -199,68 +180,71 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
 	}
 
-	// Block logic (Knight only)
 	if (current_hero == KNIGHT && has_shield) {
-		if (block_cooldown > 0.0f) {
-			block_cooldown -= (float)delta;
-			if (block_cooldown < 0.0f) block_cooldown = 0.0f;
-		}
-
+		if (block_cooldown > 0.0f) block_cooldown -= (float)delta;
 		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown <= 0.0f) {
 			is_blocking = true;
 			block_timer = BLOCK_DURATION;
-			UtilityFunctions::print("DEBUG [Knight] Block started! Duration: ", BLOCK_DURATION, "s");
+			UtilityFunctions::print("[COMBAT MONITOR] Shield Up!");
 		}
-
-		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown > 0.0f) {
-			UtilityFunctions::print("DEBUG [Knight] Block on cooldown! Remaining: ", block_cooldown, "s");
-		}
-
 		if (is_blocking) {
 			block_timer -= (float)delta;
 			if (block_timer <= 0.0f) {
 				is_blocking = false;
-				block_timer = 0.0f;
 				block_cooldown = 2.0f;
-				UtilityFunctions::print("DEBUG [Knight] Block ended. Cooldown started.");
+				UtilityFunctions::print("[COMBAT MONITOR] Shield Down (Cooldown initialized).");
 			}
 		}
 	} else {
-		// Reset block if not knight
 		is_blocking = false;
 	}
 
-	// Attack logic
 	bool is_attacking = false;
-	if (current_hero == KNIGHT && has_sword && !is_blocking &&
-		input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT)) {
-		is_attacking = true;
+	if (input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT) && !is_blocking) {
+		if (current_hero == KNIGHT && has_sword) is_attacking = true;
+		if (current_hero == ARCHER && has_bow) is_attacking = true; 
 	}
 
-	// Animation
 	if (sprite) {
-		String prefix = (current_hero == KNIGHT) ? "knight_" :
-						(current_hero == ARCHER) ? "archer_" : "priest_";
+		String prefix = (current_hero == KNIGHT) ? "knight_" : (current_hero == ARCHER) ? "archer_" : "priest_";
 
 		if (is_blocking) {
 			sprite->play("knight_block");
 		} else if (is_attacking) {
 			sprite->play(prefix + "attack");
 			int current_frame = sprite->get_frame();
+			
+			int damage_frame = (current_hero == KNIGHT) ? 4 : 10;
 
-			if (current_frame == 4 && last_attack_frame != 4) {
-				TypedArray<Node> enemies = self->get_tree()->get_nodes_in_group("enemy");
-				for (int i = 0; i < enemies.size(); i++) {
-					Object* obj = enemies[i];
-					if (!obj) continue;
-					Node* enemy_node = Object::cast_to<Node>(obj);
-					if (!enemy_node) continue;
-					if (!ObjectDB::get_instance(enemy_node->get_instance_id())) continue;
+			if (current_frame == damage_frame && last_attack_frame != damage_frame) {
+				bool facing_right = !sprite->is_flipped_h();
 
-					Node2D* enemy = Object::cast_to<Node2D>(enemy_node);
-					if (enemy) {
-						if (self->get_global_position().distance_to(enemy->get_global_position()) < 60.0f) {
-							enemy->call("take_hit");
+				if (current_hero == KNIGHT) {
+					TypedArray<Node> enemies = self->get_tree()->get_nodes_in_group("enemy");
+					for (int i = 0; i < enemies.size(); i++) {
+						Node2D* enemy = Object::cast_to<Node2D>(enemies[i]);
+						if (enemy && self->get_global_position().distance_to(enemy->get_global_position()) < 60.0f) {
+							enemy->set_meta("pending_damage", knight_damage);
+						}
+					}
+				} 
+				else if (current_hero == ARCHER) {
+					Ref<PackedScene> arrow_scene = ResourceLoader::get_singleton()->load("res://scene/arrow.tscn");
+					if (arrow_scene.is_valid()) {
+						Node* arrow_instance = arrow_scene->instantiate();
+						Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
+						
+						if (arrow) {
+							Vector2 spawn_offset = facing_right ? Vector2(20, 2) : Vector2(-20, 2);
+							arrow->set_global_position(self->get_global_position() + spawn_offset);
+							
+							if (!facing_right) {
+								arrow->set_scale(Vector2(-0.5f, 0.5f)); 
+							} else {
+								arrow->set_scale(Vector2(0.5f, 0.5f));  
+							}
+
+							self->get_tree()->get_current_scene()->add_child(arrow_instance);
 						}
 					}
 				}
@@ -269,7 +253,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		} else {
 			last_attack_frame = -1;
 			if (!self->is_on_floor()) sprite->play(prefix + "jump");
-			else if (direction != 0) sprite->play(prefix + "walk");
+			else if (velocity.x != 0) sprite->play(prefix + "walk");
 			else sprite->play(prefix + "idle");
 		}
 	}

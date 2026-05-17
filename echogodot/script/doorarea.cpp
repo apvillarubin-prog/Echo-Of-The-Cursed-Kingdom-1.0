@@ -68,10 +68,19 @@ void on_yes_pressed(Caller* instance)
 {
 	Area2D* self = GetSelf<Area2D>(instance);
 	
-	// Set the next level meta to 2
-	Engine::get_singleton()->set_meta("next_level", 2);
+	// 1. Find out what level we are currently on (default to 1)
+	int current_level = 1;
+	if (Engine::get_singleton()->has_meta("next_level")) {
+		current_level = (int)Engine::get_singleton()->get_meta("next_level");
+	}
 	
-	UtilityFunctions::print("Proceeding to Level 2...");
+	// 2. Calculate the next level
+	int next_level_to_load = current_level + 1;
+	
+	// 3. Save the new level to the Engine meta
+	Engine::get_singleton()->set_meta("next_level", next_level_to_load);
+	
+	UtilityFunctions::print("Proceeding to Level ", next_level_to_load, "...");
 	
 	// Transition to the loading screen
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
