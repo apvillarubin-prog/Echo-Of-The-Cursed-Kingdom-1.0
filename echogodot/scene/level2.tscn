@@ -512,3 +512,5 @@ position = Vector2(368, 41)
 position = Vector2(432, 40)
 scale = Vector2(0.059471633, 0.06496977)
 metadata/puzzle_id = 1
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1917446005]
