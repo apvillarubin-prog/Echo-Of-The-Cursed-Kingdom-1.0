@@ -729,8 +729,7 @@ texture_mode = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1177607577 groups=["player"]]
 texture_filter = 1
-position = Vector2(-1, -3)
+position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_swing"
-frame_progress = 0.53240705
+animation = &"archer_death"
