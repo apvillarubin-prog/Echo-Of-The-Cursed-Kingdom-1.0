@@ -1,18 +1,19 @@
-/* Jenova C++ Node Base Script (Meteora - Master Player Script) */
 #include <Godot/godot.hpp>
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
-#include <Godot/classes/sprite2d.hpp> 
 #include <Godot/classes/input.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/scene_tree_timer.hpp>
 #include <Godot/classes/engine.hpp>
 #include <Godot/classes/resource_loader.hpp>
 #include <Godot/classes/packed_scene.hpp>
-#include <Godot/classes/area2d.hpp>
+#include <Godot/classes/ray_cast2d.hpp>
+#include <Godot/classes/line2d.hpp>
+#include <Godot/classes/node2d.hpp>
 #include <Godot/classes/node.hpp>
 #include <Godot/variant/utility_functions.hpp>
 #include <Godot/variant/string.hpp>
+#include <Godot/variant/string_name.hpp>
 
 using namespace godot;
 using namespace jenova::sdk;
@@ -25,10 +26,9 @@ Vector2 start_pos;
 int inventory_count = 0;
 bool is_dead = false;
 
-// --- Combat Variables ---
 bool has_sword = false;
 bool has_shield = false;
-bool has_bow = false; 
+bool has_bow = false;  
 bool is_blocking = false;
 float block_timer = 0.0f;
 float block_cooldown = 0.0f;
@@ -37,7 +37,21 @@ int player_health = 50;
 int last_attack_frame = -1;
 int knight_damage = 10;
 
-// Hero unlock flags
+bool has_grapple = false; 
+bool is_grappling = false;
+Vector2 grapple_target_pos;
+float grapple_radius = 0.0f;          
+float grapple_climb_speed = 140.0f;    
+float max_grapple_range = 160.0f; 
+
+Vector2 hook_visual_offset = Vector2(0, 8); 
+
+float grapple_launch_duration = 0.65f;  
+float grapple_launch_timer = 0.0f; 
+
+float grapple_jump_duration = 0.35f;  
+float grapple_jump_timer = 0.0f;
+
 bool unlocked_knight = true;
 bool unlocked_archer = false;
 bool unlocked_priest = false;
@@ -49,25 +63,21 @@ float speed = 70.0f;
 float jump_velocity = -253.0f;
 float gravity = 980.0f;
 
-// ==========================================
-// UNLOCK CONFIGURATION ROUTINES
-// ==========================================
 void unlock_sword(Caller* instance) { 
 	has_sword = true; 
 	Engine::get_singleton()->set_meta("save_has_sword", true);
-	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Sword!"); 
 }
-
 void unlock_shield(Caller* instance) { 
 	has_shield = true; 
 	Engine::get_singleton()->set_meta("save_has_shield", true);
-	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Shield!"); 
 }
-
 void unlock_bow(Caller* instance) { 
 	has_bow = true; 
 	Engine::get_singleton()->set_meta("save_has_bow", true);
-	UtilityFunctions::print("[COMBAT MONITOR] Player unlocked Bow!"); 
+}
+void unlock_grapple(Caller* instance) { 
+	has_grapple = true; 
+	Engine::get_singleton()->set_meta("save_has_grapple", true);
 }
 
 void actually_teleport(Caller* instance);
@@ -75,7 +85,11 @@ void actually_teleport(Caller* instance);
 void respawn() {
 	if (is_dead) return;
 	is_dead = true;
-	UtilityFunctions::print("[COMBAT MONITOR] Player health dropped to 0! Respawning...");
+	is_grappling = false;
+	
+	Line2D* rope = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
+	if (rope) rope->set_visible(false);
+
 	if (sprite) {
 		String prefix = (current_hero == KNIGHT) ? "knight_" : (current_hero == ARCHER) ? "archer_" : "priest_";
 		sprite->play(prefix + "death");
@@ -86,15 +100,9 @@ void respawn() {
 
 void take_damage(int amount) {
 	if (is_dead) return;
-	
-	if (is_blocking && current_hero == KNIGHT) {
-		UtilityFunctions::print("[COMBAT MONITOR] SHIELD BLOCKED! Damage completely absorbed.");
-		return;
-	}
+	if (is_blocking && current_hero == KNIGHT) return; 
 	
 	player_health -= amount;
-	UtilityFunctions::print("[COMBAT MONITOR] Player hit! HP Left: ", player_health);
-	
 	if (player_health <= 0) respawn();
 }
 
@@ -128,33 +136,28 @@ void OnAwake(Caller* instance) {
 
 void OnReady(Caller* instance) {
 	if (self) {
-		// FIXED: Collectibles counter explicitly reset to 0 upon every fresh level lifecycle load
 		inventory_count = 0; 
-
 		start_pos = self->get_global_position();
 		is_dead = false;
+		is_grappling = false;
+		grapple_launch_timer = 0.0f;
+		grapple_jump_timer = 0.0f;
 		player_health = 50;
 
 		Engine* engine = Engine::get_singleton();
 		has_sword = engine->has_meta("save_has_sword") ? (bool)engine->get_meta("save_has_sword") : false;
 		has_shield = engine->has_meta("save_has_shield") ? (bool)engine->get_meta("save_has_shield") : false;
 		has_bow = engine->has_meta("save_has_bow") ? (bool)engine->get_meta("save_has_bow") : false;
+		has_grapple = engine->has_meta("save_has_grapple") ? (bool)engine->get_meta("save_has_grapple") : false;
 		
 		String scene_name = self->get_tree()->get_current_scene()->get_name();
-		
 		if (scene_name == "level2" || scene_name == "Level2") {
 			unlocked_archer = true; 
-			if (!has_sword) {
-				UtilityFunctions::print("DEV CHEAT: Giving testing gear layout.");
-				has_sword = true;
-				has_shield = true;
-			}
+			has_sword = true;
+			has_shield = true;
 		} else {
 			unlocked_archer = false; 
 		}
-
-		unlocked_priest = false; 
-		unlocked_knight = true;
 		current_hero = KNIGHT;
 	}
 }
@@ -165,10 +168,145 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	Input* input = Input::get_singleton();
 	Vector2 velocity = self->get_velocity();
 
-	if (input->is_action_just_pressed("hero_1") && unlocked_knight) current_hero = KNIGHT;
-	if (input->is_action_just_pressed("hero_2") && unlocked_archer) current_hero = ARCHER;
-	if (input->is_action_just_pressed("hero_3") && unlocked_priest) current_hero = PRIEST;
+	if (!is_grappling) {
+		if (input->is_action_just_pressed("hero_1") && unlocked_knight) current_hero = KNIGHT;
+		if (input->is_action_just_pressed("hero_2") && unlocked_archer) {
+			current_hero = ARCHER;
+			is_blocking = false;
+		}
+		if (input->is_action_just_pressed("hero_3") && unlocked_priest) current_hero = PRIEST;
+	}
 
+	Line2D* grapple_line = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
+	Node2D* hand_anchor = Object::cast_to<Node2D>(self->get_node_or_null("BowHandAnchor"));
+
+	// ==========================================================
+	// PHASE A: COMPREHENSIVE SEQUENTIAL SWING & CLIMB ENGINE
+	// ==========================================================
+	if (is_grappling && current_hero == ARCHER) {
+		
+		if (input->is_action_just_pressed("grapple_hook")) {
+			is_grappling = false;
+			if (grapple_line) grapple_line->set_visible(false);
+			self->set_velocity(velocity);
+			self->move_and_slide();
+			return;
+		}
+
+		if (input->is_action_just_pressed("ui_accept")) {
+			is_grappling = false;
+			if (grapple_line) grapple_line->set_visible(false);
+			velocity.y = jump_velocity; 
+			self->set_velocity(velocity);
+			self->move_and_slide();
+			return;
+		}
+
+		if (grapple_launch_timer > 0.0f) {
+			grapple_launch_timer -= (float)delta;
+			velocity = Vector2(0, 0); 
+			
+			if (sprite && sprite->get_animation() != StringName("archer_grapple_launch")) {
+				sprite->play("archer_grapple_launch"); 
+			}
+			if (grapple_line) grapple_line->set_visible(false);
+
+			if (grapple_launch_timer <= 0.0f) {
+				grapple_jump_timer = grapple_jump_duration;
+				
+				Vector2 to_target = grapple_target_pos - self->get_global_position();
+				velocity = to_target.normalized() * 260.0f; 
+				if (velocity.y > -140.0f) velocity.y = -180.0f; 
+			}
+		} 
+		else if (grapple_jump_timer > 0.0f) {
+			grapple_jump_timer -= (float)delta;
+			if (sprite && sprite->get_animation() != StringName("archer_jump")) {
+				sprite->play("archer_jump"); 
+			}
+			
+			velocity.y += gravity * (float)delta;
+
+			if (grapple_jump_timer <= 0.0f) {
+				Vector2 rope_vector = self->get_global_position() - grapple_target_pos;
+				grapple_radius = rope_vector.length();
+				if (grapple_radius < 30.0f) grapple_radius = 30.0f;
+			}
+		}
+		else {
+			bool input_up = input->is_action_pressed("ui_up") || input->is_key_pressed(Key::KEY_W);
+			bool input_down = input->is_action_pressed("ui_down") || input->is_key_pressed(Key::KEY_S);
+			float climb_direction = 0.0f;
+			if (input_up) climb_direction = -1.0f;
+			if (input_down) climb_direction = 1.0f;
+
+			if (climb_direction != 0.0f) {
+				grapple_radius += climb_direction * grapple_climb_speed * (float)delta;
+				if (grapple_radius < 30.0f) grapple_radius = 30.0f;
+				if (grapple_radius > max_grapple_range) grapple_radius = max_grapple_range;
+
+				if (sprite && sprite->get_animation() != StringName("archer_grapple_pull")) {
+					sprite->play("archer_grapple_pull"); 
+				}
+			} 
+			else {
+				if (sprite && sprite->get_animation() != StringName("archer_swing")) {
+					sprite->play("archer_swing"); 
+				}
+			}
+
+			velocity.y += gravity * (float)delta;
+
+			Vector2 rope_vector = self->get_global_position() - grapple_target_pos;
+			Vector2 rope_dir = rope_vector.normalized();
+			Vector2 tangent_trajectory = Vector2(-rope_dir.y, rope_dir.x).normalized();
+
+			float swing_input = input->get_axis("ui_left", "ui_right");
+			if (swing_input != 0.0f) {
+				velocity += tangent_trajectory * (-swing_input) * 280.0f * (float)delta; 
+				if (sprite) sprite->set_flip_h(swing_input < 0);
+			}
+
+			float tangent_speed = velocity.dot(tangent_trajectory);
+			tangent_speed *= 0.990f; 
+			velocity = tangent_trajectory * tangent_speed;
+
+			float current_dist = rope_vector.length();
+			velocity -= rope_dir * (current_dist - grapple_radius) * 25.0f;
+		}
+
+		self->set_velocity(velocity);
+		self->move_and_slide();
+
+		if (is_grappling && grapple_launch_timer <= 0.0f) {
+			if (self->is_on_floor() || self->is_on_wall() || self->is_on_ceiling()) {
+				is_grappling = false;
+				if (grapple_line) grapple_line->set_visible(false);
+				return;
+			}
+		}
+
+		if (is_grappling && grapple_launch_timer <= 0.0f && grapple_jump_timer <= 0.0f) {
+			Vector2 corrected_offset = self->get_global_position() - grapple_target_pos;
+			self->set_global_position(grapple_target_pos + corrected_offset.normalized() * grapple_radius);
+		}
+
+		if (is_grappling && grapple_launch_timer <= 0.0f && grapple_line && hand_anchor) {
+			grapple_line->set_visible(true);
+			if (grapple_line->get_point_count() < 2) {
+				grapple_line->clear_points();
+				grapple_line->add_point(Vector2(0,0));
+				grapple_line->add_point(Vector2(0,0));
+			}
+			grapple_line->set_point_position(0, grapple_line->to_local(hand_anchor->get_global_position()));
+			grapple_line->set_point_position(1, grapple_line->to_local(grapple_target_pos));
+		}
+		return; 
+	}
+
+	// ==========================================================
+	// PHASE B: STANDARD RUN AND JUMP ENGINE
+	// ==========================================================
 	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
 	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) velocity.y = jump_velocity;
 
@@ -180,19 +318,55 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
 	}
 
+	if (current_hero == ARCHER && has_grapple && input->is_action_just_pressed("grapple_hook")) {
+		TypedArray<Node> targets = self->get_tree()->get_nodes_in_group("grapple_target");
+		Node2D* nearest_valid_hook = nullptr;
+		float shortest_distance = max_grapple_range; 
+
+		for (int i = 0; i < targets.size(); i++) {
+			Node2D* hook = Object::cast_to<Node2D>(targets[i]);
+			if (hook) {
+				float current_distance = self->get_global_position().distance_to(hook->get_global_position() + hook_visual_offset);
+				if (current_distance < shortest_distance) {
+					shortest_distance = current_distance;
+					nearest_valid_hook = hook;
+				}
+			}
+		}
+
+		if (nearest_valid_hook) {
+			is_grappling = true;
+			grapple_launch_timer = grapple_launch_duration; 
+			grapple_jump_timer = grapple_jump_duration; 
+			grapple_target_pos = nearest_valid_hook->get_global_position() + hook_visual_offset; 
+			
+			if (sprite) {
+				bool target_is_on_left = (grapple_target_pos.x < self->get_global_position().x);
+				sprite->set_flip_h(target_is_on_left);
+			}
+
+			Vector2 current_pos = self->get_global_position();
+			current_pos.y -= 18.0f; 
+			self->set_global_position(current_pos);
+
+			grapple_radius = self->get_global_position().distance_to(grapple_target_pos); 
+			
+			if (sprite) sprite->play("archer_grapple_launch"); 
+			UtilityFunctions::print("[COMPILER SUCCESS] Synchronized facing trackers active.");
+		}
+	}
+
 	if (current_hero == KNIGHT && has_shield) {
 		if (block_cooldown > 0.0f) block_cooldown -= (float)delta;
 		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown <= 0.0f) {
 			is_blocking = true;
 			block_timer = BLOCK_DURATION;
-			UtilityFunctions::print("[COMBAT MONITOR] Shield Up!");
 		}
 		if (is_blocking) {
 			block_timer -= (float)delta;
 			if (block_timer <= 0.0f) {
 				is_blocking = false;
 				block_cooldown = 2.0f;
-				UtilityFunctions::print("[COMBAT MONITOR] Shield Down (Cooldown initialized).");
 			}
 		}
 	} else {
@@ -213,7 +387,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		} else if (is_attacking) {
 			sprite->play(prefix + "attack");
 			int current_frame = sprite->get_frame();
-			
 			int damage_frame = (current_hero == KNIGHT) ? 4 : 10;
 
 			if (current_frame == damage_frame && last_attack_frame != damage_frame) {
@@ -233,17 +406,10 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 					if (arrow_scene.is_valid()) {
 						Node* arrow_instance = arrow_scene->instantiate();
 						Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
-						
 						if (arrow) {
 							Vector2 spawn_offset = facing_right ? Vector2(20, 2) : Vector2(-20, 2);
 							arrow->set_global_position(self->get_global_position() + spawn_offset);
-							
-							if (!facing_right) {
-								arrow->set_scale(Vector2(-0.5f, 0.5f)); 
-							} else {
-								arrow->set_scale(Vector2(0.5f, 0.5f));  
-							}
-
+							arrow->set_scale(facing_right ? Vector2(0.5f, 0.5f) : Vector2(-0.5f, 0.5f));
 							self->get_tree()->get_current_scene()->add_child(arrow_instance);
 						}
 					}

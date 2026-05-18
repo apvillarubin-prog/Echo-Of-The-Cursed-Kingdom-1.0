@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dlpy6j6r0ivd"]
+
+[ext_resource type="Texture2D" uid="uid://o5kie5kky8it" path="res://asset/Untitled design (13).png" id="1_bat7j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7wkrf"]
+
+[node name="GrapplePoint" type="Area2D" unique_id=161295692 groups=["grapple_target"]]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1389156817]
+scale = Vector2(0.066785425, 0.06726894)
+texture = ExtResource("1_bat7j")
+region_enabled = true
+region_rect = Rect2(452.8, 133.59999, 299.2, 328.8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1744504173]
+shape = SubResource("CircleShape2D_7wkrf")
