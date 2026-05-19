@@ -160,10 +160,6 @@ region = Rect2(128, 1856, 64, 64)
 atlas = ExtResource("3_4unx2")
 region = Rect2(192, 1856, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xs12l"]
-atlas = ExtResource("3_4unx2")
-region = Rect2(256, 1856, 64, 64)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_sucbm"]
 atlas = ExtResource("3_4unx2")
 region = Rect2(128, 1856, 64, 64)
@@ -402,7 +398,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"archer_attack",
-"speed": 9.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -502,9 +498,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ng1nv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xs12l")
 }],
 "loop": true,
 "name": &"archer_jump",
@@ -732,4 +725,5 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_death"
+animation = &"archer_jump"
+frame_progress = 0.77731127
