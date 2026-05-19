@@ -51,6 +51,7 @@ float grapple_launch_timer = 0.0f;
 
 float grapple_jump_duration = 0.35f;  
 float grapple_jump_timer = 0.0f;
+bool grapple_jump_boost_applied = false; // Tracks and ensures the leap force only injects once
 
 bool unlocked_knight = true;
 bool unlocked_archer = false;
@@ -142,6 +143,7 @@ void OnReady(Caller* instance) {
 		is_grappling = false;
 		grapple_launch_timer = 0.0f;
 		grapple_jump_timer = 0.0f;
+		grapple_jump_boost_applied = false;
 		player_health = 50;
 
 		Engine* engine = Engine::get_singleton();
@@ -202,6 +204,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			return;
 		}
 
+		// PART 1: The Cast/Drawback Sequence State Window
 		if (grapple_launch_timer > 0.0f) {
 			grapple_launch_timer -= (float)delta;
 			velocity = Vector2(0, 0); 
@@ -213,18 +216,25 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 			if (grapple_launch_timer <= 0.0f) {
 				grapple_jump_timer = grapple_jump_duration;
-				
-				Vector2 to_target = grapple_target_pos - self->get_global_position();
-				velocity = to_target.normalized() * 260.0f; 
-				if (velocity.y > -140.0f) velocity.y = -180.0f; 
+				grapple_jump_boost_applied = false; // Reset flag to authorize vector injection on next frame
 			}
 		} 
+		// PART 2: The Transitional Flight Leap State Window
 		else if (grapple_jump_timer > 0.0f) {
 			grapple_jump_timer -= (float)delta;
 			if (sprite && sprite->get_animation() != StringName("archer_jump")) {
 				sprite->play("archer_jump"); 
 			}
 			
+			// INITIAL VELOCITY SPIKE REALIGNMENT
+			// Fires exclusively on the first physics frame of the archer_jump state execution
+			if (!grapple_jump_boost_applied) {
+				Vector2 to_target = grapple_target_pos - self->get_global_position();
+				velocity = to_target.normalized() * 260.0f; 
+				if (velocity.y > -140.0f) velocity.y = -180.0f; 
+				grapple_jump_boost_applied = true; 
+			}
+
 			velocity.y += gravity * (float)delta;
 
 			if (grapple_jump_timer <= 0.0f) {
@@ -233,6 +243,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				if (grapple_radius < 30.0f) grapple_radius = 30.0f;
 			}
 		}
+		// PART 3: Standard Swing & Reel-Climb States
 		else {
 			bool input_up = input->is_action_pressed("ui_up") || input->is_key_pressed(Key::KEY_W);
 			bool input_down = input->is_action_pressed("ui_down") || input->is_key_pressed(Key::KEY_S);
@@ -338,6 +349,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			is_grappling = true;
 			grapple_launch_timer = grapple_launch_duration; 
 			grapple_jump_timer = grapple_jump_duration; 
+			grapple_jump_boost_applied = false; // Arm state trigger
 			grapple_target_pos = nearest_valid_hook->get_global_position() + hook_visual_offset; 
 			
 			if (sprite) {
