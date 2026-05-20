@@ -384,10 +384,10 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_uqjci")
 }, {
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_543w2")
 }, {
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_v5xpb")
 }, {
 "duration": 1.0,
@@ -725,5 +725,4 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_jump"
-frame_progress = 0.77731127
+animation = &"archer_attack"

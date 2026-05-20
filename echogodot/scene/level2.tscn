@@ -448,19 +448,22 @@ size = Vector2(2424, 98)
 [node name="Node" type="Node" parent="." unique_id=497720344]
 
 [node name="enemy3" parent="Node" unique_id=906854867 instance=ExtResource("10_vwck2")]
-position = Vector2(1280, 40.000008)
+position = Vector2(1144, 32.000004)
 scale = Vector2(0.46459648, 0.42889586)
+metadata/attack_range = 15.0
 
-[node name="enemy4" parent="Node" unique_id=1231114963 instance=ExtResource("10_vwck2")]
-position = Vector2(1280, 40.000008)
+[node name="enemy4" parent="Node" unique_id=1794999897 instance=ExtResource("10_vwck2")]
+position = Vector2(1080, 32)
 scale = Vector2(0.46459648, 0.42889586)
+metadata/attack_range = 15.0
 
-[node name="enemy2" parent="Node" unique_id=1016429137 instance=ExtResource("10_vwck2")]
-position = Vector2(1288, 40)
-scale = Vector2(0.52006257, 0.37997362)
+[node name="enemy5" parent="Node" unique_id=777831135 instance=ExtResource("10_vwck2")]
+position = Vector2(1144, 32.000004)
+scale = Vector2(0.46459648, 0.42889586)
+metadata/attack_range = 15.0
 
 [node name="EliteEnemy" parent="Node" unique_id=878717896 instance=ExtResource("10_vwck2")]
-position = Vector2(1272, 8)
+position = Vector2(1024, -8)
 scale = Vector2(1.0002935, 0.990742)
 script = ExtResource("11_68ptg")
 
