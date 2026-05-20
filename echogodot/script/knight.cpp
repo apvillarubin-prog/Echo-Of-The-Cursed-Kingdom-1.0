@@ -26,9 +26,15 @@ Vector2 start_pos;
 int inventory_count = 0;
 bool is_dead = false;
 
+// --- Combat Configurations ---
 bool has_sword = false;
 bool has_shield = false;
 bool has_bow = false;  
+
+// ACTION DURATIONS: Synced perfectly with the Godot SpriteFrames FPS settings
+float knight_attack_duration = 1.25f; 
+float archer_attack_duration = 1.25f; 
+
 bool is_blocking = false;
 float block_timer = 0.0f;
 float block_cooldown = 0.0f;
@@ -51,7 +57,6 @@ float grapple_launch_timer = 0.0f;
 
 float grapple_jump_duration = 0.35f;  
 float grapple_jump_timer = 0.0f;
-bool grapple_jump_boost_applied = false; // Tracks and ensures the leap force only injects once
 
 bool unlocked_knight = true;
 bool unlocked_archer = false;
@@ -143,7 +148,11 @@ void OnReady(Caller* instance) {
 		is_grappling = false;
 		grapple_launch_timer = 0.0f;
 		grapple_jump_timer = 0.0f;
-		grapple_jump_boost_applied = false;
+		
+		self->set_meta("prev_mouse", false);
+		self->set_meta("prev_key_q", false);
+		self->set_meta("attack_timer", 0.0f);
+		
 		player_health = 50;
 
 		Engine* engine = Engine::get_singleton();
@@ -169,6 +178,19 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	Input* input = Input::get_singleton();
 	Vector2 velocity = self->get_velocity();
+
+	// --- Safe Meta Edge-Detection for Taps ---
+	bool curr_mouse_left = input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT);
+	bool prev_mouse_left = self->has_meta("prev_mouse") ? (bool)self->get_meta("prev_mouse") : false;
+	bool mouse_left_just_pressed = curr_mouse_left && !prev_mouse_left;
+	self->set_meta("prev_mouse", curr_mouse_left);
+
+	bool curr_key_q = input->is_key_pressed(Key::KEY_Q);
+	bool prev_key_q = self->has_meta("prev_key_q") ? (bool)self->get_meta("prev_key_q") : false;
+	bool key_q_just_pressed = curr_key_q && !prev_key_q;
+	self->set_meta("prev_key_q", curr_key_q);
+
+	float attack_timer = self->has_meta("attack_timer") ? (float)self->get_meta("attack_timer") : 0.0f;
 
 	if (!is_grappling) {
 		if (input->is_action_just_pressed("hero_1") && unlocked_knight) current_hero = KNIGHT;
@@ -204,7 +226,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			return;
 		}
 
-		// PART 1: The Cast/Drawback Sequence State Window
 		if (grapple_launch_timer > 0.0f) {
 			grapple_launch_timer -= (float)delta;
 			velocity = Vector2(0, 0); 
@@ -216,25 +237,24 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 			if (grapple_launch_timer <= 0.0f) {
 				grapple_jump_timer = grapple_jump_duration;
-				grapple_jump_boost_applied = false; // Reset flag to authorize vector injection on next frame
+				
+				Vector2 current_pos = self->get_global_position();
+				current_pos.y -= 18.0f; 
+				self->set_global_position(current_pos);
+				
+				if (sprite) sprite->play("archer_jump");
+				
+				Vector2 to_target = grapple_target_pos - self->get_global_position();
+				velocity = to_target.normalized() * 260.0f; 
+				if (velocity.y > -140.0f) velocity.y = -180.0f; 
 			}
 		} 
-		// PART 2: The Transitional Flight Leap State Window
 		else if (grapple_jump_timer > 0.0f) {
 			grapple_jump_timer -= (float)delta;
 			if (sprite && sprite->get_animation() != StringName("archer_jump")) {
 				sprite->play("archer_jump"); 
 			}
 			
-			// INITIAL VELOCITY SPIKE REALIGNMENT
-			// Fires exclusively on the first physics frame of the archer_jump state execution
-			if (!grapple_jump_boost_applied) {
-				Vector2 to_target = grapple_target_pos - self->get_global_position();
-				velocity = to_target.normalized() * 260.0f; 
-				if (velocity.y > -140.0f) velocity.y = -180.0f; 
-				grapple_jump_boost_applied = true; 
-			}
-
 			velocity.y += gravity * (float)delta;
 
 			if (grapple_jump_timer <= 0.0f) {
@@ -243,7 +263,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				if (grapple_radius < 30.0f) grapple_radius = 30.0f;
 			}
 		}
-		// PART 3: Standard Swing & Reel-Climb States
 		else {
 			bool input_up = input->is_action_pressed("ui_up") || input->is_key_pressed(Key::KEY_W);
 			bool input_down = input->is_action_pressed("ui_down") || input->is_key_pressed(Key::KEY_S);
@@ -316,20 +335,85 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	}
 
 	// ==========================================================
-	// PHASE B: STANDARD RUN AND JUMP ENGINE
+	// PHASE B: STANDARD RUN, JUMP, AND COMBAT ENGINE
 	// ==========================================================
-	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
-	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) velocity.y = jump_velocity;
-
-	float direction = input->get_axis("ui_left", "ui_right");
-	if (direction != 0) {
-		velocity.x = direction * speed;
-		if (sprite) sprite->set_flip_h(direction < 0);
-	} else {
-		velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
+	
+	if (attack_timer > 0.0f) {
+		attack_timer -= (float)delta;
 	}
 
-	if (current_hero == ARCHER && has_grapple && input->is_action_just_pressed("grapple_hook")) {
+	if (current_hero == KNIGHT && has_shield) {
+		if (block_cooldown > 0.0f) block_cooldown -= (float)delta;
+		if (key_q_just_pressed && !is_blocking && block_cooldown <= 0.0f && attack_timer <= 0.0f && self->is_on_floor()) {
+			is_blocking = true;
+			block_timer = BLOCK_DURATION;
+		}
+		if (is_blocking) {
+			block_timer -= (float)delta;
+			if (block_timer <= 0.0f) {
+				is_blocking = false;
+				block_cooldown = 2.0f;
+			}
+		}
+	} else {
+		is_blocking = false;
+	}
+
+	bool is_attacking = false;
+	if (attack_timer > 0.0f) {
+		is_attacking = true; 
+	} 
+	else if (mouse_left_just_pressed && !is_blocking) {
+		if (current_hero == KNIGHT && has_sword) {
+			is_attacking = true;
+			attack_timer = knight_attack_duration; 
+		} else if (current_hero == ARCHER && has_bow) {
+			is_attacking = true;
+			attack_timer = archer_attack_duration; 
+		}
+	}
+	
+	self->set_meta("attack_timer", attack_timer);
+	bool is_action_locked = is_attacking || is_blocking;
+
+	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
+
+	// --- NEW: ANIMATION CANCELING JUMP MECHANIC ---
+	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) {
+		
+		velocity.y = jump_velocity; // Execute the jump immediately
+		
+		// If you were locked in a combat state, instantly shatter it!
+		if (is_action_locked) {
+			attack_timer = 0.0f;
+			self->set_meta("attack_timer", 0.0f);
+			is_attacking = false;
+			
+			is_blocking = false;
+			block_timer = 0.0f;
+			
+			is_action_locked = false; // Restore normal horizontal steering
+			UtilityFunctions::print("[COMBAT DEBUG] Action Cancelled by Jump!");
+		}
+	}
+
+	float direction = input->get_axis("ui_left", "ui_right");
+	
+	if (is_action_locked) {
+		if (self->is_on_floor()) {
+			velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed * 6.0f * (float)delta); 
+		}
+	} 
+	else {
+		if (direction != 0) {
+			velocity.x = direction * speed;
+			if (sprite) sprite->set_flip_h(direction < 0);
+		} else {
+			velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
+		}
+	}
+
+	if (current_hero == ARCHER && has_grapple && input->is_action_just_pressed("grapple_hook") && !is_action_locked) {
 		TypedArray<Node> targets = self->get_tree()->get_nodes_in_group("grapple_target");
 		Node2D* nearest_valid_hook = nullptr;
 		float shortest_distance = max_grapple_range; 
@@ -348,47 +432,16 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (nearest_valid_hook) {
 			is_grappling = true;
 			grapple_launch_timer = grapple_launch_duration; 
-			grapple_jump_timer = grapple_jump_duration; 
-			grapple_jump_boost_applied = false; // Arm state trigger
+			grapple_jump_timer = 0.0f; 
 			grapple_target_pos = nearest_valid_hook->get_global_position() + hook_visual_offset; 
 			
 			if (sprite) {
 				bool target_is_on_left = (grapple_target_pos.x < self->get_global_position().x);
 				sprite->set_flip_h(target_is_on_left);
 			}
-
-			Vector2 current_pos = self->get_global_position();
-			current_pos.y -= 18.0f; 
-			self->set_global_position(current_pos);
-
-			grapple_radius = self->get_global_position().distance_to(grapple_target_pos); 
 			
 			if (sprite) sprite->play("archer_grapple_launch"); 
-			UtilityFunctions::print("[COMPILER SUCCESS] Synchronized facing trackers active.");
 		}
-	}
-
-	if (current_hero == KNIGHT && has_shield) {
-		if (block_cooldown > 0.0f) block_cooldown -= (float)delta;
-		if (input->is_key_pressed(Key::KEY_Q) && !is_blocking && block_cooldown <= 0.0f) {
-			is_blocking = true;
-			block_timer = BLOCK_DURATION;
-		}
-		if (is_blocking) {
-			block_timer -= (float)delta;
-			if (block_timer <= 0.0f) {
-				is_blocking = false;
-				block_cooldown = 2.0f;
-			}
-		}
-	} else {
-		is_blocking = false;
-	}
-
-	bool is_attacking = false;
-	if (input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT) && !is_blocking) {
-		if (current_hero == KNIGHT && has_sword) is_attacking = true;
-		if (current_hero == ARCHER && has_bow) is_attacking = true; 
 	}
 
 	if (sprite) {
