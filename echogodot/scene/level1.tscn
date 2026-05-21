@@ -49,7 +49,7 @@
 [ext_resource type="PackedScene" uid="uid://cxn047ix4wu2o" path="res://scene/lava.tscn" id="41_obhj3"]
 [ext_resource type="Texture2D" uid="uid://cpo8edjtwi3wn" path="res://asset/Sprite-0001.png" id="45_vvg2v"]
 [ext_resource type="PackedScene" uid="uid://d31u3nyqblfth" path="res://scene/poor_chandelier.tscn" id="46_4lnrf"]
-[ext_resource type="Script" uid="uid://ben4c0f2bfd5x" path="res://script/point_light_2d.cpp" id="46_6kk1f"]
+[ext_resource type="Script" path="res://script/point_light_2d.cpp" id="46_6kk1f"]
 [ext_resource type="PackedScene" uid="uid://1oyw4ryc0nhb" path="res://scene/platform_2_0.tscn" id="48_m2o71"]
 [ext_resource type="PackedScene" uid="uid://dhrn4fpimjmj0" path="res://scene/gold.tscn" id="50_snd0k"]
 [ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="51_7wlxp"]
