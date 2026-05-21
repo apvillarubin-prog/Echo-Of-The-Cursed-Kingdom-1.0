@@ -25281,7 +25281,7 @@ position = Vector2(4, -2)
 scale = Vector2(1.0002935, 0.990742)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=581343641]
-color = Color(0.4006612, 0.39353988, 0.3935405, 1)
+color = Color(0.35827833, 0.3512608, 0.35126024, 1)
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_itxqv")]
 z_index = 5
