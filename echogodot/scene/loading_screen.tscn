@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c8lg1w0vwfe80"]
 
 [ext_resource type="Script" uid="uid://ygfqs0c5i7sh" path="res://script/loading_screen.cpp" id="1_126je"]
+[ext_resource type="Script" uid="uid://bm1nh32678ctj" path="res://script/loading_label.cpp" id="2_2nubw"]
 
 [node name="Loading screen" type="Control" unique_id=1257926674]
 layout_mode = 3
@@ -29,12 +30,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -389.0
-offset_top = -244.0
-offset_right = -327.0
-offset_bottom = -195.0
+offset_left = -403.0
+offset_top = -269.0
+offset_right = 266.0
+offset_bottom = 214.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(10.41784, 8.718004)
+theme_override_font_sizes/font_size = 175
 text = "Loading
 "
+script = ExtResource("2_2nubw")
+
+[node name="Timer" type="Timer" parent="Label" unique_id=2115204791]
+wait_time = 0.5
+autostart = true
