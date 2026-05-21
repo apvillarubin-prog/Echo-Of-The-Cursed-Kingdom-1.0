@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://bp0l1ml12frfm" path="res://script/enemy.cpp" id="1_f87vc"]
 [ext_resource type="Texture2D" uid="uid://bsa23qeobfbv7" path="res://asset/character-spritesheet (5).png" id="2_8u16h"]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_f87vc"]
+polygon = PackedVector2Array(-8, 9, -7, 12, -5, 13, 1, 13, 7, 13, 13, 12, 14, 8, 12, 5, 4, 4, -6, 5, -8, 7, -8, 8)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
 size = Vector2(20, 53.969864)
 
@@ -174,6 +177,11 @@ animations = [{
 [node name="enemy" type="CharacterBody2D" unique_id=906854867 groups=["enemy"]]
 collision_layer = 2
 script = ExtResource("1_f87vc")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=187882997]
+position = Vector2(1.1920929e-07, 0)
+scale = Vector2(0.99999994, 1)
+occluder = SubResource("OccluderPolygon2D_f87vc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1809335297]
 position = Vector2(2, -9.040979)
