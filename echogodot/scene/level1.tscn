@@ -61,6 +61,12 @@ gradient = SubResource("Gradient_gm452")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7wlxp"]
+bg_color = Color(0.49938375, 0, 0.043900363, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvg2v"]
+bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
+
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_itxqv"]
 distance = 130.46869
 
@@ -25285,7 +25291,7 @@ color = Color(0.3530626, 0.35306263, 0.35306257, 1)
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_itxqv")]
 z_index = 5
-position = Vector2(-82.97565, 1.009345)
+position = Vector2(-81.97594, 2.0186896)
 scale = Vector2(0.5064855, 0.480353)
 
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=138646991]
@@ -25305,6 +25311,20 @@ range_z_max = 11
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_lyfxw")
 texture_scale = 4.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="knight" unique_id=446749983]
+
+[node name="HealthBar" type="ProgressBar" parent="knight/CanvasLayer" unique_id=436271283]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 24.0
+offset_bottom = 47.0
+scale = Vector2(87.77041, 1.8791432)
+theme_override_styles/background = SubResource("StyleBoxFlat_7wlxp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vvg2v")
+max_value = 50.0
+value = 50.0
+show_percentage = false
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1964327119]
 position = Vector2(-3.998826, 688.3729)
@@ -25479,13 +25499,33 @@ scale = Vector2(1.0002935, 0.990742)
 script = ExtResource("22_eah8l")
 
 [node name="enemy13" parent="killable enemies" unique_id=822035448 instance=ExtResource("21_6ow0t")]
-position = Vector2(1836.0001, -347)
-scale = Vector2(0.6100395, 0.41125453)
+position = Vector2(1974, -349)
+scale = Vector2(0.62187535, 0.411)
 metadata/attack_range = 15.0
 
 [node name="enemy14" parent="killable enemies" unique_id=398005371 instance=ExtResource("21_6ow0t")]
-position = Vector2(1876, -364)
-scale = Vector2(0.6100395, 0.41125453)
+position = Vector2(2074, -362)
+scale = Vector2(0.61, 0.411)
+metadata/attack_range = 15.0
+
+[node name="enemy15" parent="killable enemies" unique_id=1475542883 instance=ExtResource("21_6ow0t")]
+position = Vector2(1949, -350)
+scale = Vector2(0.62187535, 0.411)
+metadata/attack_range = 15.0
+
+[node name="enemy16" parent="killable enemies" unique_id=984125652 instance=ExtResource("21_6ow0t")]
+position = Vector2(2049, -363)
+scale = Vector2(0.61, 0.411)
+metadata/attack_range = 15.0
+
+[node name="enemy17" parent="killable enemies" unique_id=962890607 instance=ExtResource("21_6ow0t")]
+position = Vector2(1928, -352)
+scale = Vector2(0.62187535, 0.411)
+metadata/attack_range = 15.0
+
+[node name="enemy18" parent="killable enemies" unique_id=1743099908 instance=ExtResource("21_6ow0t")]
+position = Vector2(2027.9999, -365)
+scale = Vector2(0.61, 0.411)
 metadata/attack_range = 15.0
 
 [node name="Chest2" parent="." unique_id=1462839273 instance=ExtResource("19_0vlqb")]

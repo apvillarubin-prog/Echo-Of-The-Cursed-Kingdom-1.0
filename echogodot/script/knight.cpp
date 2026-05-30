@@ -1,3 +1,4 @@
+
 #include <Godot/godot.hpp>
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
@@ -11,6 +12,7 @@
 #include <Godot/classes/line2d.hpp>
 #include <Godot/classes/node2d.hpp>
 #include <Godot/classes/node.hpp>
+#include <Godot/classes/progress_bar.hpp> // [HEALTH BAR UPDATE]
 #include <Godot/variant/utility_functions.hpp>
 #include <Godot/variant/string.hpp>
 #include <Godot/variant/string_name.hpp>
@@ -22,6 +24,8 @@ JENOVA_SCRIPT_BEGIN
 
 CharacterBody2D* self = nullptr;
 AnimatedSprite2D* sprite = nullptr;
+ProgressBar* health_bar = nullptr; // [HEALTH BAR UPDATE]
+
 Vector2 start_pos;
 int inventory_count = 0;
 bool is_dead = false;
@@ -109,6 +113,12 @@ void take_damage(int amount) {
 	if (is_blocking && current_hero == KNIGHT) return; 
 	
 	player_health -= amount;
+
+	// [HEALTH BAR UPDATE]
+	if (health_bar) {
+		health_bar->set_value((double)player_health);
+	}
+
 	if (player_health <= 0) respawn();
 }
 
@@ -121,6 +131,12 @@ void actually_teleport(Caller* instance) {
 		player->set_global_position(start_pos);
 		is_dead = false;
 		player_health = 50;
+
+		// [HEALTH BAR UPDATE]
+		if (health_bar) {
+			health_bar->set_value(50.0);
+		}
+
 		is_blocking = false;
 		block_cooldown = 0.0f;
 	}
@@ -154,6 +170,13 @@ void OnReady(Caller* instance) {
 		self->set_meta("attack_timer", 0.0f);
 		
 		player_health = 50;
+
+		// [HEALTH BAR UPDATE]
+		health_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("CanvasLayer/HealthBar"));
+		if (health_bar) {
+			health_bar->set_max(50.0);
+			health_bar->set_value(50.0);
+		}
 
 		Engine* engine = Engine::get_singleton();
 		has_sword = engine->has_meta("save_has_sword") ? (bool)engine->get_meta("save_has_sword") : false;
@@ -393,7 +416,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			block_timer = 0.0f;
 			
 			is_action_locked = false; // Restore normal horizontal steering
-			UtilityFunctions::print("[COMBAT DEBUG] Action Cancelled by Jump!");
 		}
 	}
 
