@@ -26564,3 +26564,24 @@ energy = 0.75
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_lyfxw")
 texture_scale = 4.0
+
+[node name="PointLight2D2" type="PointLight2D" parent="lighting" unique_id=36004019]
+position = Vector2(460, 125.000015)
+rotation = 1.5707964
+scale = Vector2(0.8525699, -0.74613935)
+skew = 0.00018298626
+texture = SubResource("GradientTexture2D_vvg2v")
+
+[node name="PointLight2D3" type="PointLight2D" parent="lighting" unique_id=1350416077]
+position = Vector2(612.00006, 115)
+rotation = 1.5707964
+scale = Vector2(1.1392696, -0.51140887)
+skew = 0.00018298626
+texture = SubResource("GradientTexture2D_vvg2v")
+
+[node name="PointLight2D4" type="PointLight2D" parent="lighting" unique_id=1607425663]
+position = Vector2(772.00006, 137)
+rotation = 1.5707964
+scale = Vector2(1.1569134, -1.5401008)
+skew = 0.00018298626
+texture = SubResource("GradientTexture2D_vvg2v")
