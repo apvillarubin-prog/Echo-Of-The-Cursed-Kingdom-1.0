@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b874dshg1w5y2" path="res://asset/gro.png" id="4_y2git"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
-size = Vector2(14.057985, 14.266984)
+size = Vector2(9.779469, 14.266984)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oicfy"]
 atlas = ExtResource("2_y2git")
@@ -701,7 +701,7 @@ collision_mask = 3
 script = ExtResource("1_igyo2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1746094008]
-position = Vector2(-0.50000006, 6.9335265)
+position = Vector2(-1.1920929e-07, 6.933527)
 rotation = -3.1415925
 scale = Vector2(1.6360806, -2.953178)
 shape = SubResource("RectangleShape2D_igyo2")
@@ -726,4 +726,4 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_attack"
+animation = &"knight_block"

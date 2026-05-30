@@ -174,6 +174,12 @@ animations = [{
 "speed": 11.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f87vc"]
+bg_color = Color(0.49938375, 0, 0.043900363, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8u16h"]
+bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
+
 [node name="enemy" type="CharacterBody2D" unique_id=906854867 groups=["enemy"]]
 collision_layer = 2
 script = ExtResource("1_f87vc")
@@ -193,3 +199,15 @@ position = Vector2(1.9999999, -16.999998)
 scale = Vector2(0.953125, 1)
 sprite_frames = SubResource("SpriteFrames_g2u8i")
 animation = &"enemy_attack"
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1814326419]
+offset_left = -7.0
+offset_top = -38.0
+offset_right = -3.0
+offset_bottom = -11.0
+scale = Vector2(3.9687488, 0.1069203)
+theme_override_styles/background = SubResource("StyleBoxFlat_f87vc")
+theme_override_styles/fill = SubResource("StyleBoxFlat_8u16h")
+max_value = 50.0
+value = 50.0
+show_percentage = false

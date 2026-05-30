@@ -3,6 +3,7 @@
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
 #include <Godot/classes/scene_tree.hpp>
+#include <Godot/classes/progress_bar.hpp>
 #include <Godot/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -23,13 +24,18 @@ void OnReady(Caller* instance) {
 	if (!self->is_in_group("enemy")) self->add_to_group("enemy");
 	self->set_collision_mask_value(2, false);
 
-	// FIX: Store isolated instance memory values natively
-	self->set_meta("current_health", 30);
+	self->set_meta("current_health", 60);
 	self->set_meta("last_hit_frame", -1);
 	self->set_meta("is_dying", false);
 	self->set_meta("attack_cooldown", 0.0f);
 	
-	UtilityFunctions::print("[HEALTH MONITOR] MiniBoss '", self->get_name(), "' spawned with 30 isolated HP.");
+	ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
+	if (hp_bar) {
+		hp_bar->set_max(60.0); 
+		hp_bar->set_value(60.0);
+	}
+
+	UtilityFunctions::print("[HEALTH MONITOR] MiniBoss '", self->get_name(), "' spawned with 60 isolated HP.");
 }
 
 void OnPhysicsProcess(Caller* instance, double delta) {
@@ -39,15 +45,20 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	bool is_dying = self->has_meta("is_dying") ? (bool)self->get_meta("is_dying") : false;
 	if (is_dying) return;
 
-	int current_health = self->has_meta("current_health") ? (int)self->get_meta("current_health") : 30;
+	int current_health = self->has_meta("current_health") ? (int)self->get_meta("current_health") : 60;
 
-	// Check notice storage block for fresh damage values
+	// --- Damage Registration ---
 	if (self->has_meta("pending_damage")) {
 		int incoming_dmg = (int)self->get_meta("pending_damage");
 		self->remove_meta("pending_damage"); 
 
 		current_health -= incoming_dmg;
 		self->set_meta("current_health", current_health);
+
+		ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
+		if (hp_bar) {
+			hp_bar->set_value((double)current_health);
+		}
 
 		UtilityFunctions::print("[HEALTH MONITOR] MiniBoss '", self->get_name(), "' registered hit! Damage: ", incoming_dmg, " | Isolated HP Left: ", current_health);
 
@@ -85,37 +96,65 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 		if (dist <= AGGRO_RANGE) {
 			int dir = (p_pos.x > e_pos.x) ? 1 : -1;
-			anim->set_flip_h(dir < 0);
+			
+			// Lock facing direction if they are mid-swing
+			if (anim->get_animation() != StringName("enemy_attack") || !anim->is_playing()) {
+				anim->set_flip_h(dir < 0);
+			}
 
+			// --- CHASE PHASE ---
 			if (dist > ATTACK_RANGE) {
-				velocity.x = dir * CHASE_SPEED;
-				anim->play("enemy_run");
-				self->set_meta("last_hit_frame", -1);
-			} else {
-				velocity.x = 0;
-
 				if (attack_cooldown <= 0.0f) {
-					anim->play("enemy_attack");
-
-					int current_frame = anim->get_frame();
-					int last_hit_frame = self->has_meta("last_hit_frame") ? (int)self->get_meta("last_hit_frame") : -1;
-
-					if (current_frame == 9 && last_hit_frame != 9) {
-						float hit_dist = e_pos.distance_to(target->get_global_position());
-						if (hit_dist <= 50.0f) {
-							target->call("take_damage", 10);
-							self->set_meta("attack_cooldown", ATTACK_COOLDOWN_DURATION);
-						}
-						self->set_meta("last_hit_frame", 2);
-					} else if (current_frame != 2) {
-						self->set_meta("last_hit_frame", -1);
-					}
+					velocity.x = dir * CHASE_SPEED;
+					anim->play("enemy_run");
 				} else {
+					velocity.x = 0;
 					anim->play("enemy_idle");
-					self->set_meta("last_hit_frame", -1);
+				}
+				self->set_meta("last_hit_frame", -1);
+			} 
+			// --- ATTACK PHASE ---
+			else {
+				velocity.x = 0; // Stop moving to swing
+
+				if (attack_cooldown <= 0.0f && anim->get_animation() != StringName("enemy_attack")) {
+					anim->play("enemy_attack");
+				}
+
+				if (anim->get_animation() == StringName("enemy_attack")) {
+					
+					// Only check frames if the animation is actively playing
+					if (anim->is_playing()) {
+						int current_frame = anim->get_frame();
+						int last_hit_frame = self->has_meta("last_hit_frame") ? (int)self->get_meta("last_hit_frame") : -1;
+
+						if (current_frame == 9 && last_hit_frame != 9) {
+							float hit_dist = e_pos.distance_to(target->get_global_position());
+							
+							// Apply damage ONLY if in range
+							if (hit_dist <= 50.0f) {
+								target->call("take_damage", 10);
+							}
+							
+							// 🛑 APPLY COOLDOWN REGARDLESS OF HIT OR MISS
+							self->set_meta("attack_cooldown", ATTACK_COOLDOWN_DURATION);
+							self->set_meta("last_hit_frame", 9);
+						} 
+						else if (current_frame != 9) {
+							self->set_meta("last_hit_frame", -1);
+						}
+					} 
+					// If the attack animation has finished playing
+					else {
+						anim->play("enemy_idle");
+					}
+				} 
+				else if (attack_cooldown > 0.0f) {
+					anim->play("enemy_idle");
 				}
 			}
 		} else {
+			// --- OUT OF AGGRO RANGE ---
 			velocity.x = 0;
 			anim->play("enemy_idle");
 			self->set_meta("last_hit_frame", -1);
