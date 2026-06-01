@@ -36,7 +36,7 @@ bool has_shield = false;
 bool has_bow = false;  
 
 // ACTION DURATIONS: Synced perfectly with the Godot SpriteFrames FPS settings
-float knight_attack_duration = 1.25f; 
+float knight_attack_duration = 0.66f; 
 float archer_attack_duration = 1.25f; 
 
 bool is_blocking = false;
@@ -108,18 +108,27 @@ void respawn() {
 	self->get_tree()->create_timer(1.0)->connect("timeout", Callable((Object*)self, "actually_teleport"));
 }
 
-void take_damage(int amount) {
-	if (is_dead) return;
-	if (is_blocking && current_hero == KNIGHT) return; 
+bool take_damage(int amount) {
+	if (is_dead) return false;
+	
+	if (is_blocking && current_hero == KNIGHT) {
+		// BLOCK_DURATION is 2.0. If the timer is above 1.7, they JUST pressed block!
+		if (block_timer > BLOCK_DURATION - 0.3f) {
+			UtilityFunctions::print("[DEBUG] PERFECT PARRY!");
+			return true; // Return true to signal the attacker they got countered
+		}
+		return false; // Return false for a normal block (negates damage, but no stun)
+	}
 	
 	player_health -= amount;
 
-	// [HEALTH BAR UPDATE]
 	if (health_bar) {
 		health_bar->set_value((double)player_health);
 	}
 
 	if (player_health <= 0) respawn();
+	
+	return false; // Return false because they took normal damage
 }
 
 int increase_inventory(Caller* instance) { inventory_count += 1; return inventory_count; }
@@ -375,7 +384,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			block_timer -= (float)delta;
 			if (block_timer <= 0.0f) {
 				is_blocking = false;
-				block_cooldown = 2.0f;
+				block_cooldown = 1.0f;
 			}
 		}
 	} else {

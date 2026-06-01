@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cwooywdp5w62n" path="res://asset/character-spritesheet (6).png" id="3_8lpmn"]
 [ext_resource type="Texture2D" uid="uid://o5rqivaukage" path="res://asset/character-spritesheet (7).png" id="4_buwha"]
 [ext_resource type="Texture2D" uid="uid://b874dshg1w5y2" path="res://asset/gro.png" id="4_y2git"]
+[ext_resource type="Texture2D" uid="uid://b8q5aawdl04wn" path="res://asset/character-spritesheet (10).png" id="9_xoxna"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
@@ -360,6 +361,38 @@ region = Rect2(448, 704, 64, 64)
 atlas = ExtResource("2_igyo2")
 region = Rect2(512, 704, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_xs12l"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(64, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo2c8"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(128, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1p4b"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(192, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3g3l6"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(256, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3h65u"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(320, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jo202"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(384, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vjr5"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(448, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq7f1"]
+atlas = ExtResource("9_xoxna")
+region = Rect2(512, 704, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_8lpmn"]
 animations = [{
 "frames": [{
@@ -567,7 +600,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knight_attack",
-"speed": 5.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -605,7 +638,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knight_block",
-"speed": 5.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -692,10 +725,38 @@ animations = [{
 "loop": true,
 "name": &"knight_walk",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xs12l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eo2c8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1p4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3g3l6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3h65u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jo202")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vjr5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq7f1")
+}],
+"loop": true,
+"name": &"wizard_walk",
+"speed": 5.0
 }]
 
 [node name="knight" type="CharacterBody2D" unique_id=1245913708 groups=["player"]]
-modulate = Color(0.5802277, 0.58022773, 0.58022773, 1)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_igyo2")
@@ -727,3 +788,5 @@ position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
 animation = &"knight_block"
+autoplay = "wizard_walk"
+frame_progress = 0.14869405
