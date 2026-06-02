@@ -37,7 +37,7 @@ bool has_bow = false;
 
 // ACTION DURATIONS: Synced perfectly with the Godot SpriteFrames FPS settings
 float knight_attack_duration = 0.66f; 
-float archer_attack_duration = 1.25f; 
+float archer_attack_duration = 1.0f; 
 
 bool is_blocking = false;
 float block_timer = 0.0f;

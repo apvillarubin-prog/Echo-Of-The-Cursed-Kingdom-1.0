@@ -507,7 +507,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"archer_attack",
-"speed": 10.0
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -935,5 +935,4 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"wizard_summon"
-frame_progress = 0.5461343
+animation = &"archer_attack"
