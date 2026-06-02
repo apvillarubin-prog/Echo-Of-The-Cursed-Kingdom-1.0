@@ -38,6 +38,7 @@ AudioStreamPlayer* sfx_walk = nullptr;
 AudioStreamPlayer* sfx_attack = nullptr;
 AudioStreamPlayer* sfx_block = nullptr;
 AudioStreamPlayer* sfx_landing = nullptr; 
+AudioStreamPlayer* sfx_defeat = nullptr;
 
 bool was_on_floor = true; 
 
@@ -97,7 +98,7 @@ void respawn() {
 	if (is_dead) return;
 	is_dead = true;
 	is_grappling = false;
-	
+	if (sfx_defeat) sfx_defeat->play();
 	UtilityFunctions::print("[DEBUG-DEATH] Player died. Triggering respawn logic.");
 
 	Line2D* rope = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
@@ -213,7 +214,7 @@ void OnReady(Caller* instance) {
 		sfx_walk = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("WalkSFX"));
 		sfx_attack = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("AttackSFX"));
 		sfx_block = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("BlockSFX"));
-		sfx_landing = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("landing")); 
+		sfx_defeat = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("defeat"));
 
 		was_on_floor = self->is_on_floor(); 
 

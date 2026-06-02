@@ -13,7 +13,7 @@ JENOVA_SCRIPT_BEGIN
 
 const float AGGRO_RANGE = 150.0f;
 const float CHASE_SPEED = 40.0f;
-const float ATTACK_RANGE = 30.0f;
+const float ATTACK_RANGE = 25.0f;
 
 void OnReady(Caller* instance) {
 	CharacterBody2D* self = GetSelf<CharacterBody2D>(instance);

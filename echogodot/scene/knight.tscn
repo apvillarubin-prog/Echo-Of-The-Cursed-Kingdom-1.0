@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://asset/music/attack (mp3cut.net) (1).mp3" id="12_biu62"]
 [ext_resource type="AudioStream" uid="uid://d3wsiasflrfti" path="res://asset/music/realblock.mp3" id="13_7t8lw"]
 [ext_resource type="AudioStream" uid="uid://6r040ltyn45f" path="res://asset/music/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3" id="14_7t8lw"]
+[ext_resource type="AudioStream" uid="uid://bl3fprtu5r0dw" path="res://asset/music/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3" id="15_3qbpu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
@@ -603,7 +604,7 @@ animations = [{
 "duration": 1.5,
 "texture": SubResource("AtlasTexture_h2wnm")
 }, {
-"duration": 1.8,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_4novg")
 }, {
 "duration": 1.0,
@@ -611,7 +612,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knight_block",
-"speed": 11.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -759,9 +760,14 @@ stream = ExtResource("13_7t8lw")
 stream = ExtResource("14_7t8lw")
 volume_db = -5.727
 
+[node name="defeat" type="AudioStreamPlayer" parent="." unique_id=1062321526]
+stream = ExtResource("15_3qbpu")
+volume_db = -5.727
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1061500185]
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=875618579]
+visible = false
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 24.0
@@ -774,6 +780,7 @@ value = 50.0
 show_percentage = false
 
 [node name="DeathScreen" type="Control" parent="CanvasLayer" unique_id=385275630]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
