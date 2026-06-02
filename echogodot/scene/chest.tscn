@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cgbdhubyxp7sf" path="res://script/chest.cpp" id="1_c0k1r"]
 [ext_resource type="Texture2D" uid="uid://dgth2mm7xr4gu" path="res://asset/Pixel Chest Pack/Wooden Chest 2/Wooden Chest 2 - Spritesheet.png" id="1_twpm2"]
+[ext_resource type="AudioStream" uid="uid://cyalty52l8odj" path="res://asset/music/Magic Treasure Chest _ SOUND FX (NO Copyright) - The Audio Horizon SFX.mp3" id="3_cettl"]
 
 [sub_resource type="Animation" id="Animation_8uwsg"]
 length = 0.001
@@ -32,7 +33,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_bp1or"]
 resource_name = "open"
-length = 1.2
+length = 6.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -40,7 +41,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0.100000024, 0.7, 1.3333335, 2.0333333, 2.6666667),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4]
@@ -52,7 +53,7 @@ tracks/1/path = NodePath("Sprite2D:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.56666666, 0.8),
+"times": PackedFloat32Array(3.1666667, 5.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -93,3 +94,6 @@ libraries/ = SubResource("AnimationLibrary_trlyu")
 position = Vector2(1.5000004, 3.0000005)
 scale = Vector2(0.22338666, 0.9745345)
 shape = SubResource("RectangleShape2D_x7mpe")
+
+[node name="OpenSFX" type="AudioStreamPlayer" parent="." unique_id=880854489]
+stream = ExtResource("3_cettl")

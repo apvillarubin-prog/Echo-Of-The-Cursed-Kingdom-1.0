@@ -3,6 +3,7 @@
 #include <Godot/classes/label.hpp>
 #include <Godot/classes/animation_player.hpp>
 #include <Godot/classes/input.hpp>
+#include <Godot/classes/audio_stream_player.hpp> // <-- [AUDIO UPDATE] Added header
 #include <Godot/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -63,6 +64,13 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			} else {
 				UtilityFunctions::print("DEBUG [Chest] AnimationPlayer missing at open time!");
 			}
+
+			// --- [AUDIO UPDATE] Play the sound effect ---
+			AudioStreamPlayer* open_sfx = Object::cast_to<AudioStreamPlayer>(chest_self->get_node_or_null("OpenSFX"));
+			if (open_sfx) {
+				open_sfx->play();
+			}
+			// --------------------------------------------
 
 			if (target_player) {
 				target_player->call("unlock_sword");

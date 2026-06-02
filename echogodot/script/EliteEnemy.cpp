@@ -11,7 +11,7 @@ using namespace jenova::sdk;
 
 JENOVA_SCRIPT_BEGIN
 
-const float AGGRO_RANGE = 200.0f;
+const float AGGRO_RANGE = 170.0f;
 const float CHASE_SPEED = 30.0f;
 const float ATTACK_RANGE = 35.0f; 
 const float ATTACK_COOLDOWN_DURATION = 1.5f; 
