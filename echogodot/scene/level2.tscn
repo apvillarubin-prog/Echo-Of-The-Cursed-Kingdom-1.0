@@ -440,12 +440,6 @@ texture = ExtResource("13_g3rbi")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_lnfv4")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l4tox"]
-bg_color = Color(0.49938375, 0, 0.043900363, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggcsn"]
-bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l4tox"]
 size = Vector2(2424, 98)
 
@@ -502,20 +496,6 @@ limit_right = 9999996
 limit_bottom = 180
 limit_smoothed = true
 position_smoothing_enabled = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="knight" unique_id=1752697696]
-
-[node name="HealthBar" type="ProgressBar" parent="knight/CanvasLayer" unique_id=1854903421]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 24.0
-offset_bottom = 47.0
-scale = Vector2(87.77041, 1.8791432)
-theme_override_styles/background = SubResource("StyleBoxFlat_l4tox")
-theme_override_styles/fill = SubResource("StyleBoxFlat_ggcsn")
-max_value = 50.0
-value = 50.0
-show_percentage = false
 
 [node name="DoorArea" parent="." unique_id=39519444 instance=ExtResource("4_if17c")]
 position = Vector2(1152, 40)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyalty52l8odj"
+path="res://.godot/imported/Magic Treasure Chest _ SOUND FX (NO Copyright) - The Audio Horizon SFX.mp3-fe2877d5ff3585e866c81c2b24e24d2b.mp3str"
+
+[deps]
+
+source_file="res://asset/music/Magic Treasure Chest _ SOUND FX (NO Copyright) - The Audio Horizon SFX.mp3"
+dest_files=["res://.godot/imported/Magic Treasure Chest _ SOUND FX (NO Copyright) - The Audio Horizon SFX.mp3-fe2877d5ff3585e866c81c2b24e24d2b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

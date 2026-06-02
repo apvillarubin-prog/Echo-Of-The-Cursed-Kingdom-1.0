@@ -3,6 +3,7 @@
 #include <Godot/classes/label.hpp>
 #include <Godot/classes/animation_player.hpp>
 #include <Godot/classes/input.hpp>
+#include <Godot/classes/audio_stream_player.hpp> // <-- [AUDIO UPDATE] Added header
 #include <Godot/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -52,8 +53,17 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			UtilityFunctions::print("DEBUG [ShieldChest] E pressed, opening chest.");
 			has_been_opened = true;
 			if (prompt) prompt->set_visible(false);
+			
 			AnimationPlayer* ap = (AnimationPlayer*)chest_self->get_node_or_null("AnimationPlayer");
 			if (ap) ap->play("open");
+			
+			// --- [AUDIO UPDATE] Play the sound effect ---
+			AudioStreamPlayer* open_sfx = Object::cast_to<AudioStreamPlayer>(chest_self->get_node_or_null("OpenSFX"));
+			if (open_sfx) {
+				open_sfx->play();
+			}
+			// --------------------------------------------
+
 			// calls unlock_shield on the player instead of unlock_sword
 			if (target_player) target_player->call("unlock_shield");
 		}

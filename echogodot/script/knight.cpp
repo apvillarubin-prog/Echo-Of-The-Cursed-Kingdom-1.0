@@ -1,4 +1,3 @@
-
 #include <Godot/godot.hpp>
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
@@ -12,7 +11,10 @@
 #include <Godot/classes/line2d.hpp>
 #include <Godot/classes/node2d.hpp>
 #include <Godot/classes/node.hpp>
-#include <Godot/classes/progress_bar.hpp> // [HEALTH BAR UPDATE]
+#include <Godot/classes/progress_bar.hpp>
+#include <Godot/classes/audio_stream_player.hpp> 
+#include <Godot/classes/control.hpp> 
+#include <Godot/classes/button.hpp>  
 #include <Godot/variant/utility_functions.hpp>
 #include <Godot/variant/string.hpp>
 #include <Godot/variant/string_name.hpp>
@@ -24,7 +26,18 @@ JENOVA_SCRIPT_BEGIN
 
 CharacterBody2D* self = nullptr;
 AnimatedSprite2D* sprite = nullptr;
-ProgressBar* health_bar = nullptr; // [HEALTH BAR UPDATE]
+ProgressBar* health_bar = nullptr;
+
+// --- Death Screen Pointers ---
+Control* death_screen = nullptr;
+
+// --- Audio Pointers ---
+AudioStreamPlayer* bg_music = nullptr;
+AudioStreamPlayer* combat_music = nullptr;
+AudioStreamPlayer* sfx_walk = nullptr;
+AudioStreamPlayer* sfx_attack = nullptr;
+AudioStreamPlayer* sfx_block = nullptr;
+float combat_cooldown = 0.0f; 
 
 Vector2 start_pos;
 int inventory_count = 0;
@@ -35,13 +48,12 @@ bool has_sword = false;
 bool has_shield = false;
 bool has_bow = false;  
 
-// ACTION DURATIONS: Synced perfectly with the Godot SpriteFrames FPS settings
 float knight_attack_duration = 0.66f; 
 float archer_attack_duration = 1.0f; 
 
 bool is_blocking = false;
 float block_timer = 0.0f;
-float block_cooldown = 0.0f;
+float block_cooldown_val = 0.0f;
 float BLOCK_DURATION = 2.0f;
 int player_health = 50;
 int last_attack_frame = -1;
@@ -53,12 +65,9 @@ Vector2 grapple_target_pos;
 float grapple_radius = 0.0f;          
 float grapple_climb_speed = 140.0f;    
 float max_grapple_range = 160.0f; 
-
 Vector2 hook_visual_offset = Vector2(0, 8); 
-
 float grapple_launch_duration = 0.65f;  
 float grapple_launch_timer = 0.0f; 
-
 float grapple_jump_duration = 0.35f;  
 float grapple_jump_timer = 0.0f;
 
@@ -73,22 +82,10 @@ float speed = 70.0f;
 float jump_velocity = -253.0f;
 float gravity = 980.0f;
 
-void unlock_sword(Caller* instance) { 
-	has_sword = true; 
-	Engine::get_singleton()->set_meta("save_has_sword", true);
-}
-void unlock_shield(Caller* instance) { 
-	has_shield = true; 
-	Engine::get_singleton()->set_meta("save_has_shield", true);
-}
-void unlock_bow(Caller* instance) { 
-	has_bow = true; 
-	Engine::get_singleton()->set_meta("save_has_bow", true);
-}
-void unlock_grapple(Caller* instance) { 
-	has_grapple = true; 
-	Engine::get_singleton()->set_meta("save_has_grapple", true);
-}
+void unlock_sword(Caller* instance) { has_sword = true; Engine::get_singleton()->set_meta("save_has_sword", true); }
+void unlock_shield(Caller* instance) { has_shield = true; Engine::get_singleton()->set_meta("save_has_shield", true); }
+void unlock_bow(Caller* instance) { has_bow = true; Engine::get_singleton()->set_meta("save_has_bow", true); }
+void unlock_grapple(Caller* instance) { has_grapple = true; Engine::get_singleton()->set_meta("save_has_grapple", true); }
 
 void actually_teleport(Caller* instance);
 
@@ -97,6 +94,8 @@ void respawn() {
 	is_dead = true;
 	is_grappling = false;
 	
+	UtilityFunctions::print("[DEBUG-DEATH] Player died. Triggering respawn logic.");
+
 	Line2D* rope = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
 	if (rope) rope->set_visible(false);
 
@@ -105,49 +104,54 @@ void respawn() {
 		sprite->play(prefix + "death");
 	}
 	if (self) self->set_velocity(Vector2(0, 0));
-	self->get_tree()->create_timer(1.0)->connect("timeout", Callable((Object*)self, "actually_teleport"));
+	
+	if (death_screen) {
+		death_screen->set_visible(true);
+		Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+		UtilityFunctions::print("[DEBUG-DEATH] Death screen made visible. Mouse unlocked.");
+	} else {
+		UtilityFunctions::print("[DEBUG-DEATH] WARNING: No death screen found. Using 1-sec fallback timer.");
+		self->get_tree()->create_timer(1.0)->connect("timeout", Callable((Object*)self, "actually_teleport"));
+	}
 }
 
 bool take_damage(int amount) {
 	if (is_dead) return false;
-	
 	if (is_blocking && current_hero == KNIGHT) {
-		// BLOCK_DURATION is 2.0. If the timer is above 1.7, they JUST pressed block!
 		if (block_timer > BLOCK_DURATION - 0.3f) {
-			UtilityFunctions::print("[DEBUG] PERFECT PARRY!");
-			return true; // Return true to signal the attacker they got countered
+			return true; 
 		}
-		return false; // Return false for a normal block (negates damage, but no stun)
+		return false; 
 	}
 	
 	player_health -= amount;
-
-	if (health_bar) {
-		health_bar->set_value((double)player_health);
-	}
-
+	if (health_bar) health_bar->set_value((double)player_health);
 	if (player_health <= 0) respawn();
 	
-	return false; // Return false because they took normal damage
+	return false; 
 }
 
 int increase_inventory(Caller* instance) { inventory_count += 1; return inventory_count; }
 int get_inventory_count(Caller* instance) { return inventory_count; }
 
 void actually_teleport(Caller* instance) {
+	UtilityFunctions::print("[DEBUG-DEATH] actually_teleport() FIRED!");
+	
 	CharacterBody2D* player = GetSelf<CharacterBody2D>(instance);
 	if (player) {
 		player->set_global_position(start_pos);
 		is_dead = false;
 		player_health = 50;
-
-		// [HEALTH BAR UPDATE]
-		if (health_bar) {
-			health_bar->set_value(50.0);
-		}
-
+		if (health_bar) health_bar->set_value(50.0);
 		is_blocking = false;
-		block_cooldown = 0.0f;
+		block_cooldown_val = 0.0f;
+
+		if (death_screen) death_screen->set_visible(false);
+		if (sprite) {
+			String prefix = (current_hero == KNIGHT) ? "knight_" : (current_hero == ARCHER) ? "archer_" : "priest_";
+			sprite->play(prefix + "idle");
+		}
+		UtilityFunctions::print("[DEBUG-DEATH] Player successfully reset to start_pos.");
 	}
 }
 
@@ -179,12 +183,40 @@ void OnReady(Caller* instance) {
 		self->set_meta("attack_timer", 0.0f);
 		
 		player_health = 50;
-
-		// [HEALTH BAR UPDATE]
 		health_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("CanvasLayer/HealthBar"));
 		if (health_bar) {
 			health_bar->set_max(50.0);
 			health_bar->set_value(50.0);
+		}
+
+		death_screen = Object::cast_to<Control>(self->get_node_or_null("CanvasLayer/DeathScreen"));
+		if (death_screen) {
+			death_screen->set_visible(false);
+			Button* respawn_btn = Object::cast_to<Button>(death_screen->get_node_or_null("RespawnButton"));
+			if (respawn_btn) {
+				respawn_btn->set_focus_mode(Control::FOCUS_ALL);
+				if (!respawn_btn->is_connected("pressed", Callable((Object*)self, "actually_teleport"))) {
+					respawn_btn->connect("pressed", Callable((Object*)self, "actually_teleport"));
+					UtilityFunctions::print("[DEBUG-DEATH] Respawn Button successfully connected.");
+				}
+			} else {
+				UtilityFunctions::print("[DEBUG-DEATH] ERROR: Death screen found, but RespawnButton is missing!");
+			}
+		}
+
+		bg_music = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("LevelBGM"));
+		combat_music = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("CombatBGM"));
+		sfx_walk = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("WalkSFX"));
+		sfx_attack = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("AttackSFX"));
+		sfx_block = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("BlockSFX"));
+
+		if (bg_music) {
+			bg_music->set_volume_db(0.0f);
+			bg_music->play();
+		}
+		if (combat_music) {
+			combat_music->set_volume_db(-60.0f); 
+			combat_music->play();
 		}
 
 		Engine* engine = Engine::get_singleton();
@@ -211,7 +243,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	Input* input = Input::get_singleton();
 	Vector2 velocity = self->get_velocity();
 
-	// --- Safe Meta Edge-Detection for Taps ---
 	bool curr_mouse_left = input->is_mouse_button_pressed(MouseButton::MOUSE_BUTTON_LEFT);
 	bool prev_mouse_left = self->has_meta("prev_mouse") ? (bool)self->get_meta("prev_mouse") : false;
 	bool mouse_left_just_pressed = curr_mouse_left && !prev_mouse_left;
@@ -223,6 +254,34 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	self->set_meta("prev_key_q", curr_key_q);
 
 	float attack_timer = self->has_meta("attack_timer") ? (float)self->get_meta("attack_timer") : 0.0f;
+
+	bool enemies_near = false;
+	TypedArray<Node> enemies = self->get_tree()->get_nodes_in_group("enemy");
+	for (int i = 0; i < enemies.size(); i++) {
+		Node2D* enemy = Object::cast_to<Node2D>(enemies[i]);
+		if (enemy && self->get_global_position().distance_to(enemy->get_global_position()) < 150.0f) {
+			enemies_near = true;
+			break;
+		}
+	}
+
+	if (enemies_near) {
+		combat_cooldown = 2.0f; 
+	} else if (combat_cooldown > 0.0f) {
+		combat_cooldown -= (float)delta;
+	}
+
+	if (bg_music && combat_music) {
+		bool play_combat = (combat_cooldown > 0.0f);
+		float target_bg_vol = play_combat ? -15.0f : 0.0f;     
+		float target_combat_vol = play_combat ? 0.0f : -60.0f; 
+
+		float current_bg = bg_music->get_volume_db();
+		float current_combat = combat_music->get_volume_db();
+		
+		bg_music->set_volume_db(current_bg + (target_bg_vol - current_bg) * 2.0f * (float)delta);
+		combat_music->set_volume_db(current_combat + (target_combat_vol - current_combat) * 2.0f * (float)delta);
+	}
 
 	if (!is_grappling) {
 		if (input->is_action_just_pressed("hero_1") && unlocked_knight) current_hero = KNIGHT;
@@ -236,11 +295,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	Line2D* grapple_line = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
 	Node2D* hand_anchor = Object::cast_to<Node2D>(self->get_node_or_null("BowHandAnchor"));
 
-	// ==========================================================
-	// PHASE A: COMPREHENSIVE SEQUENTIAL SWING & CLIMB ENGINE
-	// ==========================================================
 	if (is_grappling && current_hero == ARCHER) {
-		
 		if (input->is_action_just_pressed("grapple_hook")) {
 			is_grappling = false;
 			if (grapple_line) grapple_line->set_visible(false);
@@ -269,7 +324,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 			if (grapple_launch_timer <= 0.0f) {
 				grapple_jump_timer = grapple_jump_duration;
-				
 				Vector2 current_pos = self->get_global_position();
 				current_pos.y -= 18.0f; 
 				self->set_global_position(current_pos);
@@ -283,10 +337,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		} 
 		else if (grapple_jump_timer > 0.0f) {
 			grapple_jump_timer -= (float)delta;
-			if (sprite && sprite->get_animation() != StringName("archer_jump")) {
-				sprite->play("archer_jump"); 
-			}
-			
+			if (sprite && sprite->get_animation() != StringName("archer_jump")) sprite->play("archer_jump"); 
 			velocity.y += gravity * (float)delta;
 
 			if (grapple_jump_timer <= 0.0f) {
@@ -306,19 +357,13 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				grapple_radius += climb_direction * grapple_climb_speed * (float)delta;
 				if (grapple_radius < 30.0f) grapple_radius = 30.0f;
 				if (grapple_radius > max_grapple_range) grapple_radius = max_grapple_range;
-
-				if (sprite && sprite->get_animation() != StringName("archer_grapple_pull")) {
-					sprite->play("archer_grapple_pull"); 
-				}
+				if (sprite && sprite->get_animation() != StringName("archer_grapple_pull")) sprite->play("archer_grapple_pull"); 
 			} 
 			else {
-				if (sprite && sprite->get_animation() != StringName("archer_swing")) {
-					sprite->play("archer_swing"); 
-				}
+				if (sprite && sprite->get_animation() != StringName("archer_swing")) sprite->play("archer_swing"); 
 			}
 
 			velocity.y += gravity * (float)delta;
-
 			Vector2 rope_vector = self->get_global_position() - grapple_target_pos;
 			Vector2 rope_dir = rope_vector.normalized();
 			Vector2 tangent_trajectory = Vector2(-rope_dir.y, rope_dir.x).normalized();
@@ -332,7 +377,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			float tangent_speed = velocity.dot(tangent_trajectory);
 			tangent_speed *= 0.990f; 
 			velocity = tangent_trajectory * tangent_speed;
-
 			float current_dist = rope_vector.length();
 			velocity -= rope_dir * (current_dist - grapple_radius) * 25.0f;
 		}
@@ -365,26 +409,21 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		}
 		return; 
 	}
-
-	// ==========================================================
-	// PHASE B: STANDARD RUN, JUMP, AND COMBAT ENGINE
-	// ==========================================================
 	
-	if (attack_timer > 0.0f) {
-		attack_timer -= (float)delta;
-	}
+	if (attack_timer > 0.0f) attack_timer -= (float)delta;
 
 	if (current_hero == KNIGHT && has_shield) {
-		if (block_cooldown > 0.0f) block_cooldown -= (float)delta;
-		if (key_q_just_pressed && !is_blocking && block_cooldown <= 0.0f && attack_timer <= 0.0f && self->is_on_floor()) {
+		if (block_cooldown_val > 0.0f) block_cooldown_val -= (float)delta;
+		if (key_q_just_pressed && !is_blocking && block_cooldown_val <= 0.0f && attack_timer <= 0.0f && self->is_on_floor()) {
 			is_blocking = true;
 			block_timer = BLOCK_DURATION;
+			if (sfx_block) sfx_block->play();
 		}
 		if (is_blocking) {
 			block_timer -= (float)delta;
 			if (block_timer <= 0.0f) {
 				is_blocking = false;
-				block_cooldown = 1.0f;
+				block_cooldown_val = 1.0f;
 			}
 		}
 	} else {
@@ -399,9 +438,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (current_hero == KNIGHT && has_sword) {
 			is_attacking = true;
 			attack_timer = knight_attack_duration; 
+			if (sfx_attack) sfx_attack->play();
 		} else if (current_hero == ARCHER && has_bow) {
 			is_attacking = true;
 			attack_timer = archer_attack_duration; 
+			if (sfx_attack) sfx_attack->play();
 		}
 	}
 	
@@ -410,21 +451,15 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
 
-	// --- NEW: ANIMATION CANCELING JUMP MECHANIC ---
 	if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) {
-		
-		velocity.y = jump_velocity; // Execute the jump immediately
-		
-		// If you were locked in a combat state, instantly shatter it!
+		velocity.y = jump_velocity; 
 		if (is_action_locked) {
 			attack_timer = 0.0f;
 			self->set_meta("attack_timer", 0.0f);
 			is_attacking = false;
-			
 			is_blocking = false;
 			block_timer = 0.0f;
-			
-			is_action_locked = false; // Restore normal horizontal steering
+			is_action_locked = false; 
 		}
 	}
 
@@ -441,6 +476,16 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			if (sprite) sprite->set_flip_h(direction < 0);
 		} else {
 			velocity.x = UtilityFunctions::move_toward(velocity.x, 0, speed);
+		}
+	}
+
+	if (self->is_on_floor() && velocity.x != 0 && !is_action_locked) {
+		if (sfx_walk && !sfx_walk->is_playing()) {
+			sfx_walk->play(); 
+		}
+	} else {
+		if (sfx_walk && sfx_walk->is_playing()) {
+			sfx_walk->stop(); 
 		}
 	}
 
@@ -469,9 +514,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			if (sprite) {
 				bool target_is_on_left = (grapple_target_pos.x < self->get_global_position().x);
 				sprite->set_flip_h(target_is_on_left);
+				sprite->play("archer_grapple_launch"); 
 			}
-			
-			if (sprite) sprite->play("archer_grapple_launch"); 
 		}
 	}
 
@@ -489,9 +533,9 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				bool facing_right = !sprite->is_flipped_h();
 
 				if (current_hero == KNIGHT) {
-					TypedArray<Node> enemies = self->get_tree()->get_nodes_in_group("enemy");
-					for (int i = 0; i < enemies.size(); i++) {
-						Node2D* enemy = Object::cast_to<Node2D>(enemies[i]);
+					TypedArray<Node> enemies_grp = self->get_tree()->get_nodes_in_group("enemy");
+					for (int i = 0; i < enemies_grp.size(); i++) {
+						Node2D* enemy = Object::cast_to<Node2D>(enemies_grp[i]);
 						if (enemy && self->get_global_position().distance_to(enemy->get_global_position()) < 60.0f) {
 							enemy->set_meta("pending_damage", knight_damage);
 						}
