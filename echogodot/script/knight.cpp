@@ -37,6 +37,10 @@ AudioStreamPlayer* combat_music = nullptr;
 AudioStreamPlayer* sfx_walk = nullptr;
 AudioStreamPlayer* sfx_attack = nullptr;
 AudioStreamPlayer* sfx_block = nullptr;
+AudioStreamPlayer* sfx_landing = nullptr; 
+
+bool was_on_floor = true; 
+
 float combat_cooldown = 0.0f; 
 
 Vector2 start_pos;
@@ -49,7 +53,7 @@ bool has_shield = false;
 bool has_bow = false;  
 
 float knight_attack_duration = 0.66f; 
-float archer_attack_duration = 1.0f; 
+float archer_attack_duration = 1.25f; 
 
 bool is_blocking = false;
 float block_timer = 0.0f;
@@ -209,6 +213,9 @@ void OnReady(Caller* instance) {
 		sfx_walk = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("WalkSFX"));
 		sfx_attack = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("AttackSFX"));
 		sfx_block = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("BlockSFX"));
+		sfx_landing = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("landing")); 
+
+		was_on_floor = self->is_on_floor(); 
 
 		if (bg_music) {
 			bg_music->set_volume_db(0.0f);
@@ -442,7 +449,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		} else if (current_hero == ARCHER && has_bow) {
 			is_attacking = true;
 			attack_timer = archer_attack_duration; 
-			if (sfx_attack) sfx_attack->play();
 		}
 	}
 	
@@ -526,10 +532,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			sprite->play("knight_block");
 		} else if (is_attacking) {
 			sprite->play(prefix + "attack");
+			
 			int current_frame = sprite->get_frame();
-			int damage_frame = (current_hero == KNIGHT) ? 4 : 10;
+			int damage_frame = (current_hero == KNIGHT) ? 4 : 10; 
 
-			if (current_frame == damage_frame && last_attack_frame != damage_frame) {
+			if (current_frame >= damage_frame && last_attack_frame < damage_frame) {
 				bool facing_right = !sprite->is_flipped_h();
 
 				if (current_hero == KNIGHT) {
@@ -542,16 +549,42 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 					}
 				} 
 				else if (current_hero == ARCHER) {
+					UtilityFunctions::print("[DEBUG-ARROW] Hit frame 5. Attempting to spawn arrow...");
+					
 					Ref<PackedScene> arrow_scene = ResourceLoader::get_singleton()->load("res://scene/arrow.tscn");
 					if (arrow_scene.is_valid()) {
+						UtilityFunctions::print("[DEBUG-ARROW] Arrow scene loaded successfully.");
+						
 						Node* arrow_instance = arrow_scene->instantiate();
-						Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
-						if (arrow) {
-							Vector2 spawn_offset = facing_right ? Vector2(20, 2) : Vector2(-20, 2);
-							arrow->set_global_position(self->get_global_position() + spawn_offset);
-							arrow->set_scale(facing_right ? Vector2(0.5f, 0.5f) : Vector2(-0.5f, 0.5f));
-							self->get_tree()->get_current_scene()->add_child(arrow_instance);
+						if (arrow_instance) {
+							UtilityFunctions::print("[DEBUG-ARROW] Arrow instantiated. Setting configuration...");
+							
+							Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
+							if (arrow) {
+								Vector2 spawn_offset = facing_right ? Vector2(25, 2) : Vector2(-25, 2);
+								arrow->set_global_position(self->get_global_position() + spawn_offset);
+								arrow->set_scale(Vector2(0.5f, 0.5f));
+								
+								if (!facing_right) {
+									arrow->set_rotation(3.14159f); 
+								} else {
+									arrow->set_rotation(0.0f);
+								}
+
+								UtilityFunctions::print("[DEBUG-ARROW] Config set. Adding to scene tree via call_deferred...");
+								
+								// --- DEFERRED SPAWN: This prevents physics state lock crashes ---
+								self->get_tree()->get_current_scene()->call_deferred(StringName("add_child"), arrow_instance);
+								
+								UtilityFunctions::print("[DEBUG-ARROW] Deferred spawn registered successfully.");
+							} else {
+								UtilityFunctions::print("[DEBUG-ARROW] ERROR: Could not cast arrow to Node2D.");
+							}
+						} else {
+							UtilityFunctions::print("[DEBUG-ARROW] ERROR: Failed to instantiate arrow.");
 						}
+					} else {
+						UtilityFunctions::print("[DEBUG-ARROW] ERROR: Arrow scene is invalid! Check path.");
 					}
 				}
 			}
@@ -566,6 +599,17 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	self->set_velocity(velocity);
 	self->move_and_slide();
+
+	// --- Landing Sound Logic ---
+	bool is_currently_on_floor = self->is_on_floor();
+	
+	if (!was_on_floor && is_currently_on_floor) {
+		if (sfx_landing) {
+			sfx_landing->play();
+		}
+	}
+	
+	was_on_floor = is_currently_on_floor;
 }
 
 JENOVA_SCRIPT_END

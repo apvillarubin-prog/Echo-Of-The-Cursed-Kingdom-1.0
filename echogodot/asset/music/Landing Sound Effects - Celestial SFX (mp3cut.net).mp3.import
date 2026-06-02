@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://6r040ltyn45f"
+path="res://.godot/imported/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3-c617925d43c772615d6a0efc8c9cf49b.mp3str"
+
+[deps]
+
+source_file="res://asset/music/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3"
+dest_files=["res://.godot/imported/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3-c617925d43c772615d6a0efc8c9cf49b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

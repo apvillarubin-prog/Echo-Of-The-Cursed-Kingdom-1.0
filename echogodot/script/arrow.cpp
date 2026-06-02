@@ -15,8 +15,9 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	Area2D* self = GetSelf<Area2D>(instance);
 	if (!self) return;
 
-	Vector2 current_scale = self->get_scale();
-	Vector2 move_direction = (current_scale.x < 0.0f) ? Vector2(-1, 0) : Vector2(1, 0);
+	float current_rotation = self->get_rotation();
+// If the arrow is rotated backwards (roughly 3.14 radians), it flies left
+	Vector2 move_direction = (cos(current_rotation) < 0.0f) ? Vector2(-1, 0) : Vector2(1, 0);
 
 	Vector2 current_pos = self->get_global_position();
 	self->set_global_position(current_pos + (move_direction * speed * (float)delta));
