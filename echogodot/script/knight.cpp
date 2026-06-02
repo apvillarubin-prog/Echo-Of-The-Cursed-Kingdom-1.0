@@ -215,7 +215,7 @@ void OnReady(Caller* instance) {
 		sfx_attack = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("AttackSFX"));
 		sfx_block = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("BlockSFX"));
 		sfx_defeat = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("defeat"));
-
+		sfx_landing = Object::cast_to<AudioStreamPlayer>(self->get_node_or_null("landing"));
 		was_on_floor = self->is_on_floor(); 
 
 		if (bg_music) {
