@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://3j710w6ees0q"]
 
+[ext_resource type="Texture2D" uid="uid://dyhc0xma7gmrn" path="res://asset/PNG/background 1/background 1.png" id="1_ggcsn"]
 [ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/knight.tscn" id="1_qhexg"]
 [ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="4_if17c"]
 [ext_resource type="PackedScene" uid="uid://qumfvur675cc" path="res://scene/orb.tscn" id="5_lnov8"]
@@ -445,6 +446,14 @@ size = Vector2(2424, 98)
 
 [node name="level2" type="Node2D" unique_id=1264825657]
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=165537330]
+color = Color(0.3530626, 0.35306263, 0.35306257, 1)
+
+[node name="Background1" type="Sprite2D" parent="." unique_id=595099863]
+position = Vector2(144, -40)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_ggcsn")
+
 [node name="Node" type="Node" parent="." unique_id=497720344]
 
 [node name="enemy3" parent="Node" unique_id=906854867 instance=ExtResource("10_vwck2")]
@@ -488,6 +497,7 @@ position = Vector2(136.00003, 24)
 scale = Vector2(0.5064855, 0.480353)
 
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=1539870367]
+position = Vector2(0, -60.37227)
 scale = Vector2(1.9743901, 2.0818024)
 zoom = Vector2(6, 6)
 limit_left = -10000004
