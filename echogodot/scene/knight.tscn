@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/music/level bg music (mp3cut.net).mp3" id="11_7t8lw"]
 [ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://asset/music/attack (mp3cut.net) (1).mp3" id="12_biu62"]
 [ext_resource type="AudioStream" uid="uid://d3wsiasflrfti" path="res://asset/music/realblock.mp3" id="13_7t8lw"]
+[ext_resource type="AudioStream" uid="uid://6r040ltyn45f" path="res://asset/music/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3" id="14_7t8lw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
@@ -610,7 +611,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knight_block",
-"speed": 14.0
+"speed": 11.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -736,14 +737,14 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"knight_block"
-frame_progress = 0.5115726
+animation = &"archer_attack"
 
 [node name="CombatBGM" type="AudioStreamPlayer" parent="." unique_id=320216106]
 stream = ExtResource("9_biu62")
 
 [node name="WalkSFX" type="AudioStreamPlayer" parent="." unique_id=631026230]
 stream = ExtResource("11_3qbpu")
+volume_db = 8.934
 
 [node name="LevelBGM" type="AudioStreamPlayer" parent="." unique_id=2001276277]
 stream = ExtResource("11_7t8lw")
@@ -753,6 +754,10 @@ stream = ExtResource("12_biu62")
 
 [node name="BlockSFX" type="AudioStreamPlayer" parent="." unique_id=1062763795]
 stream = ExtResource("13_7t8lw")
+
+[node name="landing" type="AudioStreamPlayer" parent="." unique_id=158030269]
+stream = ExtResource("14_7t8lw")
+volume_db = -5.727
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1061500185]
 
