@@ -23,7 +23,6 @@
 [ext_resource type="PackedScene" uid="uid://cn8qymk2g2mat" path="res://scene/Gem.tscn" id="21_kdtfp"]
 [ext_resource type="PackedScene" uid="uid://nth4a6yrmftx" path="res://scene/artifact.tscn" id="22_ajs6y"]
 [ext_resource type="PackedScene" uid="uid://qumfvur675cc" path="res://scene/orb.tscn" id="23_1aw0l"]
-[ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="24_ajs6y"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qhexg"]
 
@@ -10318,8 +10317,3 @@ scale = Vector2(0.36054847, 0.33904123)
 [node name="orb" parent="collectibles" unique_id=1976635752 instance=ExtResource("23_1aw0l")]
 position = Vector2(2456.0002, 624)
 scale = Vector2(-0.5121505, 0.5048836)
-
-[node name="DoorArea" parent="." unique_id=39519444 instance=ExtResource("24_ajs6y")]
-visible = false
-position = Vector2(2757, 628)
-scale = Vector2(1.4814194, 2.1703308)
