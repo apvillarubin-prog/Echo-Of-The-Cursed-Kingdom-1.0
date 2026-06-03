@@ -252,7 +252,7 @@ show_percentage = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=132443837]
 sprite_frames = SubResource("SpriteFrames_bn25d")
-animation = &"idle"
+animation = &"smash_land"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=111688934]
 position = Vector2(1, -3.5)
@@ -267,3 +267,9 @@ stream = ExtResource("8_4rkin")
 stream = ExtResource("9_4jcgb")
 volume_db = 7.042
 pitch_scale = 0.8
+
+[node name="WindupSound" type="AudioStreamPlayer2D" parent="." unique_id=52211709]
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1382539143]
+
+[node name="SmashSound" type="AudioStreamPlayer2D" parent="." unique_id=446309188]

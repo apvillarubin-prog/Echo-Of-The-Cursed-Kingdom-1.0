@@ -26,7 +26,12 @@ AnimatedSprite2D* sprite = nullptr;
 RayCast2D* ledge_check = nullptr;
 ColorRect* smash_indicator = nullptr; 
 ProgressBar* hp_bar = nullptr; 
+
+// --- Sound Effects Nodes ---
 AudioStreamPlayer2D* hit_sound = nullptr; 
+AudioStreamPlayer2D* windup_sound = nullptr; // ADDED
+AudioStreamPlayer2D* smash_sound = nullptr;  // ADDED
+AudioStreamPlayer2D* death_sound = nullptr;  // ADDED
 
 enum OrcState { 
 	STATE_PATROL, 
@@ -45,7 +50,7 @@ int health = MAX_HEALTH;
 bool is_dead = false;      
 int smash_damage = 22;
 float default_gravity = 980.0f;
-float smash_splash_radius = 120.0f; // Perfect radial danger zone area
+float smash_splash_radius = 120.0f; 
 
 // --- Momentum & Logic ---
 float walk_speed = 45.0f;
@@ -61,7 +66,7 @@ float smash_cooldown = 0.0f;
 int direction = -1;
 float target_smash_x = 0.0f;
 bool is_dive_bombing = false;
-Node2D* last_ignored_player = nullptr; // Tracks the player to clean up exceptions safely
+Node2D* last_ignored_player = nullptr; 
 
 void safely_clear_exception() {
 	if (self && last_ignored_player) {
@@ -101,8 +106,13 @@ void OnAwake(Caller* instance) {
 		self->add_to_group("enemy");
 		sprite = Object::cast_to<AnimatedSprite2D>(self->get_node_or_null("AnimatedSprite2D"));
 		ledge_check = Object::cast_to<RayCast2D>(self->get_node_or_null("LedgeCheck"));
-		hit_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("HitSound"));
 		hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("ProgressBar"));
+		
+		// Wire up Sound Nodes
+		hit_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("HitSound"));
+		windup_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("WindupSound")); // ADDED
+		smash_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("SmashSound"));   // ADDED
+		death_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("DeathSound"));   // ADDED
 		
 		smash_indicator = memnew(ColorRect);
 		smash_indicator->set_size(Vector2(140.0f, 10.0f)); 
@@ -169,6 +179,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (health <= 0) {
 			is_dead = true; current_state = STATE_DEATH; state_timer = 0.8f;
 			if (sprite) sprite->play("death");
+			if (death_sound) death_sound->play(0.0); // ADDED: Play death audio
 			return;
 		}
 	}
@@ -195,6 +206,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			if (smash_cooldown <= 0.0f) {
 				current_state = STATE_SMASH_LAUNCH; state_timer = 1.2f; 
 				if (sprite) sprite->play("jump_launch"); velocity.x = 0;
+				if (windup_sound) windup_sound->play(0.0); // ADDED: Play windup audio
 			} else {
 				if (sprite) sprite->play("walk");
 				velocity.x = approach(velocity.x, (float)direction * run_speed, ground_acceleration * (float)delta);
@@ -213,7 +225,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				if (smash_indicator) { smash_indicator->set_global_position(Vector2(target_smash_x - 70.0f, fixed_floor_y)); smash_indicator->show(); }
 				is_dive_bombing = false;
 
-				// ALTERNATIVE FIX Part 1: Prevent crushing the player entirely. Add a full collision exception mid-air.
 				if (player) {
 					self->add_collision_exception_with(player);
 					last_ignored_player = player;
@@ -232,28 +243,24 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			}
 			velocity.y += (is_dive_bombing ? default_gravity * 3.5f : default_gravity) * (float)delta;
 
-			// Check if Orc successfully slams onto the real floor map
 			if (self->is_on_floor() && velocity.y >= 0.0f) {
 				current_state = STATE_SMASH_LAND;
 				state_timer = 1.5f;
 				if (smash_indicator) smash_indicator->hide(); 
 				if (sprite) sprite->play("smash_land"); 
+				if (smash_sound) smash_sound->play(0.0); // ADDED: Play impact slam audio
+				
 				self->get_tree()->call_group("camera", "shake", 0.4f); 
 				smash_cooldown = 4.0f; 
 
-				// ALTERNATIVE FIX Part 2: Instantly remove exception so physical interactions return safely
 				safely_clear_exception();
 
-				// ALTERNATIVE FIX Part 3: Calculate full localized impact area damage + knockback
 				if (player) {
 					float dist_to_impact = self->get_global_position().distance_to(player->get_global_position());
 					if (dist_to_impact <= smash_splash_radius) {
 						player->call("take_damage", smash_damage); 
 						
-						// Create guaranteed horizontal flinging trajectory away from epicenter
 						float splash_side = (player->get_global_position().x >= self->get_global_position().x) ? 1.0f : -1.0f;
-						
-						// Forces a strictly upward diagonal trajectory (-380.0f Y ensures they bounce up away from ground)
 						Vector2 guaranteed_upward_knockback = Vector2(splash_side * 800.0f, -380.0f);
 						player->call("apply_knockback", guaranteed_upward_knockback);
 					}
@@ -279,7 +286,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 void take_damage(Caller* instance, int amount) {
 	if (is_dead) return;
 	health -= amount; self->set_meta("health", health); play_hit_effects();
-	if (health <= 0) { is_dead = true; current_state = STATE_DEATH; state_timer = 0.8f; if (sprite) sprite->play("death"); }
+	if (health <= 0) { 
+		is_dead = true; current_state = STATE_DEATH; state_timer = 0.8f; 
+		if (sprite) sprite->play("death"); 
+		if (death_sound) death_sound->play(0.0); // ADDED: Play death audio
+	}
 }
 
 JENOVA_SCRIPT_END

@@ -1,3 +1,4 @@
+/* Jenova C++ Node Base Script (Disappearing Block) */
 #include <Godot/godot.hpp>
 #include <Godot/classes/static_body2d.hpp>
 #include <Godot/classes/animation_player.hpp>
@@ -9,40 +10,44 @@ using namespace jenova::sdk;
 
 JENOVA_SCRIPT_BEGIN
 
-StaticBody2D* self = nullptr;
-AnimationPlayer* anim_player = nullptr;
-CollisionShape2D* collision_shape = nullptr;
-
-// --- State Machine Definitions ---
+// Define states cleanly
 enum BlockState { ASSEMBLED, DISASSEMBLING, DISASSEMBLED, ASSEMBLING };
-BlockState current_state = ASSEMBLED;
 
-// Configurable timing configurations
-float solid_duration = 3.0f;  // How long the block remains safe to stand on
-float broken_duration = 2.0f; // How long it stays completely vanished
-float state_timer = 0.0f;
+// Configurable timing configurations (Global read-only configuration constants are fine!)
+const float solid_duration = 3.0f;  
+const float broken_duration = 2.0f; 
 
 void OnAwake(Caller* instance) {
-	self = GetSelf<StaticBody2D>(instance);
+	// No global assignment! Everything stays local to this execution instance.
 }
 
 void OnReady(Caller* instance) {
-	if (self) {
-		anim_player = Object::cast_to<AnimationPlayer>(self->get_node_or_null("AnimationPlayer"));
-		collision_shape = Object::cast_to<CollisionShape2D>(self->get_node_or_null("CollisionShape2D"));
-		
-		// Reset state on load
-		current_state = ASSEMBLED;
-		state_timer = solid_duration;
-		
-		if (collision_shape) {
-			collision_shape->set_deferred("disabled", false);
-		}
+	StaticBody2D* self = GetSelf<StaticBody2D>(instance);
+	if (!self) return;
+
+	AnimationPlayer* anim_player = Object::cast_to<AnimationPlayer>(self->get_node_or_null("AnimationPlayer"));
+	CollisionShape2D* collision_shape = Object::cast_to<CollisionShape2D>(self->get_node_or_null("CollisionShape2D"));
+	
+	// Store states directly inside THIS specific node instance's metadata memory space
+	self->set_meta("current_state", (int)ASSEMBLED);
+	self->set_meta("state_timer", solid_duration);
+	
+	if (collision_shape) {
+		collision_shape->set_deferred("disabled", false);
 	}
 }
 
 void OnPhysicsProcess(Caller* instance, double delta) {
-	if (!self || !anim_player) return;
+	StaticBody2D* self = GetSelf<StaticBody2D>(instance);
+	if (!self) return;
+
+	AnimationPlayer* anim_player = Object::cast_to<AnimationPlayer>(self->get_node_or_null("AnimationPlayer"));
+	CollisionShape2D* collision_shape = Object::cast_to<CollisionShape2D>(self->get_node_or_null("CollisionShape2D"));
+	if (!anim_player) return;
+
+	// Retrieve this specific node's state and timer metrics
+	BlockState current_state = (BlockState)(int)self->get_meta("current_state", (int)ASSEMBLED);
+	float state_timer = (float)self->get_meta("state_timer", solid_duration);
 
 	switch (current_state) {
 		case ASSEMBLED:
@@ -51,7 +56,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				current_state = DISASSEMBLING;
 				anim_player->play("disassemble");
 				
-				// CRITICAL: Turn off collisions instantly the moment it shatters
 				if (collision_shape) {
 					collision_shape->set_deferred("disabled", true);
 				}
@@ -59,7 +63,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			break;
 
 		case DISASSEMBLING:
-			// Automatically wait until the destruction animation finishes playing
 			if (!anim_player->is_playing()) {
 				current_state = DISASSEMBLED;
 				state_timer = broken_duration;
@@ -75,18 +78,20 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			break;
 
 		case ASSEMBLING:
-			// Wait until the blocks piece themselves completely back together
 			if (!anim_player->is_playing()) {
 				current_state = ASSEMBLED;
 				state_timer = solid_duration;
 				
-				// CRITICAL: Reactivate solid collision code exactly when the visual is whole
 				if (collision_shape) {
 					collision_shape->set_deferred("disabled", false);
 				}
 			}
 			break;
 	}
+
+	// Save the changes back to this instance's metadata storage
+	self->set_meta("current_state", (int)current_state);
+	self->set_meta("state_timer", state_timer);
 }
 
 JENOVA_SCRIPT_END
