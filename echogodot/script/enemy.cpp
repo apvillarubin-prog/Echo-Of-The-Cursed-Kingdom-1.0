@@ -1,7 +1,7 @@
 #include <Godot/godot.hpp>
 #include <Godot/classes/character_body2d.hpp>
 #include <Godot/classes/animated_sprite2d.hpp>
-#include <Godot/classes/sprite_frames.hpp> // Required for dynamic frame counting
+#include <Godot/classes/sprite_frames.hpp> 
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/progress_bar.hpp>
 #include <Godot/variant/utility_functions.hpp>
@@ -27,8 +27,9 @@ void OnReady(Caller* instance) {
 
 	ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
 	if (hp_bar) {
-		hp_bar->set_max(15.0); 
-		hp_bar->set_value(15.0);
+		// Bulletproof property setting overrides the Godot Editor
+		hp_bar->set("max_value", 15.0); 
+		hp_bar->set("value", 15.0);
 	}
 }
 
@@ -46,7 +47,10 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		self->set_meta("current_health", current_health); 
 
 		ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
-		if (hp_bar) hp_bar->set_value((double)current_health);
+		if (hp_bar) {
+			hp_bar->set("max_value", 15.0); // Force max to prevent editor resets
+			hp_bar->set("value", (double)current_health);
+		}
 
 		if (current_health <= 0) {
 			self->set_meta("is_dying", true);
@@ -79,7 +83,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			int dir = (p_pos.x > e_pos.x) ? 1 : -1;
 			
 			bool is_playing_attack = (anim->get_animation() == StringName("enemy_attack") && anim->is_playing());
-			if (!is_playing_attack) anim->set_flip_h(dir < 0); // Only turn if not mid-swing
+			if (!is_playing_attack) anim->set_flip_h(dir < 0); 
 
 			if (dist > ATTACK_RANGE && !is_playing_attack) {
 				velocity.x = dir * CHASE_SPEED;
@@ -89,7 +93,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			else {
 				velocity.x = 0; 
 				
-				// Start attack if off cooldown
 				if (attack_cooldown <= 0.0f && !is_playing_attack) {
 					anim->play("enemy_attack");
 					anim->set_frame(0);
@@ -100,17 +103,15 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 					int current_frame = anim->get_frame();
 					int last_hit_frame = self->has_meta("last_hit_frame") ? (int)self->get_meta("last_hit_frame") : -1;
 
-					// Deal damage on Frame 2
 					if (current_frame == 2 && last_hit_frame != 2) {
 						if (dist <= ATTACK_RANGE + 20.0f) target->call("take_damage", 1);
 						self->set_meta("last_hit_frame", 2);
 					} 
 					
-					// Let the animation finish to the very last frame!
 					int max_frames = anim->get_sprite_frames()->get_frame_count("enemy_attack");
 					if (current_frame == max_frames - 1) {
-						self->set_meta("attack_cooldown", 0.1f); // 0.1s micro-pause
-						anim->stop(); // Force stop to reset the state machine cleanly
+						self->set_meta("attack_cooldown", 0.1f); 
+						anim->stop(); 
 					}
 				} 
 				else if (attack_cooldown > 0.0f) {

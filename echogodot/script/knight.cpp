@@ -28,6 +28,9 @@ CharacterBody2D* self = nullptr;
 AnimatedSprite2D* sprite = nullptr;
 ProgressBar* health_bar = nullptr;
 
+// --- Admin Toggle ---
+bool admin_mode = true; // <-- SET TO FALSE FOR PRODUCTION
+
 // --- Death Screen Pointers ---
 Control* death_screen = nullptr;
 
@@ -53,16 +56,25 @@ bool has_sword = false;
 bool has_shield = false;
 bool has_bow = false;  
 
-float knight_attack_duration = 0.66f; 
-float archer_attack_duration = 1.25f; 
+// Timings matched exactly to Godot Animation player
+float knight_attack_duration = 1.0f; 
+float archer_attack_duration = 1.08f; 
 
 bool is_blocking = false;
 float block_timer = 0.0f;
 float block_cooldown_val = 0.0f;
-float BLOCK_DURATION = 2.0f;
+float BLOCK_DURATION = 1.5f;
 int player_health = 50;
 int last_attack_frame = -1;
 int knight_damage = 10;
+
+// --- Priest Configurations ---
+float priest_heal_cooldown_val = 0.0f;
+float priest_buff_cooldown_val = 0.0f;
+float buff_active_timer = 0.0f; 
+float priest_action_timer = 0.0f; 
+bool is_healing = false;
+bool is_buffing = false;
 
 bool has_grapple = false; 
 bool is_grappling = false;
@@ -122,15 +134,21 @@ void respawn() {
 
 bool take_damage(int amount) {
 	if (is_dead) return false;
+	
 	if (is_blocking && current_hero == KNIGHT) {
 		if (block_timer > BLOCK_DURATION - 0.3f) {
-			return true; 
+			return true; // Perfect Parry
 		}
-		return false; 
+		// Halve damage on a normal block instead of ignoring it
+		amount = amount / 2;
 	}
 	
+	int old_hp = player_health;
 	player_health -= amount;
 	if (health_bar) health_bar->set_value((double)player_health);
+	
+	UtilityFunctions::print(String("[DEBUG-PLAYER] Player took ") + String::num_int64(amount) + String(" damage. HP: ") + String::num_int64(old_hp) + String(" -> ") + String::num_int64(player_health));
+	
 	if (player_health <= 0) respawn();
 	
 	return false; 
@@ -150,6 +168,13 @@ void actually_teleport(Caller* instance) {
 		if (health_bar) health_bar->set_value(50.0);
 		is_blocking = false;
 		block_cooldown_val = 0.0f;
+		
+		is_healing = false;
+		is_buffing = false;
+		priest_action_timer = 0.0f;
+		buff_active_timer = 0.0f;
+		priest_heal_cooldown_val = 0.0f;
+		priest_buff_cooldown_val = 0.0f;
 
 		if (death_screen) death_screen->set_visible(false);
 		if (sprite) {
@@ -185,6 +210,7 @@ void OnReady(Caller* instance) {
 		
 		self->set_meta("prev_mouse", false);
 		self->set_meta("prev_key_q", false);
+		self->set_meta("prev_key_e", false);
 		self->set_meta("attack_timer", 0.0f);
 		
 		player_health = 50;
@@ -227,20 +253,40 @@ void OnReady(Caller* instance) {
 			combat_music->play();
 		}
 
-		Engine* engine = Engine::get_singleton();
-		has_sword = engine->has_meta("save_has_sword") ? (bool)engine->get_meta("save_has_sword") : false;
-		has_shield = engine->has_meta("save_has_shield") ? (bool)engine->get_meta("save_has_shield") : false;
-		has_bow = engine->has_meta("save_has_bow") ? (bool)engine->get_meta("save_has_bow") : false;
-		has_grapple = engine->has_meta("save_has_grapple") ? (bool)engine->get_meta("save_has_grapple") : false;
-		
-		String scene_name = self->get_tree()->get_current_scene()->get_name();
-		if (scene_name == "level2" || scene_name == "Level2") {
-			unlocked_archer = true; 
+		if (admin_mode) {
+			unlocked_knight = true;
+			unlocked_archer = true;
+			unlocked_priest = true;
 			has_sword = true;
 			has_shield = true;
+			has_bow = true;
+			has_grapple = true;
+			UtilityFunctions::print("[DEBUG] Admin mode is ON: All characters and weapons unlocked.");
 		} else {
-			unlocked_archer = false; 
+			Engine* engine = Engine::get_singleton();
+			has_sword = engine->has_meta("save_has_sword") ? (bool)engine->get_meta("save_has_sword") : false;
+			has_shield = engine->has_meta("save_has_shield") ? (bool)engine->get_meta("save_has_shield") : false;
+			has_bow = engine->has_meta("save_has_bow") ? (bool)engine->get_meta("save_has_bow") : false;
+			has_grapple = engine->has_meta("save_has_grapple") ? (bool)engine->get_meta("save_has_grapple") : false;
+			
+			String scene_name = self->get_tree()->get_current_scene()->get_name();
+			
+			if (scene_name == "level2" || scene_name == "Level2") {
+				unlocked_archer = true; 
+				has_sword = true;
+				has_shield = true;
+				unlocked_priest = false;
+			} else if (scene_name == "level4" || scene_name == "Level4") {
+				unlocked_archer = true; 
+				unlocked_priest = true;
+				has_sword = true;
+				has_shield = true;
+			} else {
+				unlocked_archer = false; 
+				unlocked_priest = false;
+			}
 		}
+		
 		current_hero = KNIGHT;
 	}
 }
@@ -260,8 +306,27 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	bool prev_key_q = self->has_meta("prev_key_q") ? (bool)self->get_meta("prev_key_q") : false;
 	bool key_q_just_pressed = curr_key_q && !prev_key_q;
 	self->set_meta("prev_key_q", curr_key_q);
+	
+	bool curr_key_e = input->is_key_pressed(Key::KEY_E);
+	bool prev_key_e = self->has_meta("prev_key_e") ? (bool)self->get_meta("prev_key_e") : false;
+	bool key_e_just_pressed = curr_key_e && !prev_key_e;
+	self->set_meta("prev_key_e", curr_key_e);
 
 	float attack_timer = self->has_meta("attack_timer") ? (float)self->get_meta("attack_timer") : 0.0f;
+
+	if (priest_heal_cooldown_val > 0.0f) priest_heal_cooldown_val -= (float)delta;
+	if (priest_buff_cooldown_val > 0.0f) priest_buff_cooldown_val -= (float)delta;
+	if (buff_active_timer > 0.0f) buff_active_timer -= (float)delta;
+	
+	knight_damage = (buff_active_timer > 0.0f) ? 20 : 10;
+	
+	if (priest_action_timer > 0.0f) {
+		priest_action_timer -= (float)delta;
+		if (priest_action_timer <= 0.0f) {
+			is_healing = false;
+			is_buffing = false;
+		}
+	}
 
 	bool enemies_near = false;
 	TypedArray<Node> enemies = self->get_tree()->get_nodes_in_group("enemy");
@@ -297,7 +362,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			current_hero = ARCHER;
 			is_blocking = false;
 		}
-		if (input->is_action_just_pressed("hero_3") && unlocked_priest) current_hero = PRIEST;
+		if (input->is_action_just_pressed("hero_4") && unlocked_priest) current_hero = PRIEST;
 	}
 
 	Line2D* grapple_line = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
@@ -419,6 +484,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	}
 	
 	if (attack_timer > 0.0f) attack_timer -= (float)delta;
+	
+	bool is_action_locked = (attack_timer > 0.0f) || is_blocking || is_healing || is_buffing;
 
 	if (current_hero == KNIGHT && has_shield) {
 		if (block_cooldown_val > 0.0f) block_cooldown_val -= (float)delta;
@@ -426,6 +493,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			is_blocking = true;
 			block_timer = BLOCK_DURATION;
 			if (sfx_block) sfx_block->play();
+			is_action_locked = true;
 		}
 		if (is_blocking) {
 			block_timer -= (float)delta;
@@ -437,24 +505,59 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	} else {
 		is_blocking = false;
 	}
+	
+	if (current_hero == PRIEST && !is_action_locked && self->is_on_floor()) {
+		if (key_e_just_pressed && priest_heal_cooldown_val <= 0.0f) {
+			is_healing = true;
+			priest_action_timer = 1.2f; 
+			priest_heal_cooldown_val = 3.0f;
+			
+			int old_hp = player_health;
+			player_health += 10;
+			if (player_health > 50) player_health = 50;
+			if (health_bar) health_bar->set_value((double)player_health);
+			is_action_locked = true;
+			
+			UtilityFunctions::print(String("[DEBUG-PLAYER] Priest Heal! HP: ") + String::num_int64(old_hp) + String(" -> ") + String::num_int64(player_health));
+		} 
+		else if (key_q_just_pressed && priest_buff_cooldown_val <= 0.0f) {
+			is_buffing = true;
+			priest_action_timer = 1.2f;
+			priest_buff_cooldown_val = 3.0f;
+			buff_active_timer = 10.0f; 
+			is_action_locked = true;
+			UtilityFunctions::print("[DEBUG-PLAYER] Priest Buff Applied! Knight Damage Doubled.");
+		}
+	}
 
 	bool is_attacking = false;
 	if (attack_timer > 0.0f) {
 		is_attacking = true; 
 	} 
-	else if (mouse_left_just_pressed && !is_blocking) {
+	else if (mouse_left_just_pressed && !is_action_locked) {
 		if (current_hero == KNIGHT && has_sword) {
 			is_attacking = true;
 			attack_timer = knight_attack_duration; 
 			if (sfx_attack) sfx_attack->play();
+			is_action_locked = true;
+			
+			if (sprite) {
+				sprite->stop();
+				last_attack_frame = -1;
+			}
 		} else if (current_hero == ARCHER && has_bow) {
 			is_attacking = true;
 			attack_timer = archer_attack_duration; 
+			is_action_locked = true;
+			
+			if (sprite) {
+				sprite->stop();
+				last_attack_frame = -1;
+			}
 		}
 	}
 	
 	self->set_meta("attack_timer", attack_timer);
-	bool is_action_locked = is_attacking || is_blocking;
 
 	if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
 
@@ -463,9 +566,14 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (is_action_locked) {
 			attack_timer = 0.0f;
 			self->set_meta("attack_timer", 0.0f);
+			
 			is_attacking = false;
 			is_blocking = false;
+			is_healing = false;
+			is_buffing = false;
+			
 			block_timer = 0.0f;
+			priest_action_timer = 0.0f;
 			is_action_locked = false; 
 		}
 	}
@@ -531,40 +639,52 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 		if (is_blocking) {
 			sprite->play("knight_block");
+		} else if (is_healing) {
+			sprite->play("priest_heal");
+		} else if (is_buffing) {
+			sprite->play("priest_buff");
 		} else if (is_attacking) {
 			sprite->play(prefix + "attack");
 			
 			int current_frame = sprite->get_frame();
-			int damage_frame = (current_hero == KNIGHT) ? 4 : 10; 
+			int damage_frame = (current_hero == KNIGHT) ? 4 : 9; 
 
 			if (current_frame >= damage_frame && last_attack_frame < damage_frame) {
 				bool facing_right = !sprite->is_flipped_h();
 
 				if (current_hero == KNIGHT) {
 					TypedArray<Node> enemies_grp = self->get_tree()->get_nodes_in_group("enemy");
+					bool hit_anything = false;
+					
 					for (int i = 0; i < enemies_grp.size(); i++) {
 						Node2D* enemy = Object::cast_to<Node2D>(enemies_grp[i]);
-						if (enemy && self->get_global_position().distance_to(enemy->get_global_position()) < 60.0f) {
-							enemy->set_meta("pending_damage", knight_damage);
+						if (enemy) {
+							float dist = self->get_global_position().distance_to(enemy->get_global_position());
+							if (dist < 95.0f) {
+								enemy->set_meta("pending_damage", knight_damage); 
+								hit_anything = true;
+								UtilityFunctions::print(String("[DEBUG-PLAYER] Knight hit enemy! Dist: ") + String::num(dist) + String(" | DMG: ") + String::num_int64(knight_damage));
+							}
 						}
+					}
+					if (!hit_anything) {
+						UtilityFunctions::print("[DEBUG-PLAYER] Knight swung but missed (No enemy within 95.0f).");
 					}
 				} 
 				else if (current_hero == ARCHER) {
-					UtilityFunctions::print("[DEBUG-ARROW] Hit frame 5. Attempting to spawn arrow...");
+					UtilityFunctions::print("[DEBUG-ARROW] Attempting to spawn arrow...");
 					
 					Ref<PackedScene> arrow_scene = ResourceLoader::get_singleton()->load("res://scene/arrow.tscn");
 					if (arrow_scene.is_valid()) {
-						UtilityFunctions::print("[DEBUG-ARROW] Arrow scene loaded successfully.");
-						
 						Node* arrow_instance = arrow_scene->instantiate();
 						if (arrow_instance) {
-							UtilityFunctions::print("[DEBUG-ARROW] Arrow instantiated. Setting configuration...");
-							
 							Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
 							if (arrow) {
 								Vector2 spawn_offset = facing_right ? Vector2(25, 2) : Vector2(-25, 2);
 								arrow->set_global_position(self->get_global_position() + spawn_offset);
 								arrow->set_scale(Vector2(0.5f, 0.5f));
+								
+								arrow->set_meta("buffed_damage", buff_active_timer > 0.0f);
 								
 								if (!facing_right) {
 									arrow->set_rotation(3.14159f); 
@@ -572,20 +692,9 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 									arrow->set_rotation(0.0f);
 								}
 
-								UtilityFunctions::print("[DEBUG-ARROW] Config set. Adding to scene tree via call_deferred...");
-								
-								// --- DEFERRED SPAWN: This prevents physics state lock crashes ---
 								self->get_tree()->get_current_scene()->call_deferred(StringName("add_child"), arrow_instance);
-								
-								UtilityFunctions::print("[DEBUG-ARROW] Deferred spawn registered successfully.");
-							} else {
-								UtilityFunctions::print("[DEBUG-ARROW] ERROR: Could not cast arrow to Node2D.");
 							}
-						} else {
-							UtilityFunctions::print("[DEBUG-ARROW] ERROR: Failed to instantiate arrow.");
 						}
-					} else {
-						UtilityFunctions::print("[DEBUG-ARROW] ERROR: Arrow scene is invalid! Check path.");
 					}
 				}
 			}
@@ -594,14 +703,13 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			last_attack_frame = -1;
 			if (!self->is_on_floor()) sprite->play(prefix + "jump");
 			else if (velocity.x != 0) sprite->play(prefix + "walk");
-			else sprite->play(prefix + "idle");
+			else sprite->play(prefix + "idle"); 
 		}
 	}
 
 	self->set_velocity(velocity);
 	self->move_and_slide();
 
-	// --- Landing Sound Logic ---
 	bool is_currently_on_floor = self->is_on_floor();
 	
 	if (!was_on_floor && is_currently_on_floor) {

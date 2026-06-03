@@ -1,20 +1,23 @@
 [gd_scene format=3 uid="uid://bup6sn2txf707"]
 
 [ext_resource type="Script" uid="uid://cve0rs785glde" path="res://script/knight.cpp" id="1_igyo2"]
-[ext_resource type="Texture2D" uid="uid://c4dfmvt78m13q" path="res://asset/ropes.png" id="2_34asd"]
-[ext_resource type="Texture2D" uid="uid://c25kyr0xxl74n" path="res://asset/character-spritesheet (2).png" id="2_igyo2"]
-[ext_resource type="Texture2D" uid="uid://2qmwqld2j8fr" path="res://asset/new(9).png" id="2_y2git"]
-[ext_resource type="Texture2D" uid="uid://cfj42kyig5qeq" path="res://asset/character-spritesheet (9).png" id="3_4unx2"]
-[ext_resource type="Texture2D" uid="uid://cwooywdp5w62n" path="res://asset/character-spritesheet (6).png" id="3_8lpmn"]
-[ext_resource type="Texture2D" uid="uid://o5rqivaukage" path="res://asset/character-spritesheet (7).png" id="4_buwha"]
-[ext_resource type="Texture2D" uid="uid://b874dshg1w5y2" path="res://asset/gro.png" id="4_y2git"]
-[ext_resource type="AudioStream" uid="uid://b46yg5dsttl5" path="res://asset/music/enemiesap3cut.net).mp3" id="9_biu62"]
-[ext_resource type="AudioStream" uid="uid://cy3jpt6c2m3iw" path="res://asset/music/walking.mp3" id="11_3qbpu"]
-[ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/music/level bg music (mp3cut.net).mp3" id="11_7t8lw"]
-[ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://asset/music/attack (mp3cut.net) (1).mp3" id="12_biu62"]
-[ext_resource type="AudioStream" uid="uid://d3wsiasflrfti" path="res://asset/music/realblock.mp3" id="13_7t8lw"]
-[ext_resource type="AudioStream" uid="uid://6r040ltyn45f" path="res://asset/music/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3" id="14_7t8lw"]
-[ext_resource type="AudioStream" uid="uid://bl3fprtu5r0dw" path="res://asset/music/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3" id="15_3qbpu"]
+[ext_resource type="Texture2D" uid="uid://c4dfmvt78m13q" path="res://asset/asset/ropes.png" id="2_34asd"]
+[ext_resource type="Texture2D" uid="uid://c25kyr0xxl74n" path="res://asset/asset/character-spritesheet (2).png" id="2_igyo2"]
+[ext_resource type="Texture2D" uid="uid://2qmwqld2j8fr" path="res://asset/asset/new(9).png" id="2_y2git"]
+[ext_resource type="Texture2D" uid="uid://cfj42kyig5qeq" path="res://asset/asset/character-spritesheet (9).png" id="3_4unx2"]
+[ext_resource type="Texture2D" uid="uid://cwooywdp5w62n" path="res://asset/asset/character-spritesheet (6).png" id="3_8lpmn"]
+[ext_resource type="Texture2D" uid="uid://o5rqivaukage" path="res://asset/asset/character-spritesheet (7).png" id="4_buwha"]
+[ext_resource type="Texture2D" uid="uid://b874dshg1w5y2" path="res://asset/asset/gro.png" id="4_y2git"]
+[ext_resource type="Texture2D" uid="uid://cn2x3irkm0u4e" path="res://asset/healing.png" id="9_07wx8"]
+[ext_resource type="AudioStream" uid="uid://b46yg5dsttl5" path="res://asset/asset/music/enemiesap3cut.net).mp3" id="9_biu62"]
+[ext_resource type="Texture2D" uid="uid://dvgiqqlj5on1x" path="res://asset/buff.png" id="10_gn5vj"]
+[ext_resource type="AudioStream" uid="uid://cy3jpt6c2m3iw" path="res://asset/asset/music/walking.mp3" id="11_3qbpu"]
+[ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/asset/music/level bg music (mp3cut.net).mp3" id="11_7t8lw"]
+[ext_resource type="Texture2D" uid="uid://bmxxq5nqu6e2l" path="res://asset/character-spritesheet (11).png" id="11_vk5k2"]
+[ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://asset/asset/music/attack (mp3cut.net) (1).mp3" id="12_biu62"]
+[ext_resource type="AudioStream" uid="uid://d3wsiasflrfti" path="res://asset/asset/music/realblock.mp3" id="13_7t8lw"]
+[ext_resource type="AudioStream" uid="uid://6r040ltyn45f" path="res://asset/asset/music/Landing Sound Effects - Celestial SFX (mp3cut.net).mp3" id="14_7t8lw"]
+[ext_resource type="AudioStream" uid="uid://bl3fprtu5r0dw" path="res://asset/asset/music/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3" id="15_3qbpu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
@@ -367,6 +370,150 @@ region = Rect2(448, 704, 64, 64)
 atlas = ExtResource("2_igyo2")
 region = Rect2(512, 704, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_xs12l"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo2c8"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1p4b"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3g3l6"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3h65u"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(256, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jo202"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vjr5"]
+atlas = ExtResource("9_07wx8")
+region = Rect2(384, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5pyj0"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(0, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wta5"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(64, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ce2m5"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(128, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rctlj"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(192, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flwjh"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(256, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qamb"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(320, 1280, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yq7f1"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_moo4c"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(64, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7vfs"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(128, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4hrg"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(192, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcdui"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(256, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_os7b6"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(320, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnh6t"]
+atlas = ExtResource("10_gn5vj")
+region = Rect2(384, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sas4u"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(0, 1600, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ph5k5"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(64, 1600, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lhv2"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(0, 1856, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p0e26"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(64, 1856, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g33iq"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(128, 1856, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6y41c"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(192, 1856, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fhv7"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(256, 1856, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1nr4q"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(0, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7x3x8"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(64, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8aoy1"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(128, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xm2dp"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(192, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnbna"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(256, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kak8d"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(320, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e37su"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(384, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pn2oa"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(448, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7r2g"]
+atlas = ExtResource("11_vk5k2")
+region = Rect2(512, 704, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_8lpmn"]
 animations = [{
 "frames": [{
@@ -574,7 +721,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"knight_attack",
-"speed": 9.0
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -699,6 +846,144 @@ animations = [{
 "loop": true,
 "name": &"knight_walk",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xs12l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eo2c8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1p4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3g3l6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3h65u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jo202")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vjr5")
+}],
+"loop": true,
+"name": &"priest_buff",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5pyj0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wta5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ce2m5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rctlj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flwjh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5qamb")
+}],
+"loop": true,
+"name": &"priest_death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yq7f1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_moo4c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7vfs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4hrg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcdui")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_os7b6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnh6t")
+}],
+"loop": true,
+"name": &"priest_heal",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sas4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ph5k5")
+}],
+"loop": true,
+"name": &"priest_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lhv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p0e26")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g33iq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6y41c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fhv7")
+}],
+"loop": true,
+"name": &"priest_jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1nr4q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7x3x8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8aoy1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xm2dp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnbna")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kak8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e37su")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pn2oa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f7r2g")
+}],
+"loop": true,
+"name": &"priest_walk",
+"speed": 5.0
 }]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_biu62"]
@@ -738,7 +1023,8 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_attack"
+animation = &"knight_attack"
+frame_progress = 0.59166473
 
 [node name="CombatBGM" type="AudioStreamPlayer" parent="." unique_id=320216106]
 stream = ExtResource("9_biu62")
@@ -767,12 +1053,10 @@ volume_db = -5.727
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1061500185]
 
 [node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=875618579]
-visible = false
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 24.0
+offset_right = 170.0
 offset_bottom = 47.0
-scale = Vector2(87.77041, 1.8791432)
 theme_override_styles/background = SubResource("StyleBoxFlat_biu62")
 theme_override_styles/fill = SubResource("StyleBoxFlat_7t8lw")
 max_value = 50.0
@@ -780,7 +1064,6 @@ value = 50.0
 show_percentage = false
 
 [node name="DeathScreen" type="Control" parent="CanvasLayer" unique_id=385275630]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

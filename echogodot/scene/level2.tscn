@@ -4070,7 +4070,7 @@ scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5hdjc")
 
 [node name="GeminiGeneratedImageTcp351Tcp351Tcp3" type="Sprite2D" parent="." unique_id=1897300697]
-position = Vector2(277, -8.000004)
+position = Vector2(304, -72)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5hdjc")
 
