@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bl3fprtu5r0dw"
+path="res://.godot/imported/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3-30109f4c9b1b9b1fe8da29b8d74b1bae.mp3str"
+
+[deps]
+
+source_file="res://asset/asset/music/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3"
+dest_files=["res://.godot/imported/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3-30109f4c9b1b9b1fe8da29b8d74b1bae.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
