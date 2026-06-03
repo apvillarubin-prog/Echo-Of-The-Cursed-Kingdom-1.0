@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
 [ext_resource type="Texture2D" uid="uid://b3ys8s2tqttja" path="res://asset/Untitled design (17).png" id="2_2fwvj"]
 [ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
+[ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="4_sepwh"]
+[ext_resource type="Texture2D" uid="uid://prmx7al2day3" path="res://assetLvl3/neiljanart.png" id="5_14wem"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hxu56"]
 particle_flag_disable_z = true
@@ -33,7 +35,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3er1b")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1712189433]
+layout_mode = 0
+offset_left = -1206.0
+offset_top = -598.0
+offset_right = 845.0
+offset_bottom = 611.0
+color = Color(0, 0, 0, 1)
+
 [node name="UntitledDesign(17)" type="Sprite2D" parent="." unique_id=922140207]
+visible = false
 modulate = Color(0.5132329, 0.5132329, 0.5132329, 1)
 position = Vector2(-167, -32)
 scale = Vector2(1.9959756, 1.9959756)
@@ -41,30 +52,38 @@ texture = ExtResource("2_2fwvj")
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
 layout_mode = 1
-offset_left = -393.5
-offset_top = -266.0
-offset_right = -52.5
-offset_bottom = 177.0
-
-[node name="menu" type="Button" parent="MenuButtons" unique_id=690158773]
-layout_mode = 2
-size_flags_horizontal = 0
-theme = ExtResource("3_2fwvj")
-theme_override_font_sizes/font_size = 100
-text = "  Menu  "
+offset_left = -33.0
+offset_top = -260.0
+offset_right = 727.0
+offset_bottom = 204.0
 
 [node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
 texture_filter = 1
 layout_mode = 2
 theme = ExtResource("3_2fwvj")
+theme_override_colors/font_hover_color = Color(0.80784315, 0.63529414, 0.21176471, 1)
+theme_override_fonts/font = ExtResource("4_sepwh")
 theme_override_font_sizes/font_size = 100
-text = "Start"
+text = "START"
+flat = true
 
-[node name="option" type="Button" parent="MenuButtons" unique_id=619920857]
+[node name="credits" type="Button" parent="MenuButtons" unique_id=690158773]
 layout_mode = 2
 theme = ExtResource("3_2fwvj")
+theme_override_colors/font_hover_color = Color(0.80784315, 0.63529414, 0.21176471, 1)
+theme_override_fonts/font = ExtResource("4_sepwh")
 theme_override_font_sizes/font_size = 100
-text = "Option"
+text = "CREDITS"
+flat = true
+
+[node name="quit" type="Button" parent="MenuButtons" unique_id=619920857]
+layout_mode = 2
+theme = ExtResource("3_2fwvj")
+theme_override_colors/font_hover_color = Color(0.80784315, 0.63529414, 0.21176471, 1)
+theme_override_fonts/font = ExtResource("4_sepwh")
+theme_override_font_sizes/font_size = 100
+text = "QUIT"
+flat = true
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=310825229]
 position = Vector2(-174, -254.00003)
@@ -74,3 +93,23 @@ process_material = SubResource("ParticleProcessMaterial_hxu56")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=776545516]
 environment = SubResource("Environment_0iwki")
+
+[node name="Neiljanart" type="Sprite2D" parent="." unique_id=21947609]
+position = Vector2(-625, 280)
+scale = Vector2(0.8812597, 0.8812597)
+texture = ExtResource("5_14wem")
+
+[node name="Label" type="Label" parent="." unique_id=1387564887]
+layout_mode = 0
+offset_left = -843.0
+offset_top = -462.0
+offset_right = -298.0
+offset_bottom = -21.0
+theme_override_colors/font_color = Color(0, 0.2318457, 0.6236955, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_sepwh")
+theme_override_font_sizes/font_size = 165
+text = "GAME
+NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
