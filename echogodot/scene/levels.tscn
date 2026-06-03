@@ -22,7 +22,7 @@ glow_blend_mode = 0
 position = Vector2(550, 344)
 
 [node name="UntitledDesign(16)" type="Sprite2D" parent="." unique_id=1260842938]
-position = Vector2(442, 158)
+position = Vector2(442, 189)
 scale = Vector2(1.9631408, 1.9631408)
 texture = ExtResource("1_j6528")
 
