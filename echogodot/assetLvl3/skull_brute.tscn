@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://bcn8qxdbhuae" path="res://assetLvl3/skullcd.png" id="3_nuw5y"]
 [ext_resource type="Texture2D" uid="uid://3exdlbiqixx2" path="res://assetLvl3/skullwalk.png" id="4_gv4cu"]
 [ext_resource type="Texture2D" uid="uid://l5eqmmbr4fmp" path="res://assetLvl3/skulltele.png" id="5_nuw5y"]
+[ext_resource type="AudioStream" uid="uid://c12snk4mr5mxo" path="res://assetLvl3/hits.wav" id="8_nvokn"]
+[ext_resource type="AudioStream" uid="uid://dufkkh5vikcwy" path="res://assetLvl3/death.wav" id="9_p4rrd"]
+[ext_resource type="AudioStream" uid="uid://if84rllwa55x" path="res://assetLvl3/charge.wav" id="10_v0i6y"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s11fd"]
 atlas = ExtResource("2_lbpii")
@@ -249,3 +252,12 @@ shape = SubResource("RectangleShape2D_nuw5y")
 [node name="WallCheck" type="RayCast2D" parent="." unique_id=134443022]
 
 [node name="LedgeCheck" type="RayCast2D" parent="." unique_id=349693948]
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="." unique_id=454263602]
+stream = ExtResource("8_nvokn")
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=109805220]
+stream = ExtResource("9_p4rrd")
+
+[node name="ChargeSound" type="AudioStreamPlayer2D" parent="." unique_id=1677256976]
+stream = ExtResource("10_v0i6y")

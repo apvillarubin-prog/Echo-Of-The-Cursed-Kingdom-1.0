@@ -3636,7 +3636,7 @@ offset_bottom = 88.0
 scale = Vector2(0.28775072, 0.31345233)
 text = "These are the WIZARD's abilities 
 and their corresponding inputs:
-Q - Teleport to the selected location
-F - Freeze an enemy in place
-G - EXPLOSION!!!"
+Q - Teleport to the selected location, 10 sec CD
+F - Freeze an enemy in place, 30 sec CD
+G - EXPLOSION!!!  60 sec CD"
 horizontal_alignment = 1

@@ -4,10 +4,13 @@
 #include <Godot/classes/ray_cast2d.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/node2d.hpp>
+#include <Godot/classes/audio_stream_player2d.hpp> // ADDED: Required for audio player nodes
 #include <Godot/variant/utility_functions.hpp>
 #include <Godot/variant/string.hpp>
 #include <Godot/variant/string_name.hpp>
-#include <Godot/variant/color.hpp> // Added for visual flash color processing
+#include <Godot/variant/color.hpp> 
+#include <cmath>
+#include <algorithm>
 
 using namespace godot;
 using namespace jenova::sdk;
@@ -17,6 +20,11 @@ JENOVA_SCRIPT_BEGIN
 CharacterBody2D* self = nullptr;
 AnimatedSprite2D* sprite = nullptr;
 RayCast2D* ledge_check = nullptr;
+
+// --- Sound Effects Nodes ---
+AudioStreamPlayer2D* hit_sound = nullptr;    // ADDED
+AudioStreamPlayer2D* charge_sound = nullptr; // ADDED
+AudioStreamPlayer2D* death_sound = nullptr;  // ADDED
 
 enum BruteState { STATE_PATROL, STATE_TELEGRAPH, STATE_CHARGE, STATE_COOLDOWN, STATE_DEATH };
 BruteState current_state = STATE_PATROL;
@@ -44,6 +52,11 @@ void OnAwake(Caller* instance) {
 		self->add_to_group("enemy");
 		sprite = Object::cast_to<AnimatedSprite2D>(self->get_node_or_null("AnimatedSprite2D"));
 		ledge_check = Object::cast_to<RayCast2D>(self->get_node_or_null("LedgeCheck"));
+		
+		// Wire up Sound Nodes
+		hit_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("HitSound"));       // ADDED
+		charge_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("ChargeSound")); // ADDED
+		death_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("DeathSound"));   // ADDED
 	}
 }
 
@@ -51,10 +64,10 @@ void OnReady(Caller* instance) {
 	current_state = STATE_PATROL;
 	if (self) {
 		self->set_meta("pending_damage", 0);
-		self->set_meta("flash_timer", 0.0f); // Initialize flash timer
+		self->set_meta("flash_timer", 0.0f); 
 	}
 	has_dealt_damage_this_charge = false;
-	if (sprite) sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); // Ensure color resets on spawn
+	if (sprite) sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); 
 }
 
 void OnPhysicsProcess(Caller* instance, double delta) {
@@ -68,7 +81,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (f_timer > 0.0f) {
 			f_timer -= (float)delta;
 			self->set_meta("flash_timer", f_timer);
-			// Reset color back to normal only if not dead
 			if (f_timer <= 0.0f && current_state != STATE_DEATH && sprite) {
 				sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f));
 			}
@@ -101,7 +113,14 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		enemy_health -= dmg;
 		self->set_meta("pending_damage", 0);
 		
-		// Trigger Flash Highlight (Orc Style)
+		// ADDED: Play Hit Audio with slight dynamic pitch shifts
+		if (hit_sound) {
+			float random_pitch = 0.9f + (static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / 0.2f)));
+			hit_sound->set_pitch_scale(random_pitch);
+			hit_sound->play(0.0);
+		}
+
+		// Trigger Flash Highlight
 		if (sprite && enemy_health > 0) {
 			sprite->set_modulate(Color(10.0f, 2.0f, 2.0f, 1.0f)); 
 			self->set_meta("flash_timer", 0.15f);
@@ -112,9 +131,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			state_timer = 0.75f; 
 			
 			if (sprite) {
-				sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); // Clean reset color filter for death anim
+				sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); 
 				sprite->play("death");
 			}
+			
+			if (death_sound) death_sound->play(0.0); // ADDED: Play Death Audio
 			
 			self->remove_from_group("enemy"); 
 			
@@ -176,6 +197,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				current_state = STATE_CHARGE;
 				state_timer = max_charge_duration;
 				has_dealt_damage_this_charge = false; 
+				
+				if (charge_sound) charge_sound->play(0.0); // ADDED: Play Charge Sprint Audio
 			}
 			break;
 		}

@@ -9,6 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://blqhs7pvjo8d0" path="res://assetLvl3/saraslam.png" id="6_4rkin"]
 [ext_resource type="AudioStream" uid="uid://b08ldavy3jkr0" path="res://assetLvl3/ragecore29-htf-flesh-impact-1-480118.mp3" id="8_4rkin"]
 [ext_resource type="AudioStream" uid="uid://jps06tufu2l5" path="res://assetLvl3/soudn_[cut_0sec] (2).wav" id="9_4jcgb"]
+[ext_resource type="AudioStream" uid="uid://dunctbhbau4x3" path="res://assetLvl3/pbvhg.wav" id="10_vlu48"]
+[ext_resource type="AudioStream" uid="uid://cqmxbdjtb26mc" path="res://assetLvl3/das.wav" id="11_prjj8"]
+[ext_resource type="AudioStream" uid="uid://jyjmkm63ud1m" path="res://assetLvl3/sjash.wav" id="12_ap84a"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bn25d"]
 atlas = ExtResource("2_brqe8")
@@ -81,10 +84,6 @@ region = Rect2(1536, 0, 256, 300)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6qb3w"]
 atlas = ExtResource("5_2oguy")
 region = Rect2(1792, 0, 256, 300)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pkyox"]
-atlas = ExtResource("5_2oguy")
-region = Rect2(2048, 0, 256, 300)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y5xx0"]
 atlas = ExtResource("6_4rkin")
@@ -194,13 +193,10 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6qb3w")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pkyox")
 }],
-"loop": false,
+"loop": true,
 "name": &"jump_launch",
-"speed": 7.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -252,7 +248,8 @@ show_percentage = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=132443837]
 sprite_frames = SubResource("SpriteFrames_bn25d")
-animation = &"smash_land"
+animation = &"jump_launch"
+frame_progress = 0.721972
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=111688934]
 position = Vector2(1, -3.5)
@@ -269,7 +266,10 @@ volume_db = 7.042
 pitch_scale = 0.8
 
 [node name="WindupSound" type="AudioStreamPlayer2D" parent="." unique_id=52211709]
+stream = ExtResource("10_vlu48")
 
 [node name="DeathSound" type="AudioStreamPlayer2D" parent="." unique_id=1382539143]
+stream = ExtResource("11_prjj8")
 
 [node name="SmashSound" type="AudioStreamPlayer2D" parent="." unique_id=446309188]
+stream = ExtResource("12_ap84a")

@@ -29,9 +29,9 @@ ProgressBar* hp_bar = nullptr;
 
 // --- Sound Effects Nodes ---
 AudioStreamPlayer2D* hit_sound = nullptr; 
-AudioStreamPlayer2D* windup_sound = nullptr; // ADDED
-AudioStreamPlayer2D* smash_sound = nullptr;  // ADDED
-AudioStreamPlayer2D* death_sound = nullptr;  // ADDED
+AudioStreamPlayer2D* windup_sound = nullptr; 
+AudioStreamPlayer2D* smash_sound = nullptr;  
+AudioStreamPlayer2D* death_sound = nullptr;  
 
 enum OrcState { 
 	STATE_PATROL, 
@@ -50,7 +50,9 @@ int health = MAX_HEALTH;
 bool is_dead = false;      
 int smash_damage = 22;
 float default_gravity = 980.0f;
-float smash_splash_radius = 120.0f; 
+
+// BALANCING FIX: Reduced radius to 75.0f so the box is 150px wide (perfect for dodging)
+float smash_splash_radius = 75.0f; 
 
 // --- Momentum & Logic ---
 float walk_speed = 45.0f;
@@ -108,14 +110,13 @@ void OnAwake(Caller* instance) {
 		ledge_check = Object::cast_to<RayCast2D>(self->get_node_or_null("LedgeCheck"));
 		hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("ProgressBar"));
 		
-		// Wire up Sound Nodes
 		hit_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("HitSound"));
-		windup_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("WindupSound")); // ADDED
-		smash_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("SmashSound"));   // ADDED
-		death_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("DeathSound"));   // ADDED
+		windup_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("WindupSound")); 
+		smash_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("SmashSound"));   
+		death_sound = Object::cast_to<AudioStreamPlayer2D>(self->get_node_or_null("DeathSound"));   
 		
 		smash_indicator = memnew(ColorRect);
-		smash_indicator->set_size(Vector2(140.0f, 10.0f)); 
+		smash_indicator->set_size(Vector2(smash_splash_radius * 2.0f, 10.0f)); 
 		smash_indicator->set_color(Color(1.0f, 0.0f, 0.0f, 0.4f)); 
 		smash_indicator->set_as_top_level(true); 
 		smash_indicator->hide();
@@ -179,7 +180,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (health <= 0) {
 			is_dead = true; current_state = STATE_DEATH; state_timer = 0.8f;
 			if (sprite) sprite->play("death");
-			if (death_sound) death_sound->play(0.0); // ADDED: Play death audio
+			if (death_sound) death_sound->play(0.0); 
 			return;
 		}
 	}
@@ -206,7 +207,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			if (smash_cooldown <= 0.0f) {
 				current_state = STATE_SMASH_LAUNCH; state_timer = 1.2f; 
 				if (sprite) sprite->play("jump_launch"); velocity.x = 0;
-				if (windup_sound) windup_sound->play(0.0); // ADDED: Play windup audio
+				if (windup_sound) windup_sound->play(0.0); 
 			} else {
 				if (sprite) sprite->play("walk");
 				velocity.x = approach(velocity.x, (float)direction * run_speed, ground_acceleration * (float)delta);
@@ -219,10 +220,14 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 			state_timer -= (float)delta;
 			if (state_timer <= 0.0f) {
 				current_state = STATE_SMASH_AIR;
-				velocity.y = -520.0f; 
+				velocity.y = -700.0f; 
 				target_smash_x = player ? player->get_global_position().x : self->get_global_position().x;
 				if (sprite) sprite->play("jump_air"); 
-				if (smash_indicator) { smash_indicator->set_global_position(Vector2(target_smash_x - 70.0f, fixed_floor_y)); smash_indicator->show(); }
+				
+				if (smash_indicator) { 
+					smash_indicator->set_global_position(Vector2(target_smash_x - smash_splash_radius, fixed_floor_y)); 
+					smash_indicator->show(); 
+				}
 				is_dive_bombing = false;
 
 				if (player) {
@@ -248,7 +253,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				state_timer = 1.5f;
 				if (smash_indicator) smash_indicator->hide(); 
 				if (sprite) sprite->play("smash_land"); 
-				if (smash_sound) smash_sound->play(0.0); // ADDED: Play impact slam audio
+				if (smash_sound) smash_sound->play(0.0); 
 				
 				self->get_tree()->call_group("camera", "shake", 0.4f); 
 				smash_cooldown = 4.0f; 
@@ -261,8 +266,10 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 						player->call("take_damage", smash_damage); 
 						
 						float splash_side = (player->get_global_position().x >= self->get_global_position().x) ? 1.0f : -1.0f;
-						Vector2 guaranteed_upward_knockback = Vector2(splash_side * 800.0f, -380.0f);
-						player->call("apply_knockback", guaranteed_upward_knockback);
+						
+						// PHYSICS BUG FIX: Lowered knockback velocity to avoid tunneling through tiles
+						Vector2 safe_stable_knockback = Vector2(splash_side * 380.0f, -240.0f);
+						player->call("apply_knockback", safe_stable_knockback);
 					}
 				}
 			}
@@ -289,7 +296,7 @@ void take_damage(Caller* instance, int amount) {
 	if (health <= 0) { 
 		is_dead = true; current_state = STATE_DEATH; state_timer = 0.8f; 
 		if (sprite) sprite->play("death"); 
-		if (death_sound) death_sound->play(0.0); // ADDED: Play death audio
+		if (death_sound) death_sound->play(0.0); 
 	}
 }
 
