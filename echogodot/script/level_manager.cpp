@@ -53,7 +53,7 @@ void on_lvl3_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
 	Engine::get_singleton()->set_meta("next_level", 3);
-	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
+	self->get_tree()->change_scene_to_file("res://assetLvl3/state1.tscn");
 }
 
 void on_lvl4_pressed(Caller* instance)

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://d11ts7iyugxws"]
+
+[ext_resource type="VideoStream" uid="uid://d027fk53sc6ks" path="res://assetLvl3/ssxx.ogv" id="1_1qmb0"]
+[ext_resource type="Script" uid="uid://dnexdbepjg2p3" path="res://assetLvl3/buttons.cpp" id="1_bm6rp"]
+[ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="2_bm6rp"]
+
+[node name="Button manager" type="Control" unique_id=1847698189]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bm6rp")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1428238130]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+stream = ExtResource("1_1qmb0")
+autoplay = true
+loop = true
+
+[node name="start" type="Button" parent="." unique_id=1683973967]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 477.0
+offset_right = 1727.0
+offset_bottom = 589.0
+theme_override_colors/font_hover_color = Color(0, 0.35686275, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_bm6rp")
+theme_override_font_sizes/font_size = 78
+text = "START"
+flat = true
+
+[node name="options" type="Button" parent="." unique_id=1532900251]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 588.0
+offset_right = 1727.0
+offset_bottom = 696.0
+theme_override_colors/font_hover_color = Color(0, 0.35686275, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_bm6rp")
+theme_override_font_sizes/font_size = 75
+text = "OPTIONS"
+flat = true
+
+[node name="credits" type="Button" parent="." unique_id=1989067200]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 696.0
+offset_right = 1727.0
+offset_bottom = 805.0
+theme_override_colors/font_hover_color = Color(0, 0.35686275, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_bm6rp")
+theme_override_font_sizes/font_size = 76
+text = "CREDITS"
+flat = true
+
+[node name="quit" type="Button" parent="." unique_id=1087206308]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 805.0
+offset_right = 1727.0
+offset_bottom = 914.0
+theme_override_colors/font_hover_color = Color(0, 0.35686275, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_bm6rp")
+theme_override_font_sizes/font_size = 76
+text = "QUIT"
+flat = true
