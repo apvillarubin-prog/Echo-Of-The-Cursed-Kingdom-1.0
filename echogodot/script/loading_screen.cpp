@@ -3,6 +3,7 @@
 #include <Godot/classes/control.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/engine.hpp>
+#include <Godot/classes/audio_stream_player.hpp> // Required for Music
 #include <Godot/variant/utility_functions.hpp>
 using namespace godot;
 using namespace jenova::sdk;
@@ -30,6 +31,15 @@ void OnProcess(Caller* instance, double delta)
 	if (elapsed >= 3.5) // Holds the screen for 3.5 seconds to showcase the animation
 	{
 		switched = true;
+		
+		// --- MUSIC MANAGEMENT ---
+		// Stop the menu music exactly as the gameplay level is about to load
+		AudioStreamPlayer* menu_music = self->get_node<AudioStreamPlayer>("/root/MusicManager");
+		if (menu_music && menu_music->is_playing()) {
+			menu_music->stop();
+		}
+		// ------------------------
+
 		int level = 1;
 		if (Engine::get_singleton()->has_meta("next_level"))
 			level = (int)Engine::get_singleton()->get_meta("next_level");

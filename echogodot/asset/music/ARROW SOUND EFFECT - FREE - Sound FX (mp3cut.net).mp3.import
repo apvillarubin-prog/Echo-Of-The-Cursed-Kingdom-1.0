@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bbfb77qtjy0dg"
+path="res://.godot/imported/ARROW SOUND EFFECT - FREE - Sound FX (mp3cut.net).mp3-2a4a4066d3df34ddf8ccea2d4c8acb25.mp3str"
+
+[deps]
+
+source_file="res://asset/music/ARROW SOUND EFFECT - FREE - Sound FX (mp3cut.net).mp3"
+dest_files=["res://.godot/imported/ARROW SOUND EFFECT - FREE - Sound FX (mp3cut.net).mp3-2a4a4066d3df34ddf8ccea2d4c8acb25.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

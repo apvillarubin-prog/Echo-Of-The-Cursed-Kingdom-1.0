@@ -51,6 +51,7 @@
 [ext_resource type="PackedScene" uid="uid://1oyw4ryc0nhb" path="res://scene/platform_2_0.tscn" id="48_m2o71"]
 [ext_resource type="PackedScene" uid="uid://dhrn4fpimjmj0" path="res://scene/gold.tscn" id="50_snd0k"]
 [ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="51_7wlxp"]
+[ext_resource type="Script" uid="uid://dupfo4yjt3wek" path="res://script/instruction_zone.cpp" id="52_vvg2v"]
 
 [sub_resource type="Gradient" id="Gradient_gm452"]
 offsets = PackedFloat32Array(0.22980501, 0.6364902)
@@ -25276,6 +25277,8 @@ colors = PackedColorArray(0.08495822, 0.08495822, 0.08495822, 1, 0.9113259, 0.91
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_vvg2v"]
 gradient = SubResource("Gradient_7wlxp")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6kk1f"]
+
 [node name="Main" type="Node2D" unique_id=2019039756]
 position = Vector2(4, -2)
 scale = Vector2(1.0002935, 0.990742)
@@ -26513,6 +26516,15 @@ shadow_enabled = true
 texture = SubResource("GradientTexture2D_lyfxw")
 texture_scale = 4.0
 
+[node name="PointLight2D34" type="PointLight2D" parent="lighting" unique_id=2078882680]
+position = Vector2(1491, -172.00002)
+scale = Vector2(0.91013867, 0.9933792)
+color = Color(0.8382678, 0.8975521, 0.82968116, 1)
+range_z_max = 2
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_lyfxw")
+texture_scale = 4.0
+
 [node name="PointLight2D28" type="PointLight2D" parent="lighting" unique_id=619546246]
 position = Vector2(2449, -177)
 scale = Vector2(0.91013867, 0.9933792)
@@ -26605,3 +26617,199 @@ rotation = 1.5707964
 scale = Vector2(1.1569134, -1.5401008)
 skew = 0.00018298626
 texture = SubResource("GradientTexture2D_vvg2v")
+
+[node name="instruction" type="Node" parent="." unique_id=633645109]
+
+[node name="InstructionZone" type="Area2D" parent="instruction" unique_id=1870000408]
+position = Vector2(-20, 0)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone" unique_id=1922936501]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone" unique_id=1899025855]
+offset_left = 9.0
+offset_top = -42.0
+offset_right = 49.0
+offset_bottom = -19.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "Hi Dear Player...
+To move press D to move forward
+and  A backward
+To jump press SPACE"
+
+[node name="InstructionZone9" type="Area2D" parent="instruction" unique_id=684138672]
+position = Vector2(-77, 0)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone9" unique_id=1291986098]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone9" unique_id=968629039]
+offset_left = -98.0
+offset_top = -17.0
+offset_right = 198.0
+offset_bottom = 32.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "TO WIN COLLECT 
+THE ORB, THE GEM AND THE ARTIFACT"
+horizontal_alignment = 2
+
+[node name="InstructionZone2" type="Area2D" parent="instruction" unique_id=116845313]
+position = Vector2(59, 65)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone2" unique_id=1289640320]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone2" unique_id=2106612419]
+offset_left = -16.0
+offset_top = -39.0
+offset_right = 106.0
+offset_bottom = -16.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "Don't fall down
+it might hurt!!"
+
+[node name="InstructionZone3" type="Area2D" parent="instruction" unique_id=672242692]
+position = Vector2(710, 66)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone3" unique_id=2075007056]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone3" unique_id=1289161946]
+offset_left = -23.0
+offset_top = -28.0
+offset_right = 200.0
+offset_bottom = 47.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "Wait till the right timing :)
+and COLLECT valuable STUFF
+LIKE the GEM!!"
+
+[node name="InstructionZone4" type="Area2D" parent="instruction" unique_id=1144315296]
+position = Vector2(837, 65)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone4" unique_id=1176966455]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone4" unique_id=1555762397]
+offset_left = -20.0
+offset_top = -24.0
+offset_right = 178.0
+offset_bottom = 25.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "Don't touch him or consequence is
+INEVITABLE!!!!"
+
+[node name="InstructionZone5" type="Area2D" parent="instruction" unique_id=1885636082]
+position = Vector2(1125, -76)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone5" unique_id=666883216]
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone5" unique_id=322367255]
+offset_left = 12.0
+offset_top = -29.0
+offset_right = 280.0
+offset_bottom = 20.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "To attack press your left mouse button!!
+wait attack does that mean....."
+
+[node name="InstructionZone6" type="Area2D" parent="instruction" unique_id=1887847738]
+position = Vector2(1375, -78)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone6" unique_id=461503233]
+position = Vector2(55, 3)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone6" unique_id=1693323168]
+offset_left = 12.0
+offset_top = -29.0
+offset_right = 280.0
+offset_bottom = 20.0
+scale = Vector2(0.27770305, 0.30269969)
+text = "ENEMIES!!! QUICK KILL THEM BEFORE THEY REPORT TO THE KING!!"
+
+[node name="InstructionZone7" type="Area2D" parent="instruction" unique_id=424120846]
+position = Vector2(1549, -77)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone7" unique_id=177412834]
+position = Vector2(22, 2)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone7" unique_id=23162370]
+offset_left = -4.0
+offset_top = -49.0
+offset_right = 639.0
+offset_bottom = 104.0
+scale = Vector2(0.21414909, 0.23083478)
+text = "To block press Q
+A perfect perry is when you block 
+when the enemy is about to attack (BIG ENEMIES)
+NOTE:
+Blocking reduce damage taken by half
+Parrying on the other hand stuns the enemy for 5 secs"
+
+[node name="InstructionZone8" type="Area2D" parent="instruction" unique_id=1520440905]
+position = Vector2(1871, -76)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone8" unique_id=1204086542]
+position = Vector2(22, 2)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone8" unique_id=1233615825]
+offset_left = -71.00001
+offset_top = -56.0
+offset_right = 572.0
+offset_bottom = 97.0
+scale = Vector2(0.28775072, 0.31345233)
+text = "WOAH AN ORB!!
+Surely this is Valuable"
+horizontal_alignment = 1
+
+[node name="InstructionZone10" type="Area2D" parent="instruction" unique_id=944880936]
+position = Vector2(1748, -341)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone10" unique_id=109740727]
+position = Vector2(22, 2)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone10" unique_id=102157033]
+offset_left = -80.00001
+offset_top = -49.0
+offset_right = 563.0
+offset_bottom = 104.0
+scale = Vector2(0.28775072, 0.31345233)
+text = "An Artifact?"
+horizontal_alignment = 1
+
+[node name="InstructionZone11" type="Area2D" parent="instruction" unique_id=1571203706]
+position = Vector2(2832, -222)
+script = ExtResource("52_vvg2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="instruction/InstructionZone11" unique_id=1467348577]
+position = Vector2(89, 1)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_6kk1f")
+
+[node name="InstructionText" type="Label" parent="instruction/InstructionZone11" unique_id=1661745506]
+offset_top = -42.0
+offset_right = 643.0
+offset_bottom = 111.0
+scale = Vector2(0.28775072, 0.31345233)
+text = "If you have'nt collected all 3 collectibles 
+SADLY You can't Escape"
+horizontal_alignment = 1

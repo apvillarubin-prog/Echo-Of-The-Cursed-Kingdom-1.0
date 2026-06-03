@@ -4,7 +4,9 @@
 #include <Godot/classes/button.hpp>
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/engine.hpp>
+#include <Godot/classes/audio_stream_player.hpp> // Required for Music
 #include <Godot/variant/utility_functions.hpp>
+
 using namespace godot;
 using namespace jenova::sdk;
 
@@ -13,15 +15,24 @@ JENOVA_SCRIPT_BEGIN
 void OnReady(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
+	
+	// --- MUSIC MANAGEMENT ---
+	// Ensures music plays even if you debug/run this specific scene directly
+	AudioStreamPlayer* menu_music = self->get_node<AudioStreamPlayer>("/root/MusicManager");
+	if (menu_music && !menu_music->is_playing()) {
+		menu_music->play();
+	}
+	// ------------------------
+
 	Button* lvl1_btn = self->get_node<Button>("Button");
 	Button* lvl2_btn = self->get_node<Button>("Button2");
 	Button* lvl3_btn = self->get_node<Button>("Button3");
-	Button* lvl4_btn = self->get_node<Button>("Button4"); // ADD THIS
+	Button* lvl4_btn = self->get_node<Button>("Button4");
 
 	if (lvl1_btn) lvl1_btn->connect("pressed", Callable(self, "on_lvl1_pressed"));
 	if (lvl2_btn) lvl2_btn->connect("pressed", Callable(self, "on_lvl2_pressed"));
 	if (lvl3_btn) lvl3_btn->connect("pressed", Callable(self, "on_lvl3_pressed"));
-	if (lvl4_btn) lvl4_btn->connect("pressed", Callable(self, "on_lvl4_pressed")); // ADD THIS
+	if (lvl4_btn) lvl4_btn->connect("pressed", Callable(self, "on_lvl4_pressed"));
 }
 
 void on_lvl1_pressed(Caller* instance)
@@ -45,7 +56,7 @@ void on_lvl3_pressed(Caller* instance)
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
 }
 
-void on_lvl4_pressed(Caller* instance) // ADD THIS
+void on_lvl4_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
 	Engine::get_singleton()->set_meta("next_level", 4);
