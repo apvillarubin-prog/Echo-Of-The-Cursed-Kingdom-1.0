@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://b66i6itd6clqg"]
 
-[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="3_8q746"]
-[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="4_vobn4"]
+[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/asset/ground.png" id="3_8q746"]
+[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/asset/lava_spr_strip45.png" id="4_vobn4"]
 [ext_resource type="Script" uid="uid://bxew3c1u1jh8o" path="res://assetLvl3/knight1.cpp" id="9_lpjod"]
-[ext_resource type="Texture2D" uid="uid://bwv8ev6l7qfd7" path="res://asset/walls_far.png" id="15_1lgmn"]
+[ext_resource type="Texture2D" uid="uid://bwv8ev6l7qfd7" path="res://asset/asset/walls_far.png" id="15_1lgmn"]
 [ext_resource type="PackedScene" uid="uid://b87ux3w4h2a5j" path="res://assetLvl3/destructible_wall.tscn" id="19_aatil"]
 [ext_resource type="PackedScene" uid="uid://cvj2xa8wq8ibt" path="res://assetLvl3/light_portal.tscn" id="22_yocug"]
 [ext_resource type="PackedScene" uid="uid://xcac3mieu02g" path="res://assetLvl3/hazard_area.tscn" id="26_7b072"]

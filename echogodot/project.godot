@@ -16,15 +16,15 @@ config/features=PackedStringArray("4.6", "Mobile")
 
 [autoload]
 
-Global="*uid://dw74uvd58qyju"
 MusicManager="*uid://dujbgjmsex0kb"
 TransitionManager="*uid://drf2rb4fht27n"
+Global="*uid://bpb0si42er6yo"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=2
+window/size/mode=3
 
 [global_group]
 

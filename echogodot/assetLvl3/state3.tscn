@@ -10,7 +10,12 @@
 [ext_resource type="PackedScene" uid="uid://8vf0mvh32wcq" path="res://assetLvl3/knight.tscn" id="7_nnf32"]
 [ext_resource type="PackedScene" uid="uid://c6em3nrpof8dh" path="res://assetLvl3/sarah .tscn" id="7_u6h8h"]
 [ext_resource type="Script" uid="uid://bxew3c1u1jh8o" path="res://assetLvl3/knight1.cpp" id="10_dk7yr"]
+<<<<<<< HEAD
 [ext_resource type="PackedScene" uid="uid://cvj2xa8wq8ibt" path="res://assetLvl3/light_portal.tscn" id="11_164fa"]
+=======
+[ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="11_164fa"]
+[ext_resource type="Script" uid="uid://bvn3r1k7ueixn" path="res://scene/door_area3to4.cpp" id="12_nnf32"]
+>>>>>>> 3a412fc6a5b6af7406c229d5c6157cfb5d74b08d
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_whxj3"]
 texture = ExtResource("2_fhsy4")
@@ -418,8 +423,14 @@ limit_bottom = 423
 limit_smoothed = true
 position_smoothing_enabled = true
 
+<<<<<<< HEAD
 [node name="LightPortal" parent="." unique_id=159826057 instance=ExtResource("11_164fa")]
 modulate = Color(0.011764706, 0.011764706, 0.011764706, 0)
 position = Vector2(685, 57)
 scale = Vector2(3.2557366, 0.763883)
 target_level_path = "uid://wsigjpj7e6s8"
+=======
+[node name="DoorArea" parent="." unique_id=39519444 instance=ExtResource("11_164fa")]
+position = Vector2(751, 72)
+script = ExtResource("12_nnf32")
+>>>>>>> 3a412fc6a5b6af7406c229d5c6157cfb5d74b08d
