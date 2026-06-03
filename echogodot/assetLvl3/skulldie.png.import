@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0l7rix80fomd"
-path="res://.godot/imported/background.png-80e7786174ff00a2c3198286b7ad39c5.ctex"
+uid="uid://t841yjvlqd7m"
+path="res://.godot/imported/skulldie.png-ab322e8d8eda4a6e90d74c847b5b5258.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset/background.png"
-dest_files=["res://.godot/imported/background.png-80e7786174ff00a2c3198286b7ad39c5.ctex"]
+source_file="res://assetLvl3/skulldie.png"
+dest_files=["res://.godot/imported/skulldie.png-ab322e8d8eda4a6e90d74c847b5b5258.ctex"]
 
 [params]
 

@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://dfsciu6xhnq0u"]
+
+[ext_resource type="Texture2D" uid="uid://eib2y6kayvwh" path="res://assetLvl3/fireball.png" id="1_3mxmd"]
+[ext_resource type="Script" uid="uid://xoqmpfoc3mye" path="res://assetLvl3/fireball.cpp" id="1_mpvkp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpvkp"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6issj"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_007qv"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e47q4"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svq16"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_245yr"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2p5hs"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kua7e"]
+atlas = ExtResource("1_3mxmd")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7usv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpvkp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6issj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_007qv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e47q4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svq16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_245yr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2p5hs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kua7e")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fc5gb"]
+radius = 14.035668
+
+[node name="Fireball" type="Node2D" unique_id=1237041534]
+scale = Vector2(0.6622879, 0.6622879)
+script = ExtResource("1_mpvkp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1523325360]
+sprite_frames = SubResource("SpriteFrames_i7usv")
+frame_progress = 0.7328212
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=752210274]
+position = Vector2(3, -3)
+shape = SubResource("CircleShape2D_fc5gb")
