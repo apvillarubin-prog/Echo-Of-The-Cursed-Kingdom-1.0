@@ -94,7 +94,7 @@ bool unlocked_wizard = true;
 enum HeroType { KNIGHT = 0, ARCHER = 1, WIZARD = 2 }; 
 HeroType current_hero = KNIGHT;
 
-float speed = 80.0f;
+float speed = 90.0f;
 float jump_velocity = -263.0f;
 float gravity = 980.0f;
 

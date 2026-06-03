@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dd2pk7txt05p6"]
+
+[ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="1_c8jmj"]
+
+[node name="Control" type="Control" unique_id=356108934]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2092662041]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="ColorRect" unique_id=916448781]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -136.5
+offset_top = 72.0
+offset_right = 136.5
+offset_bottom = 121.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_c8jmj")
+theme_override_font_sizes/font_size = 26
+text = "CREDITS TO THE RIGHTFUL OWNERS 
+OF ALL THE ASSETS WE HAVE USED
+thank you!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="ColorRect" unique_id=1934023703]
+layout_mode = 0
+offset_left = 75.0
+offset_top = 204.0
+offset_right = 115.0
+offset_bottom = 1137.0
+text = "*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+"
