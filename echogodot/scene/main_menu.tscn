@@ -1,6 +1,22 @@
 [gd_scene format=3 uid="uid://bu53u1sa3548b"]
 
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
+[ext_resource type="Texture2D" uid="uid://b3ys8s2tqttja" path="res://asset/Untitled design (17).png" id="2_2fwvj"]
+[ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hxu56"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(500, 200, 1)
+gravity = Vector3(0, 300, 0)
+scale_min = 0.0
+scale_max = 6.0
+color = Color(3.2944162, 3.243637, 0, 1)
+
+[sub_resource type="Environment" id="Environment_0iwki"]
+background_mode = 3
+glow_enabled = true
+glow_blend_mode = 0
 
 [node name="Button manager" type="Control" unique_id=1229567989]
 layout_mode = 3
@@ -17,6 +33,12 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3er1b")
 
+[node name="UntitledDesign(17)" type="Sprite2D" parent="." unique_id=922140207]
+modulate = Color(0.5132329, 0.5132329, 0.5132329, 1)
+position = Vector2(-167, -37)
+scale = Vector2(1.9959756, 1.9959756)
+texture = ExtResource("2_2fwvj")
+
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
 layout_mode = 1
 offset_left = -393.5
@@ -27,16 +49,28 @@ offset_bottom = 177.0
 [node name="menu" type="Button" parent="MenuButtons" unique_id=690158773]
 layout_mode = 2
 size_flags_horizontal = 0
+theme = ExtResource("3_2fwvj")
 theme_override_font_sizes/font_size = 100
 text = "  Menu  "
 
 [node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
 texture_filter = 1
 layout_mode = 2
+theme = ExtResource("3_2fwvj")
 theme_override_font_sizes/font_size = 100
 text = "Start"
 
 [node name="option" type="Button" parent="MenuButtons" unique_id=619920857]
 layout_mode = 2
+theme = ExtResource("3_2fwvj")
 theme_override_font_sizes/font_size = 100
 text = "Option"
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=310825229]
+position = Vector2(-174, -254.00003)
+scale = Vector2(10.7611065, 7.6526647)
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_hxu56")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=776545516]
+environment = SubResource("Environment_0iwki")

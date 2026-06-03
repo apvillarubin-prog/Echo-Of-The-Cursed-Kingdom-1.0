@@ -1,9 +1,30 @@
 [gd_scene format=3 uid="uid://d4b7adrbo0dh5"]
 
+[ext_resource type="Texture2D" uid="uid://x1qx5wpbr423" path="res://asset/Untitled design (16).png" id="1_j6528"]
 [ext_resource type="Script" uid="uid://w7dk0e6s1sn4" path="res://script/level_manager.cpp" id="1_k7kto"]
+[ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_ll3it"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y6cfw"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(500, 200, 1)
+gravity = Vector3(0, 300, 0)
+scale_min = 0.0
+scale_max = 6.0
+color = Color(3.2944162, 3.243637, 0, 1)
+
+[sub_resource type="Environment" id="Environment_ji3m0"]
+background_mode = 3
+glow_enabled = true
+glow_blend_mode = 0
 
 [node name="Levels" type="Node2D" unique_id=1692722474]
 position = Vector2(550, 344)
+
+[node name="UntitledDesign(16)" type="Sprite2D" parent="." unique_id=1260842938]
+position = Vector2(442, 158)
+scale = Vector2(1.9631408, 1.9631408)
+texture = ExtResource("1_j6528")
 
 [node name="level manager" type="Control" parent="." unique_id=298557268]
 layout_mode = 3
@@ -17,43 +38,57 @@ script = ExtResource("1_k7kto")
 
 [node name="Button" type="Button" parent="level manager" unique_id=280742836]
 layout_mode = 0
-offset_left = -498.30255
-offset_top = -314.20523
-offset_right = -307.17773
-offset_bottom = -60.10646
+offset_left = -439.56403
+offset_top = -209.4335
+offset_right = -248.43921
+offset_bottom = 45.566498
+scale = Vector2(1.472689, 1.472689)
+theme = ExtResource("3_ll3it")
 theme_override_font_sizes/font_size = 175
 text = "1
 "
 
 [node name="Button3" type="Button" parent="level manager" unique_id=84743034]
 layout_mode = 0
-offset_left = 13.445358
-offset_top = -305.228
-offset_right = 204.57018
-offset_bottom = -51.129227
+offset_left = 441.63257
+offset_top = -217.88593
+offset_right = 632.7573
+offset_bottom = 37.114075
+scale = Vector2(1.4600047, 1.4600047)
+theme = ExtResource("3_ll3it")
 theme_override_font_sizes/font_size = 175
 text = "3
 "
 
 [node name="Button4" type="Button" parent="level manager" unique_id=1531298081]
 layout_mode = 0
-offset_left = 260.636
-offset_top = -27.236
-offset_right = 451.7608
-offset_bottom = 226.86276
+offset_left = 854.3056
+offset_top = 215.06845
+offset_right = 1045.4304
+offset_bottom = 470.06845
+scale = Vector2(1.4333937, 1.4333937)
+theme = ExtResource("3_ll3it")
 theme_override_font_sizes/font_size = 175
 text = "4
 "
 
 [node name="Button2" type="Button" parent="level manager" unique_id=854132615]
 layout_mode = 0
-offset_left = -252.361
-offset_top = -33.81
-offset_right = -61.236176
-offset_bottom = 220.28877
+offset_left = -34.13085
+offset_top = 233.85175
+offset_right = 156.99396
+offset_bottom = 488.85175
+scale = Vector2(1.3781471, 1.3781471)
+theme = ExtResource("3_ll3it")
 theme_override_font_sizes/font_size = 175
 text = "2
 "
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2110164139]
-position = Vector2(23, -14)
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=596815305]
+position = Vector2(-174, -254.00003)
+scale = Vector2(10.7611065, 7.6526647)
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_y6cfw")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=458254564]
+environment = SubResource("Environment_ji3m0")

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ul4g7bda7nus"]
+
+[ext_resource type="Script" uid="uid://bj5l0m1eeosy1" path="res://script/fall_damage.cpp" id="1_4odom"]
+
+[node name="fall damage" type="Area2D" unique_id=166560945 groups=["spikes"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_4odom")
