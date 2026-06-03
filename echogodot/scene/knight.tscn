@@ -14,7 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://cy3jpt6c2m3iw" path="res://asset/music/walking.mp3" id="11_3qbpu"]
 [ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/music/level bg music (mp3cut.net).mp3" id="11_7t8lw"]
 [ext_resource type="Texture2D" uid="uid://bmxxq5nqu6e2l" path="res://asset/character-spritesheet (11).png" id="11_vk5k2"]
-[ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://asset/music/attack (mp3cut.net) (1).mp3" id="12_biu62"]
+[ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://assetLvl3/attack (mp3cut.net) (1).mp3" id="12_biu62"]
 [ext_resource type="Texture2D" uid="uid://b8q5aawdl04wn" path="res://asset/character-spritesheet (10).png" id="12_ufnbn"]
 [ext_resource type="AudioStream" uid="uid://cxndfktl10063" path="res://asset/music/buff.mp3" id="13_2j37o"]
 [ext_resource type="AudioStream" uid="uid://d3wsiasflrfti" path="res://asset/music/realblock.mp3" id="13_7t8lw"]
@@ -24,9 +24,6 @@
 [ext_resource type="AudioStream" uid="uid://cb0rj68hej0tb" path="res://asset/music/heal.mp3" id="14_ufnbn"]
 [ext_resource type="AudioStream" uid="uid://bl3fprtu5r0dw" path="res://asset/music/Defeat (Classic League of Legends Announcer) - Sound Effect for editing - Sound Library.mp3" id="15_3qbpu"]
 [ext_resource type="AudioStream" uid="uid://buuju6fo55aci" path="res://asset/music/tp.mp3" id="15_ox5ft"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
-size = Vector2(9.779469, 14.266984)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oicfy"]
 atlas = ExtResource("2_y2git")
@@ -1234,6 +1231,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
+size = Vector2(9.779469, 14.266984)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_biu62"]
 bg_color = Color(0.49938375, 0, 0.043900363, 1)
 
@@ -1244,6 +1244,13 @@ bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_igyo2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1830687312 groups=["player"]]
+texture_filter = 1
+position = Vector2(1, -1)
+scale = Vector2(1.015625, 1)
+sprite_frames = SubResource("SpriteFrames_8lpmn")
+animation = &"wizard_teleport"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1746094008]
 position = Vector2(-1.1920929e-07, 6.933527)
@@ -1265,13 +1272,6 @@ texture_repeat = 2
 width = 3.5
 texture = ExtResource("2_34asd")
 texture_mode = 1
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1177607577 groups=["player"]]
-texture_filter = 1
-position = Vector2(1, -1)
-scale = Vector2(1.015625, 1)
-sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"wizard_teleport"
 
 [node name="CombatBGM" type="AudioStreamPlayer" parent="." unique_id=320216106]
 stream = ExtResource("9_biu62")

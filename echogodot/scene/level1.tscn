@@ -25288,7 +25288,7 @@ color = Color(0.3530626, 0.35306263, 0.35306257, 1)
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_itxqv")]
 z_index = 5
-position = Vector2(-80.976234, -2.0186863)
+position = Vector2(2653.2217, -298.76596)
 scale = Vector2(0.5064855, 0.480353)
 
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=138646991]
@@ -25370,15 +25370,15 @@ shape = SubResource("WorldBoundaryShape2D_v2gmf")
 [node name="collectibles" type="Node" parent="." unique_id=1198615490]
 
 [node name="Gem2" parent="collectibles" unique_id=1540772719 instance=ExtResource("11_k65ib")]
-position = Vector2(767, 96)
+position = Vector2(2694, -274)
 scale = Vector2(0.16292237, 0.14699917)
 
 [node name="artifact" parent="collectibles" unique_id=48608864 instance=ExtResource("13_hybxs")]
-position = Vector2(1763.9999, -355)
+position = Vector2(2719, -264)
 scale = Vector2(0.36054847, 0.33904123)
 
 [node name="orb" parent="collectibles" unique_id=1976635752 instance=ExtResource("12_mswub")]
-position = Vector2(1892, -105)
+position = Vector2(2732.0002, -265)
 scale = Vector2(-0.5121505, 0.5048836)
 
 [node name="platforms" type="Node" parent="." unique_id=1891155336]
