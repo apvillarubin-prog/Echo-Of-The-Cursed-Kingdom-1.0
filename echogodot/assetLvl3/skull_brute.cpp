@@ -7,6 +7,7 @@
 #include <Godot/variant/utility_functions.hpp>
 #include <Godot/variant/string.hpp>
 #include <Godot/variant/string_name.hpp>
+#include <Godot/variant/color.hpp> // Added for visual flash color processing
 
 using namespace godot;
 using namespace jenova::sdk;
@@ -48,8 +49,12 @@ void OnAwake(Caller* instance) {
 
 void OnReady(Caller* instance) {
 	current_state = STATE_PATROL;
-	if (self) self->set_meta("pending_damage", 0);
+	if (self) {
+		self->set_meta("pending_damage", 0);
+		self->set_meta("flash_timer", 0.0f); // Initialize flash timer
+	}
 	has_dealt_damage_this_charge = false;
+	if (sprite) sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); // Ensure color resets on spawn
 }
 
 void OnPhysicsProcess(Caller* instance, double delta) {
@@ -57,9 +62,20 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	Vector2 velocity = self->get_velocity();
 
+	// --- FLASH TIMER LOGIC ---
+	if (self->has_meta("flash_timer")) {
+		float f_timer = (float)self->get_meta("flash_timer");
+		if (f_timer > 0.0f) {
+			f_timer -= (float)delta;
+			self->set_meta("flash_timer", f_timer);
+			// Reset color back to normal only if not dead
+			if (f_timer <= 0.0f && current_state != STATE_DEATH && sprite) {
+				sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f));
+			}
+		}
+	}
+
 	// --- 1. DEATH STATE OVERRIDE ---
-	// If the brute is already dead, just let gravity pull it down, freeze horizontal movement,
-	// and wait out the death animation timer before deletion.
 	if (current_state == STATE_DEATH) {
 		if (!self->is_on_floor()) {
 			velocity.y += gravity * (float)delta;
@@ -70,7 +86,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 		state_timer -= (float)delta;
 		if (state_timer <= 0.0f) {
-			self->queue_free(); // Finally delete the enemy node from the game
+			self->queue_free(); 
 			return;
 		}
 
@@ -85,13 +101,21 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		enemy_health -= dmg;
 		self->set_meta("pending_damage", 0);
 		
+		// Trigger Flash Highlight (Orc Style)
+		if (sprite && enemy_health > 0) {
+			sprite->set_modulate(Color(10.0f, 2.0f, 2.0f, 1.0f)); 
+			self->set_meta("flash_timer", 0.15f);
+		}
+		
 		if (enemy_health <= 0) {
 			current_state = STATE_DEATH;
-			state_timer = 0.75f; // Matches the duration of your death animation frames
+			state_timer = 0.75f; 
 			
-			if (sprite) sprite->play("death");
+			if (sprite) {
+				sprite->set_modulate(Color(1.0f, 1.0f, 1.0f, 1.0f)); // Clean reset color filter for death anim
+				sprite->play("death");
+			}
 			
-			// Remove from the enemy group instantly so the player's weapon stops detecting it
 			self->remove_from_group("enemy"); 
 			
 			velocity = Vector2(0, 0);
@@ -101,14 +125,12 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		}
 	}
 
-	// Apply gravity for living states
 	if (!self->is_on_floor()) {
 		velocity.y += gravity * (float)delta;
 	} else {
 		velocity.y = 0;
 	}
 
-	// Locate the player node dynamically
 	Node2D* player = nullptr;
 	TypedArray<Node> players = self->get_tree()->get_nodes_in_group("player");
 	if (players.size() > 0) {
@@ -170,7 +192,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				break;
 			}
 
-			// CONTACT DAMAGE CHECK (Silksong Frame-Perfect Tuning)
 			if (player && !has_dealt_damage_this_charge) {
 				Vector2 player_pos = player->get_global_position();
 				Vector2 brute_pos = self->get_global_position();

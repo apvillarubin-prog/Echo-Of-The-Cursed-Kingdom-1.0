@@ -3506,10 +3506,6 @@ position = Vector2(772, 43)
 scale = Vector2(0.68608266, 0.582291)
 target_level_path = "uid://cfmsgxa16typf"
 
-[node name="StaticBody2D2" parent="." unique_id=1476468796 instance=ExtResource("27_xqhno")]
-position = Vector2(319, 66)
-scale = Vector2(0.29303125, 0.29303125)
-
 [node name="HazardArea" parent="." unique_id=1891187896 instance=ExtResource("25_40cx6")]
 position = Vector2(365, 213.99998)
 rotation = 3.1415927
@@ -3540,3 +3536,7 @@ limit_right = 795
 limit_bottom = 423
 limit_smoothed = true
 position_smoothing_enabled = true
+
+[node name="StaticBody2D4" parent="." unique_id=1476468796 instance=ExtResource("27_xqhno")]
+position = Vector2(322, 64)
+scale = Vector2(0.35859853, 0.2994383)
