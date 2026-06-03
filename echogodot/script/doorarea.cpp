@@ -85,28 +85,41 @@ void on_yes_pressed(Caller* instance)
 	Area2D* self = GetSelf<Area2D>(instance);
 	if (!self) return;
 	
-	// 1. Get the actual file path of the scene (e.g., "res://scene/level1.tscn")
+	// 1. Get the actual file name of the scene
 	String scene_path = self->get_tree()->get_current_scene()->get_scene_file_path();
-	
-	// 2. Extract just the file name without extension (e.g., "level1")
-	String file_name = scene_path.get_file().get_basename().to_lower();
-	
-	// 3. Strip out the word "level" to isolate the number
-	String num_str = file_name.replace("level", "");
+	String file_name = scene_path.get_file().to_lower(); // e.g., "level1.tscn"
 	
 	int current_level = 1; // Default
-	if (num_str.is_valid_int()) {
-		current_level = num_str.to_int();
-	} else if (Engine::get_singleton()->has_meta("next_level")) {
-		// Fallback just in case
-		current_level = (int)Engine::get_singleton()->get_meta("next_level") - 1;
+	
+	// Grab YOUR global script from the Autoloads (Make sure the name matches your project settings)
+	Node* my_global = self->get_node_or_null("/root/Global");
+	
+	// 2. Bulletproof check: literally look for the number in the file name
+	if (file_name.contains("1")) {
+		current_level = 1;
+	} else if (file_name.contains("2")) {
+		current_level = 2;
+	} else if (file_name.contains("3")) {
+		current_level = 3;
+	} else if (file_name.contains("4")) {
+		current_level = 4;
+	} else if (my_global && my_global->has_meta("next_level")) {
+		// Fallback to your global script
+		current_level = (int)my_global->get_meta("next_level") - 1;
+	}
+	
+	// 3. Absolute safeguard: Never let current_level drop below 1
+	if (current_level < 1) {
+		current_level = 1;
 	}
 	
 	// 4. Calculate the next level
 	int next_level_to_load = current_level + 1;
 	
-	// 5. Save the new level to the Engine meta so the loading screen can grab it
-	Engine::get_singleton()->set_meta("next_level", next_level_to_load);
+	// 5. Save the new level to YOUR global script
+	if (my_global) {
+		my_global->set_meta("next_level", next_level_to_load);
+	}
 	
 	UtilityFunctions::print("Proceeding to Level ", next_level_to_load, "...");
 	

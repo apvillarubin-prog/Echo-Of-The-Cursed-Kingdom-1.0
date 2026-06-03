@@ -22,27 +22,34 @@ void OnReady(Caller* instance)
 	UtilityFunctions::print("Loading Screen: Initialized.");
 }
 
+
 void OnProcess(Caller* instance, double delta)
 {
 	Control* self = GetSelf<Control>(instance);
 	if (!self || switched) return;
 
 	elapsed += delta;
-	if (elapsed >= 3.5) // Holds the screen for 3.5 seconds to showcase the animation
+	if (elapsed >= 3.5)
 	{
 		switched = true;
 		
 		// --- MUSIC MANAGEMENT ---
-		// Stop the menu music exactly as the gameplay level is about to load
-		AudioStreamPlayer* menu_music = self->get_node<AudioStreamPlayer>("/root/MusicManager");
-		if (menu_music && menu_music->is_playing()) {
-			menu_music->stop();
+		Node* music_node = self->get_node_or_null("/root/MusicManager");
+		if (music_node) {
+			AudioStreamPlayer* menu_music = Object::cast_to<AudioStreamPlayer>(music_node);
+			if (menu_music && menu_music->is_playing()) {
+				menu_music->stop();
+			}
 		}
 		// ------------------------
 
 		int level = 1;
-		if (Engine::get_singleton()->has_meta("next_level"))
-			level = (int)Engine::get_singleton()->get_meta("next_level");
+		
+		// Grab the level number from YOUR global script
+		Node* my_global = self->get_node_or_null("/root/Global");
+		if (my_global && my_global->has_meta("next_level")) {
+			level = (int)my_global->get_meta("next_level");
+		}
 
 		String scene_path = "res://scene/level" + String::num_int64(level) + ".tscn";
 		UtilityFunctions::print("Loading Screen: Going to " + scene_path);
