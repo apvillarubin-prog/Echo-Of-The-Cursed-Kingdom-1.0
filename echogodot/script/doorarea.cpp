@@ -23,8 +23,14 @@ void OnReady(Caller* instance)
 	// Connect the body_entered signal to detect the player
 	self->connect("body_entered", Callable(self, "on_body_entered"));
 
-	// Grab the UI node through the CanvasLayer
-	Node* ui_node = self->get_node_or_null("CanvasLayer/WinUI");
+	// First, try assuming the CanvasLayer is a sibling in the Level tree
+	Node* ui_node = self->get_node_or_null("../CanvasLayer/WinUI");
+	
+	// If it wasn't found there, try assuming it's a direct child of the Door
+	if (!ui_node) {
+		ui_node = self->get_node_or_null("CanvasLayer/WinUI");
+	}
+
 	if (ui_node)
 	{
 		win_ui = Object::cast_to<Control>(ui_node);
@@ -36,6 +42,12 @@ void OnReady(Caller* instance)
 
 		if (yes_btn) yes_btn->connect("pressed", Callable(self, "on_yes_pressed"));
 		if (no_btn) no_btn->connect("pressed", Callable(self, "on_no_pressed"));
+		
+		UtilityFunctions::print("[DEBUG] WinUI successfully found and buttons connected!");
+	}
+	else
+	{
+		UtilityFunctions::print("[ERROR] WinUI not found! Double check your Node Path in the Scene dock.");
 	}
 }
 
@@ -55,6 +67,10 @@ void on_body_entered(Caller* instance, Node2D* body)
 			{
 				win_ui->set_visible(true); // Show the "You Win" prompt
 			}
+			else
+			{
+				UtilityFunctions::print("[ERROR] WinUI is null. Cannot make it visible.");
+			}
 		}
 		else
 		{
@@ -64,36 +80,24 @@ void on_body_entered(Caller* instance, Node2D* body)
 }
 
 // Triggered when the player clicks "Yes"
+// Triggered when the player clicks "Yes"
 void on_yes_pressed(Caller* instance)
 {
 	Area2D* self = GetSelf<Area2D>(instance);
+	if (!self) return;
 	
-	// 1. Find out what level we are currently on (default to 1)
-	int current_level = 1;
-	if (Engine::get_singleton()->has_meta("next_level")) {
-		current_level = (int)Engine::get_singleton()->get_meta("next_level");
+	// Save to your Autoload node instead of Engine
+	Node* my_global = self->get_node_or_null("/root/Global");
+	if (my_global) {
+		my_global->set_meta("next_level", 2);
+		UtilityFunctions::print("[DEBUG] Saved next_level = 2 to /root/Global");
+	} else {
+		UtilityFunctions::print("[ERROR] Could not find /root/Global to save level!");
 	}
 	
-	// 2. Calculate the next level
-	int next_level_to_load = current_level + 1;
-	
-	// 3. Save the new level to the Engine meta
-	Engine::get_singleton()->set_meta("next_level", next_level_to_load);
-	
-	UtilityFunctions::print("Proceeding to Level ", next_level_to_load, "...");
+	UtilityFunctions::print("Proceeding to Level 2...");
 	
 	// Transition to the loading screen
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
 }
-
-// Triggered when the player clicks "No"
-void on_no_pressed(Caller* instance)
-{
-	// Hide the UI so the player can keep walking around Level 1
-	if (win_ui)
-	{
-		win_ui->set_visible(false);
-	}
-}
-
 JENOVA_SCRIPT_END

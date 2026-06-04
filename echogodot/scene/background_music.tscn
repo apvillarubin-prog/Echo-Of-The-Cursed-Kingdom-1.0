@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dujbgjmsex0kb"]
+
+[ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/asset/music/level bg music (mp3cut.net).mp3" id="1_g1dms"]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" unique_id=1746008956]
+stream = ExtResource("1_g1dms")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bcny5w2wbdamt"
+path="res://.godot/imported/crossbow arrow! sound effect no copyright claim (mp3cut.net).mp3-296fff6cb839dd2b5e239c28c3c3b3ed.mp3str"
+
+[deps]
+
+source_file="res://assetLvl3/crossbow arrow! sound effect no copyright claim (mp3cut.net).mp3"
+dest_files=["res://.godot/imported/crossbow arrow! sound effect no copyright claim (mp3cut.net).mp3-296fff6cb839dd2b5e239c28c3c3b3ed.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

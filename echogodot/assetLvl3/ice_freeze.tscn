@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://lpw13mn5d2yk"]
+
+[ext_resource type="Script" uid="uid://cuyuec58y8gav" path="res://assetLvl3/ice_freeze.cpp" id="1_f8kwm"]
+[ext_resource type="Texture2D" uid="uid://bsfx2p2kv2iyu" path="res://assetLvl3/ice.png" id="2_fxq37"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i60j4"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1x16c"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3map5"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0sw2"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p1nyj"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hba84"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bof4w"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_luxn8"]
+atlas = ExtResource("2_fxq37")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_83rkr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i60j4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1x16c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3map5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0sw2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p1nyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hba84")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bof4w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_luxn8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_snaxq"]
+radius = 17.0
+
+[node name="IceFreeze" type="Area2D" unique_id=545349898]
+scale = Vector2(0.6804314, 0.6804314)
+script = ExtResource("1_f8kwm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1824748314]
+sprite_frames = SubResource("SpriteFrames_83rkr")
+frame_progress = 0.521601
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1399296648]
+position = Vector2(-3, -2.0000005)
+scale = Vector2(1, 1.0400004)
+shape = SubResource("CircleShape2D_snaxq")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -14,7 +14,9 @@ JENOVA_SCRIPT_BEGIN
 const float AGGRO_RANGE = 170.0f;
 const float CHASE_SPEED = 30.0f;
 const float ATTACK_RANGE = 35.0f; 
-const float ATTACK_COOLDOWN_DURATION = 1.5f; 
+
+// 1. INCREASED NORMAL COOLDOWN (Was 1.5f, now 3.0f)
+const float ATTACK_COOLDOWN_DURATION = 3.0f; 
 
 void OnReady(Caller* instance) {
 	CharacterBody2D* self = GetSelf<CharacterBody2D>(instance);
@@ -29,8 +31,9 @@ void OnReady(Caller* instance) {
 	
 	ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
 	if (hp_bar) {
-		hp_bar->set_max(60.0); 
-		hp_bar->set_value(60.0);
+		// INCLUDED HEALTH BAR VISUAL FIX
+		hp_bar->set("max_value", 60.0); 
+		hp_bar->set("value", 60.0);
 	}
 }
 
@@ -48,7 +51,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		self->set_meta("current_health", current_health);
 
 		ProgressBar* hp_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
-		if (hp_bar) hp_bar->set_value((double)current_health);
+		if (hp_bar) {
+			// INCLUDED HEALTH BAR VISUAL FIX
+			hp_bar->set("max_value", 60.0); 
+			hp_bar->set("value", (double)current_health);
+		}
 
 		if (current_health <= 0) {
 			self->set_meta("is_dying", true);
@@ -110,7 +117,6 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 						bool was_parried = false;
 						
 						if (e_pos.distance_to(target->get_global_position()) <= 50.0f) {
-							// Call the player's damage function and check if they parried it!
 							Variant result = target->call("take_damage", 10);
 							if (result.get_type() == Variant::Type::BOOL && (bool)result) {
 								was_parried = true;
@@ -121,11 +127,12 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 						// --- STUN LOGIC ---
 						if (was_parried) {
-							UtilityFunctions::print("[DEBUG] Elite Parried! STUNNED for 3 seconds!");
-							self->set_meta("attack_cooldown", 3.0f); // Massive Stun
-							self->set_meta("consecutive_attacks", 0); // Cancel the double-swing
-							anim->play("enemy_idle"); // Force stagger animation
-							return; // Skip the rest of the physics frame
+							UtilityFunctions::print("[DEBUG] Elite Parried! STUNNED for 5 seconds!");
+							// 2. INCREASED PARRY STUN COOLDOWN (Was 3.0f, now 5.0f)
+							self->set_meta("attack_cooldown", 5.0f); 
+							self->set_meta("consecutive_attacks", 0); 
+							anim->play("enemy_idle"); 
+							return; 
 						}
 					}
 					
@@ -138,7 +145,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 							self->set_meta("attack_cooldown", ATTACK_COOLDOWN_DURATION); 
 							consecutive = 0; 
 						} else {
-							self->set_meta("attack_cooldown", 0.0f); 
+							// 3. ADDED A SHORT DELAY BETWEEN COMBO SWINGS (Was 0.0f, now 0.5f)
+							self->set_meta("attack_cooldown", 0.5f); 
 						}
 						
 						self->set_meta("consecutive_attacks", consecutive);

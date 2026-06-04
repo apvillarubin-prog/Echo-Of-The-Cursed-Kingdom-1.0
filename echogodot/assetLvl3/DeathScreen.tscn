@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bcwqwo7xg1gx6"]
+
+[ext_resource type="Script" uid="uid://bkrascp633ink" path="res://assetLvl3/death.gd" id="1_pu5yk"]
+[ext_resource type="FontFile" uid="uid://t0osqc07ybsv" path="res://assetLvl3/DeadWood-W54O.ttf" id="1_xb2gg"]
+
+[node name="DeathScreen" type="Control" unique_id=863638416]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pu5yk")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=998260642]
+layout_mode = 0
+offset_right = 1985.0
+offset_bottom = 1091.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="." unique_id=1922800504]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -687.0
+offset_top = -341.0
+offset_right = 687.0
+offset_bottom = 341.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_xb2gg")
+theme_override_font_sizes/font_size = 315
+text = "RETARDED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="." unique_id=1642793115]
+layout_mode = 0
+offset_left = 662.0
+offset_top = 896.0
+offset_right = 1328.0
+offset_bottom = 1023.0
+theme_override_font_sizes/font_size = 37
+text = "click anywhere to revive"
+horizontal_alignment = 1
+vertical_alignment = 1

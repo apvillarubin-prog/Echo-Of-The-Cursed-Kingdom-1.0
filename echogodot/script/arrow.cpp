@@ -15,9 +15,15 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	Area2D* self = GetSelf<Area2D>(instance);
 	if (!self) return;
 
-	float current_rotation = self->get_rotation();
-// If the arrow is rotated backwards (roughly 3.14 radians), it flies left
-	Vector2 move_direction = (cos(current_rotation) < 0.0f) ? Vector2(-1, 0) : Vector2(1, 0);
+	// FIX: Use metadata to determine flight direction accurately
+	bool facing_left = self->has_meta("facing_left") ? (bool)self->get_meta("facing_left") : false;
+	Vector2 move_direction = facing_left ? Vector2(-1, 0) : Vector2(1, 0);
+
+	// FIX: Flip only the visual sprite, not the entire collision matrix
+	Node2D* arrow_sprite = Object::cast_to<Node2D>(self->get_node_or_null("Sprite2D")); 
+	if (arrow_sprite) {
+		arrow_sprite->set_scale(facing_left ? Vector2(-1, 1) : Vector2(1, 1));
+	}
 
 	Vector2 current_pos = self->get_global_position();
 	self->set_global_position(current_pos + (move_direction * speed * (float)delta));
@@ -27,10 +33,9 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		Node2D* body = Object::cast_to<Node2D>(bodies[i]);
 		if (!body) continue;
 
-		if (body->is_in_group("player")) continue;
+		if (body->is_in_group("player")) continue; 
 
 		if (body->is_in_group("enemy")) {
-			// FIX: Set meta values to handle archer damage instantly
 			body->set_meta("pending_damage", 5);
 			self->queue_free(); 
 			return;

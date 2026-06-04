@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://trgb0hpnvssr"]
+
+[ext_resource type="Texture2D" uid="uid://b8tan3c2shttu" path="res://asset/asset/tileset.png" id="1_ngnlw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tytdw"]
+size = Vector2(17, 17)
+
+[node name="wizard_block" type="RigidBody2D" unique_id=1623442562]
+mass = 2.0
+sleeping = true
+lock_rotation = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1372129646]
+texture = ExtResource("1_ngnlw")
+region_enabled = true
+region_rect = Rect2(31.513245, 143.1169, 17.266438, 16.978668)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=483848346]
+position = Vector2(0.5, -0.5)
+shape = SubResource("RectangleShape2D_tytdw")

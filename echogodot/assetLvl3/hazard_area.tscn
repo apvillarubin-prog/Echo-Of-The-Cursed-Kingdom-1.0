@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://xcac3mieu02g"]
+
+[ext_resource type="Script" uid="uid://damtp3r7bgpks" path="res://assetLvl3/hazard_area.gd" id="1_y3y8b"]
+[ext_resource type="Texture2D" uid="uid://c28nc3y7ak2v6" path="res://assetLvl3/vvv.png" id="2_j8vdo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eydxt"]
+size = Vector2(64, 55.5)
+
+[node name="HazardArea" type="Area2D" unique_id=1891187896]
+script = ExtResource("1_y3y8b")
+
+[node name="Vvv" type="Sprite2D" parent="." unique_id=276817553]
+modulate = Color(0.95686275, 0, 0, 1)
+position = Vector2(0.0003740822, -25.574055)
+rotation = -1.5707618
+scale = Vector2(1.5491894, 0.9999927)
+texture = ExtResource("2_j8vdo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=918372604]
+position = Vector2(0, -4.25)
+shape = SubResource("RectangleShape2D_eydxt")

@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://bwdjogoual4cq"]
+
+[ext_resource type="Script" uid="uid://ck6pbb1g3tlci" path="res://assetLvl3/wizard_block.cpp" id="1_ei7x5"]
+[ext_resource type="Texture2D" uid="uid://qi3qbnlunoew" path="res://assetLvl3/wizardwall.png" id="2_385jv"]
+[ext_resource type="AudioStream" uid="uid://lnofe7fdbd4q" path="res://assetLvl3/u_xjrmmgxfru-hit-rock-03-266305.mp3" id="3_385jv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbrrj"]
+atlas = ExtResource("2_385jv")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1orx"]
+atlas = ExtResource("2_385jv")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jx3nv"]
+atlas = ExtResource("2_385jv")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjnpi"]
+atlas = ExtResource("2_385jv")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ll1ao"]
+atlas = ExtResource("2_385jv")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52mf8"]
+atlas = ExtResource("2_385jv")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5oox8"]
+atlas = ExtResource("2_385jv")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w41u6"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nbrrj")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1orx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jx3nv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hjnpi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ll1ao")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_52mf8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5oox8")
+}],
+"loop": false,
+"name": &"spawn",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ei7x5"]
+size = Vector2(57, 57)
+
+[node name="WizardBlock" type="RigidBody2D" unique_id=507153055]
+scale = Vector2(0.5570288, 0.5570288)
+mass = 0.008
+lock_rotation = true
+script = ExtResource("1_ei7x5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2013519780]
+sprite_frames = SubResource("SpriteFrames_w41u6")
+animation = &"spawn"
+autoplay = "spawn"
+frame = 5
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=941632434]
+position = Vector2(0.5, 2.5)
+shape = SubResource("RectangleShape2D_ei7x5")
+
+[node name="BlockSFX" type="AudioStreamPlayer2D" parent="." unique_id=1099184572]
+stream = ExtResource("3_385jv")
