@@ -31,7 +31,7 @@ AnimatedSprite2D* sprite = nullptr;
 ProgressBar* health_bar = nullptr;
 
 // --- Admin Toggle ---
-bool admin_mode = true; // <-- SET TO FALSE FOR PRODUCTION
+bool admin_mode = false; // <-- SET TO FALSE FOR PRODUCTION
 
 // --- Death Screen Pointers ---
 Control* death_screen = nullptr;

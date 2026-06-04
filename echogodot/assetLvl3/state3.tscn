@@ -2,9 +2,9 @@
 
 [ext_resource type="VideoStream" uid="uid://c4poa14i81y38" path="res://assetLvl3/ssxx-3.ogv" id="1_5igw3"]
 [ext_resource type="Texture2D" uid="uid://cxyhx4cu2sjbu" path="res://assetLvl3/Sprite-0019.png" id="1_cnb50"]
-[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/asset/ground.png" id="2_fhsy4"]
+[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="2_fhsy4"]
 [ext_resource type="Texture2D" uid="uid://ci5hrgrgf7rw0" path="res://assetLvl3/sxa.png" id="2_qtbhk"]
-[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/asset/lava_spr_strip45.png" id="3_u6h8h"]
+[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="3_u6h8h"]
 [ext_resource type="Texture2D" uid="uid://d0eqhugdrg0i5" path="res://assetLvl3/Sprite-0001.png" id="4_dk7yr"]
 [ext_resource type="Shader" uid="uid://ietc0l5kbqm1" path="res://assetLvl3/fog.gdshader" id="6_164fa"]
 [ext_resource type="PackedScene" uid="uid://8vf0mvh32wcq" path="res://assetLvl3/knight.tscn" id="7_nnf32"]
@@ -360,7 +360,7 @@ tile_map_data = PackedByteArray("AAD7/wQAAgABAAEAAAD7/wUAAgABAAIAAAD7/wYAAgABAAM
 tile_set = SubResource("TileSet_ew7lf")
 
 [node name="HazardArea" parent="TileMap" unique_id=1891187896 instance=ExtResource("7_whxj3")]
-position = Vector2(489, 228)
+position = Vector2(490, 176)
 scale = Vector2(22.839998, 1)
 
 [node name="OrcEnemy" parent="." unique_id=489182387 instance=ExtResource("7_u6h8h")]
@@ -407,7 +407,7 @@ metadata/_edit_lock_ = true
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("7_nnf32")]
 z_index = 2
-position = Vector2(35, 69)
+position = Vector2(-14, 57)
 scale = Vector2(0.43191832, 0.43191832)
 script = ExtResource("10_dk7yr")
 
