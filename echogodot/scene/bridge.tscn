@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dm7wupb7qccv5"]
 
 [ext_resource type="Texture2D" uid="uid://ift1utcewdvo" path="res://asset/Bridges.png" id="1_bro1g"]
-[ext_resource type="Script" uid="uid://dmlkjpf2cw7sy" path="res://script/bridge.cpp" id="1_ujq3j"]
+[ext_resource type="Script" path="res://script/bridge.cpp" id="1_ujq3j"]
 [ext_resource type="Texture2D" uid="uid://bfrk1844tn88k" path="res://asset/walls.png" id="2_ujq3j"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ifc72"]
@@ -67,9 +67,7 @@ script = ExtResource("1_ujq3j")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1575888769]
 sprite_frames = SubResource("SpriteFrames_q4kal")
-animation = &"appear"
-frame = 4
-frame_progress = 1.0
+animation = &"invisible"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1010228540]
 position = Vector2(0.5, 15.5)
