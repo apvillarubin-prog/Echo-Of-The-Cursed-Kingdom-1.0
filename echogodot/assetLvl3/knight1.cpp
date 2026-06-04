@@ -241,7 +241,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				Vector2 click_target = self->get_global_mouse_position();
 				self->set_global_position(click_target); 
 				is_teleport_stance = false;             
-				wizard_q_cooldown = 5.0f;               
+				wizard_q_cooldown = 10.0f;               
 			}
 		}
 
@@ -265,7 +265,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				}
 			}
 			is_f_primed = false;
-			wizard_f_cooldown = 5.0f;
+			wizard_f_cooldown = 30.0f;
 			if (sprite) sprite->play("wizard_cast");
 		}
 
