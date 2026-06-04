@@ -39,19 +39,20 @@ vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="ColorRect" unique_id=1934023703]
 layout_mode = 0
-offset_left = 75.0
-offset_top = 204.0
-offset_right = 115.0
-offset_bottom = 1137.0
-text = "*
-*
-*
-*
-*
-*
-*
-*
-*
+offset_left = 68.0
+offset_top = 220.0
+offset_right = 1880.0
+offset_bottom = 1603.0
+theme_override_font_sizes/font_size = 28
+text = "* Sprites contributed as part of the Liberated Pixel Cup project from OpenGameArt.org: http://opengameart.org/content/lpc-collection
+*Environment Art: Pixel Fantasy Caves by Szadiart(GameDevMarket)
+*Rogue Fantasy Castle Handcrafted by Szadiart(GameDevMarket)
+*Pixel Castle 2D Platformer Handcrafted by Szadiart(GameDevMarket)
+*Fuzzeke - Without A Care [Game Trailer Music]
+*D&D/Cave Exploration/Music/ 1 Hour
+*D&D/RPG Combat Music Mix | 1 Hour | Royalty Free | Travis Savoie
+*Medieval Village Exterior RPG Tileset v 1.0 - A pixel art asset packby Hypnobius https://hypnobius.itch.io/
+*Free Castle Interior Pixel Background (itch.io)
 *
 *
 *

@@ -7589,9 +7589,25 @@ texture = ExtResource("3_r7jp4")
 [sub_resource type="TileSet" id="TileSet_40srm"]
 sources/0 = SubResource("TileSetAtlasSource_srhas")
 
+[sub_resource type="Gradient" id="Gradient_gm452"]
+offsets = PackedFloat32Array(0.22980501, 0.6364902)
+colors = PackedColorArray(0.8286908, 0.8286908, 0.8286908, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kdtfp"]
+gradient = SubResource("Gradient_gm452")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tmj3w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_srhas"]
+
+[sub_resource type="Gradient" id="Gradient_7wlxp"]
+offsets = PackedFloat32Array(0.16295265, 0.69498605, 0.8454039)
+colors = PackedColorArray(0.08495822, 0.08495822, 0.08495822, 1, 0.9113259, 0.9113259, 0.9113259, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ajs6y"]
+gradient = SubResource("Gradient_7wlxp")
 
 [node name="level4" type="Node2D" unique_id=1264825657]
 
@@ -10116,6 +10132,14 @@ limit_bottom = 180
 limit_smoothed = true
 position_smoothing_enabled = true
 
+[node name="PointLight2D" type="PointLight2D" parent="knight" unique_id=1889724160]
+color = Color(0.74357384, 0.68489313, 0.52759415, 1)
+energy = 1.66
+range_z_max = 11
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_kdtfp")
+texture_scale = 4.0
+
 [node name="Node" type="Node" parent="." unique_id=1167165632]
 
 [node name="enemy3" parent="Node" unique_id=906854867 instance=ExtResource("4_r8g5e")]
@@ -10317,3 +10341,84 @@ scale = Vector2(0.36054847, 0.33904123)
 [node name="orb" parent="collectibles" unique_id=1976635752 instance=ExtResource("23_1aw0l")]
 position = Vector2(2456.0002, 624)
 scale = Vector2(-0.5121505, 0.5048836)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=85552399]
+color = Color(0.5705783, 0.57057834, 0.57057834, 1)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=739856680]
+position = Vector2(304.45056, 116.997406)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D2" type="PointLight2D" parent="." unique_id=1222075865]
+position = Vector2(543, 117.00001)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D3" type="PointLight2D" parent="." unique_id=2144511538]
+position = Vector2(543, 117.00001)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D4" type="PointLight2D" parent="." unique_id=1335488317]
+position = Vector2(304.00006, 124.99999)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D5" type="PointLight2D" parent="." unique_id=1815165860]
+position = Vector2(-16, 121)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D6" type="PointLight2D" parent="." unique_id=1814637490]
+position = Vector2(-88, 123.99999)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D7" type="PointLight2D" parent="." unique_id=1457748309]
+position = Vector2(-171, 124)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D8" type="PointLight2D" parent="." unique_id=861541114]
+position = Vector2(945.00006, 679)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D9" type="PointLight2D" parent="." unique_id=138271243]
+position = Vector2(945.00006, 679)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D10" type="PointLight2D" parent="." unique_id=1640177024]
+position = Vector2(995, 675)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D11" type="PointLight2D" parent="." unique_id=808941898]
+position = Vector2(995, 675)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D12" type="PointLight2D" parent="." unique_id=1501595374]
+position = Vector2(1038, 676)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")
+
+[node name="PointLight2D13" type="PointLight2D" parent="." unique_id=326339794]
+position = Vector2(1038, 676)
+rotation = 1.5704485
+scale = Vector2(1.6092645, 1.4734225)
+texture = SubResource("GradientTexture2D_ajs6y")

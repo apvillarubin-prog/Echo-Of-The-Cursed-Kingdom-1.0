@@ -1,8 +1,8 @@
 [gd_scene format=4 uid="uid://c5jav5gq3pn3i"]
 
 [ext_resource type="Texture2D" uid="uid://ci5hrgrgf7rw0" path="res://assetLvl3/sxa.png" id="1_33jge"]
-[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/asset/ground.png" id="3_1bawg"]
-[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/asset/lava_spr_strip45.png" id="4_8jo3v"]
+[ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="3_1bawg"]
+[ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="4_8jo3v"]
 [ext_resource type="Texture2D" uid="uid://dhghcxa5qws0b" path="res://assetLvl3/ax.png" id="5_crm2q"]
 [ext_resource type="Texture2D" uid="uid://d2b8hrj2kljjp" path="res://assetLvl3/2.png" id="5_rpeo1"]
 [ext_resource type="Texture2D" uid="uid://d0eqhugdrg0i5" path="res://assetLvl3/Sprite-0001.png" id="5_s25qn"]
@@ -20,7 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bwfhgejjhbrrp" path="res://assetLvl3/3.png" id="13_40cx6"]
 [ext_resource type="Texture2D" uid="uid://clv2cer706kmj" path="res://assetLvl3/4.png" id="14_2tsw3"]
 [ext_resource type="Texture2D" uid="uid://cb7pafbctlcpa" path="res://assetLvl3/5.png" id="15_diob5"]
-[ext_resource type="Texture2D" uid="uid://bwv8ev6l7qfd7" path="res://asset/asset/walls_far.png" id="17_vfomm"]
+[ext_resource type="Texture2D" uid="uid://bwv8ev6l7qfd7" path="res://asset/walls_far.png" id="17_vfomm"]
 [ext_resource type="PackedScene" uid="uid://ken10lohr7yt" path="res://assetLvl3/skull_brute.tscn" id="18_hrw3b"]
 [ext_resource type="PackedScene" uid="uid://8vf0mvh32wcq" path="res://assetLvl3/knight.tscn" id="21_s25qn"]
 [ext_resource type="PackedScene" uid="uid://xcac3mieu02g" path="res://assetLvl3/hazard_area.tscn" id="25_40cx6"]
@@ -3484,7 +3484,7 @@ offset_bottom = 227.0
 metadata/_edit_lock_ = true
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=632412420]
-position = Vector2(0, 73)
+position = Vector2(0, 60)
 
 [node name="FogZone2" type="ColorRect" parent="." unique_id=1248519642]
 clip_children = 1
@@ -3508,7 +3508,7 @@ metadata/_edit_lock_ = true
 [node name="LightPortal" parent="." unique_id=159826057 instance=ExtResource("25_ttb6f")]
 position = Vector2(772, 43)
 scale = Vector2(0.68608266, 0.582291)
-target_level_path = "uid://cfmsgxa16typf"
+target_level_path = "uid://cxgwre4ubkem0"
 
 [node name="HazardArea" parent="." unique_id=1891187896 instance=ExtResource("25_40cx6")]
 position = Vector2(363.99997, 193.99998)
@@ -3521,7 +3521,7 @@ scale = Vector2(0.5025352, 0.5025352)
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("21_s25qn")]
 z_index = 2
-position = Vector2(44, 68)
+position = Vector2(7, 45)
 scale = Vector2(0.5, 0.5)
 script = ExtResource("27_40cx6")
 

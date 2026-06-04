@@ -19,8 +19,9 @@ func fade_to_scene(scene_path: String):
 	# 2. Switch the Game Scene File
 	get_tree().change_scene_to_file(scene_path)
 	
-	# 3. Wait exactly one frame for Godot to fully build the new level's nodes
-	await get_tree().process_frame
+	# 3. FIX: Give Godot a tiny buffer to fully instantiate the new level and its nodes
+	# This guarantees get_tree().current_scene is no longer null!
+	await get_tree().create_timer(0.05).timeout
 	
 	# 4. If we are entering a normal level (NOT the death screen), position the player
 	if not "death" in scene_path.to_lower():

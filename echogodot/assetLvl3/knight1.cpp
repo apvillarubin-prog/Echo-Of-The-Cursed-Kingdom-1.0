@@ -28,9 +28,8 @@ AnimatedSprite2D* sprite = nullptr;
 ProgressBar* health_bar = nullptr;
 
 // --- Grappling Hook Node References ---
-// ADDED: For the rope visual
 Line2D* grapple_line = nullptr;
-Node2D* hand_anchor = nullptr;    // ADDED: For where the rope starts on the player
+Node2D* hand_anchor = nullptr; 
 
 // --- Sound Effect Nodes ---
 Node* walk_sfx = nullptr;
@@ -114,7 +113,7 @@ void respawn() {
 	is_f_primed = false;
 	is_g_primed = false;
 	
-	if (grapple_line) grapple_line->set_visible(false); // FIXED: Use global variable
+	if (grapple_line) grapple_line->set_visible(false);
 
 	if (sprite) {
 		String anim_name = (current_hero == WIZARD) ? "wizard_die" : (current_hero == KNIGHT ? "knight_death" : "archer_death");
@@ -237,7 +236,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		}
 
 		if (is_teleport_stance) {
-			velocity = Vector2(0, 0); 
+			velocity.x = 0.0f; // FIX: Only freeze horizontal movement
 			if (mouse_left_just_pressed) {
 				Vector2 click_target = self->get_global_mouse_position();
 				self->set_global_position(click_target); 
@@ -260,11 +259,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				Node* proj_inst = ice_projectile->instantiate();
 				Node2D* proj_node = Object::cast_to<Node2D>(proj_inst);
 				if (proj_node) {
-	// 1. Pack data first
 					proj_node->set_meta("target_pos", self->get_global_mouse_position());
-					// 2. Put it in the world hierarchy 
 					self->get_tree()->get_current_scene()->add_child(proj_inst);
-					// 3. NOW set position (Godot will lock it perfectly to the player)
 					proj_node->set_global_position(self->get_global_position());
 				}
 			}
@@ -287,11 +283,8 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 				Node* fb_inst = fireball_scene->instantiate();
 				Node2D* fb_node = Object::cast_to<Node2D>(fb_inst);
 				if (fb_node) {
-					// 1. Pack data first
 					fb_node->set_meta("target_pos", self->get_global_mouse_position());
-					// 2. Put it in the world hierarchy
 					self->get_tree()->get_current_scene()->add_child(fb_inst);
-					// 3. NOW set position
 					fb_node->set_global_position(self->get_global_position());
 				}
 			}
@@ -405,8 +398,11 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 	bool is_action_locked = is_attacking || is_blocking || is_teleport_stance;
 
 	// Apply Core Engine Vector Shifts
-	if (!is_teleport_stance) {
-		if (!self->is_on_floor()) velocity.y += gravity * (float)delta;
+	if (!self->is_on_floor()) {
+		velocity.y += gravity * (float)delta; // FIX: Gravity is always applied
+	}
+
+	if (!is_teleport_stance) { // FIX: Teleport stance now only locks movement and jumping inputs
 		if (input->is_action_just_pressed("ui_accept") && self->is_on_floor()) {
 			velocity.y = jump_velocity; 
 			if (is_attacking || is_blocking) { attack_timer = 0.0f; self->set_meta("attack_timer", 0.0f); is_attacking = false; is_blocking = false; is_action_locked = false; }
@@ -516,7 +512,6 @@ void OnReady(Caller* instance) {
 		is_g_primed = false; 
 		player_health = 50; 
 		
-		// FIXED: Connect the grapple visual nodes
 		grapple_line = Object::cast_to<Line2D>(self->get_node_or_null("GrappleLine"));
 		hand_anchor = Object::cast_to<Node2D>(self->get_node_or_null("HandAnchor"));
 
@@ -539,6 +534,5 @@ void apply_knockback(Caller* instance, Vector2 force) {
 	// Force an immediate physics update
 	self->move_and_slide();
 }
-
 
 JENOVA_SCRIPT_END
