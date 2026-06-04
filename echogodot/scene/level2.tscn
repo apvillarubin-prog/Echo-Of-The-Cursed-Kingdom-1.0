@@ -31,7 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://orkl4fyhb102" path="res://asset/MedievalVillageExteriorv1.0/RawAssets/Sconce_Spritesheet.png" id="16_natlu"]
 [ext_resource type="Texture2D" uid="uid://bkn333yhjnnrj" path="res://asset/MedievalVillageExteriorv1.0/RawAssets/Walls.png" id="17_6t5cm"]
 [ext_resource type="Texture2D" uid="uid://bphbhsicfm3ht" path="res://asset/asset/Props_Decor.png" id="18_ru06c"]
-[ext_resource type="Script" uid="uid://lutusrpdm3ev" path="res://scene/door_area2to3.cpp" id="32_g3rbi"]
+[ext_resource type="Script" uid="uid://lutusrpdm3ev" path="res://script/door_area2to3.cpp" id="32_g3rbi"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qhexg"]
 
