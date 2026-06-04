@@ -9,8 +9,11 @@
 #include <Godot/variant/utility_functions.hpp>
 using namespace godot;
 using namespace jenova::sdk;
+
 JENOVA_SCRIPT_BEGIN
+
 Control* win_ui = nullptr;
+
 void OnReady(Caller* instance)
 {
 	Area2D* self = GetSelf<Area2D>(instance);
@@ -35,11 +38,11 @@ void OnReady(Caller* instance)
 		UtilityFunctions::print("[ERROR] WinUI not found! Double check your Node Path in the Scene dock.");
 	}
 }
+
 void on_body_entered(Caller* instance, Node2D* body)
 {
 	if (body && body->is_in_group("player"))
 	{
-		// No collectibles check — just show the win UI immediately
 		UtilityFunctions::print("Player reached the door!");
 		if (win_ui)
 		{
@@ -51,10 +54,29 @@ void on_body_entered(Caller* instance, Node2D* body)
 		}
 	}
 }
+
 void on_yes_pressed(Caller* instance)
 {
 	Area2D* self = GetSelf<Area2D>(instance);
 	if (!self) return;
+
+	// Reset player HP before transitioning
+	Node* player = self->get_tree()->get_first_node_in_group("player");
+	if (player) {
+		player->call("reset_health");
+		UtilityFunctions::print("[DEBUG] Player health reset before level transition.");
+	} else {
+		UtilityFunctions::print("[ERROR] Could not find player to reset health!");
+	}
+
+	// VISUAL RESET: Tell the UI to reset the health bar visually
+	Node* game_ui = self->get_tree()->get_first_node_in_group("game_ui");
+	if (game_ui) {
+		game_ui->call("reset_health_bar");
+	} else {
+		UtilityFunctions::print("[ERROR] Could not find game_ui to visually reset health!");
+	}
+
 	Node* my_global = self->get_node_or_null("/root/Global");
 	if (my_global) {
 		my_global->set_meta("next_level", 4);
@@ -65,9 +87,11 @@ void on_yes_pressed(Caller* instance)
 	UtilityFunctions::print("Proceeding to Level 4...");
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
 }
+
 void on_no_pressed(Caller* instance)
 {
 	UtilityFunctions::print("Player chose to stay.");
 	if (win_ui) win_ui->set_visible(false);
 }
+
 JENOVA_SCRIPT_END
