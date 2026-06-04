@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b87ux3w4h2a5j"]
 
-[ext_resource type="Script" uid="uid://s56og4nhxl3j" path="res://assetLvl3/destructible_wall.gd" id="1_fos1n"]
+[ext_resource type="Script" uid="uid://dtdorx734tapo" path="res://assetLvl3/destructible_wall.cpp" id="1_bwfjq"]
 [ext_resource type="Texture2D" uid="uid://dicokv82gcgm0" path="res://assetLvl3/abcs1.png" id="2_hihmd"]
 [ext_resource type="AudioStream" uid="uid://lnofe7fdbd4q" path="res://assetLvl3/u_xjrmmgxfru-hit-rock-03-266305.mp3" id="3_bwfjq"]
 
@@ -8,8 +8,7 @@
 size = Vector2(61, 62)
 
 [node name="DestructibleWall" type="StaticBody2D" unique_id=115688583 groups=["enemy"]]
-script = ExtResource("1_fos1n")
-hits_before_removance = 5
+script = ExtResource("1_bwfjq")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1848798929]
 texture = ExtResource("2_hihmd")

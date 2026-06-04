@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://3j710w6ees0q"]
 
 [ext_resource type="Texture2D" uid="uid://crs6ljupeasov" path="res://asset/Gemini_Generated_Image_tcp351tcp351tcp3.png" id="1_5hdjc"]
-[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/knight.tscn" id="1_qhexg"]
+[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/PlayerEngine.tscn" id="1_qhexg"]
 [ext_resource type="PackedScene" uid="uid://va4h47qpoueq" path="res://scene/fire.tscn" id="4_f0is0"]
 [ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="4_if17c"]
 [ext_resource type="PackedScene" uid="uid://qumfvur675cc" path="res://scene/orb.tscn" id="5_lnov8"]

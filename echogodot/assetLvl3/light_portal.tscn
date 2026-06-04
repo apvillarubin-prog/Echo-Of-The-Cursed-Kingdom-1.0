@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cvj2xa8wq8ibt"]
 
-[ext_resource type="Script" uid="uid://rg636bcofoao" path="res://assetLvl3/light_portal.gd" id="1_dhcpy"]
+[ext_resource type="Script" uid="uid://be6242titbkb4" path="res://assetLvl3/light_portal.cpp" id="1_whufp"]
 [ext_resource type="Texture2D" uid="uid://c28nc3y7ak2v6" path="res://assetLvl3/vvv.png" id="2_whufp"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dhcpy"]
@@ -10,7 +10,7 @@ blend_mode = 1
 size = Vector2(11.5, 64)
 
 [node name="LightPortal" type="Area2D" unique_id=159826057]
-script = ExtResource("1_dhcpy")
+script = ExtResource("1_whufp")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1437131956]
 material = SubResource("CanvasItemMaterial_dhcpy")

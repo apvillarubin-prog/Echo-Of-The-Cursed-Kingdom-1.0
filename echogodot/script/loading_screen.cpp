@@ -25,7 +25,6 @@ void OnProcess(Caller* instance, double delta)
 	if (elapsed >= 3.5)
 	{
 		switched = true;
-
 		// --- MUSIC MANAGEMENT ---
 		Node* music_node = self->get_node_or_null("/root/MusicManager");
 		if (music_node) {
@@ -35,9 +34,7 @@ void OnProcess(Caller* instance, double delta)
 			}
 		}
 		// ------------------------
-
 		int level = 1; // Default
-
 		// Read from the Global Autoload
 		Node* my_global = self->get_node_or_null("/root/Global");
 		UtilityFunctions::print("[DEBUG] Searching for /root/Global...");
@@ -53,9 +50,7 @@ void OnProcess(Caller* instance, double delta)
 		} else {
 			UtilityFunctions::print("[ERROR] /root/Global NOT FOUND. Defaulting to level 1.");
 		}
-
 		UtilityFunctions::print("[DEBUG] Resolved level int: ", level);
-
 		// --- SCENE PATH LOOKUP TABLE ---
 		String scene_path;
 		switch (level)
@@ -68,9 +63,13 @@ void OnProcess(Caller* instance, double delta)
 				break;
 		}
 		// --------------------------------
-
 		UtilityFunctions::print("[DEBUG] Final scene_path resolved to: ", scene_path);
 		UtilityFunctions::print("[DEBUG] Attempting scene change now...");
+
+		// Show the game UI health bar
+		Node* game_ui = self->get_tree()->get_first_node_in_group("game_ui");
+		if (game_ui) game_ui->call("show_ui");
+
 		self->get_tree()->change_scene_to_file(scene_path);
 		UtilityFunctions::print("[DEBUG] change_scene_to_file() called. (This may not print if scene change is immediate.)");
 	}

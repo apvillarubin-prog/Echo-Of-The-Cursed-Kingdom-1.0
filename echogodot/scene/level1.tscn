@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://b5ehrli65s4gp"]
 
-[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/knight.tscn" id="1_itxqv"]
+[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/PlayerEngine.tscn" id="1_itxqv"]
 [ext_resource type="Texture2D" uid="uid://clddp1wdwhlfp" path="res://asset/anim_lights.png" id="2_aiqds"]
 [ext_resource type="Texture2D" uid="uid://dd2r6vxqlavjf" path="res://asset/environment.png" id="2_of57s"]
 [ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="3_b5f6u"]
@@ -53,12 +53,12 @@
 [ext_resource type="PackedScene" uid="uid://buatistq2sfms" path="res://scene/door_area.tscn" id="51_7wlxp"]
 [ext_resource type="Script" uid="uid://dupfo4yjt3wek" path="res://script/instruction_zone.cpp" id="52_vvg2v"]
 
-[sub_resource type="Gradient" id="Gradient_gm452"]
+[sub_resource type="Gradient" id="Gradient_vvg2v"]
 offsets = PackedFloat32Array(0.22980501, 0.6364902)
 colors = PackedColorArray(0.8286908, 0.8286908, 0.8286908, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lyfxw"]
-gradient = SubResource("Gradient_gm452")
+gradient = SubResource("Gradient_vvg2v")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 

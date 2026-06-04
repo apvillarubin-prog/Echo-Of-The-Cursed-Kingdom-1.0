@@ -1241,12 +1241,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_biu62"]
-bg_color = Color(0.49938375, 0, 0.043900363, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7t8lw"]
-bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
-
 [node name="knight" type="CharacterBody2D" unique_id=1245913708 groups=["player"]]
 collision_layer = 3
 collision_mask = 3
@@ -1322,59 +1316,3 @@ volume_db = -5.727
 [node name="defeat" type="AudioStreamPlayer" parent="." unique_id=1062321526]
 stream = ExtResource("15_3qbpu")
 volume_db = -5.727
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1061500185]
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=875618579]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 270.0
-offset_bottom = 80.0
-theme_override_styles/background = SubResource("StyleBoxFlat_biu62")
-theme_override_styles/fill = SubResource("StyleBoxFlat_7t8lw")
-max_value = 50.0
-value = 50.0
-show_percentage = false
-
-[node name="DeathScreen" type="Control" parent="CanvasLayer" unique_id=385275630]
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/DeathScreen" unique_id=369448377]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="Label" type="Label" parent="CanvasLayer/DeathScreen" unique_id=827272886]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -321.0
-offset_top = -121.0
-offset_right = 302.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 125
-text = "YOU DIED!"
-
-[node name="RespawnButton" type="Button" parent="CanvasLayer/DeathScreen" unique_id=237858024]
-layout_mode = 0
-offset_left = 806.0
-offset_top = 575.0
-offset_right = 1074.0
-offset_bottom = 652.0
-theme_override_font_sizes/font_size = 50
-text = "RESPAWN?"
