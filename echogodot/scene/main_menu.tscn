@@ -101,15 +101,15 @@ texture = ExtResource("5_14wem")
 
 [node name="Label" type="Label" parent="." unique_id=1387564887]
 layout_mode = 0
-offset_left = -843.0
-offset_top = -462.0
-offset_right = -298.0
-offset_bottom = -21.0
-theme_override_colors/font_color = Color(0, 0.2318457, 0.6236955, 1)
+offset_left = -1037.0
+offset_top = -468.0
+offset_right = -50.0
+offset_bottom = -27.0
+theme_override_colors/font_color = Color(0.92726576, 1.6524335, 1.7695378, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_sepwh")
 theme_override_font_sizes/font_size = 165
-text = "GAME
-NAME"
+text = "Guild of the 
+Getaway"
 horizontal_alignment = 1
 vertical_alignment = 1
