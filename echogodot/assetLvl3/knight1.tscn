@@ -838,7 +838,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"wizard_cast",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -969,7 +969,8 @@ texture_filter = 1
 position = Vector2(1, -1)
 scale = Vector2(1.015625, 1)
 sprite_frames = SubResource("SpriteFrames_8lpmn")
-animation = &"archer_attack"
+animation = &"wizard_cast"
+frame_progress = 0.9505383
 
 [node name="WalkSFX" type="AudioStreamPlayer2D" parent="." unique_id=1381700767]
 stream = SubResource("AudioStreamMP3_so6f8")
