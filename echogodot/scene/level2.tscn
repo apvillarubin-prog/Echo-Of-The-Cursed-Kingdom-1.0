@@ -34,6 +34,7 @@
 [ext_resource type="Script" uid="uid://lutusrpdm3ev" path="res://script/door_area2to3.cpp" id="24_yb87m"]
 [ext_resource type="PackedScene" uid="uid://t0060fgfyog4" path="res://scene/fade_area.tscn" id="32_g3rbi"]
 [ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="34_yb87m"]
+[ext_resource type="Script" uid="uid://dupfo4yjt3wek" path="res://script/instruction_zone.cpp" id="35_vb3gr"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qhexg"]
 
@@ -4573,6 +4574,8 @@ texture = ExtResource("34_yb87m")
 [sub_resource type="TileSet" id="TileSet_mju07"]
 sources/0 = SubResource("TileSetAtlasSource_vb3gr")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mju07"]
+
 [node name="level2" type="Node2D" unique_id=1264825657]
 
 [node name="GeminiGeneratedImageTcp351Tcp351Tcp7" type="Sprite2D" parent="." unique_id=576432387]
@@ -4830,3 +4833,39 @@ tile_set = SubResource("TileSet_mju07")
 [node name="FadeArea2" parent="HiddenArea2" unique_id=1055994384 instance=ExtResource("32_g3rbi")]
 position = Vector2(1440, -52.000004)
 scale = Vector2(12.768904, 10.502296)
+
+[node name="InstructionZone11" type="Area2D" parent="." unique_id=944824113]
+position = Vector2(206, 42)
+script = ExtResource("35_vb3gr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionZone11" unique_id=733248585]
+position = Vector2(89, 1)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_mju07")
+
+[node name="InstructionText" type="Label" parent="InstructionZone11" unique_id=393201910]
+offset_top = -28.000002
+offset_right = 643.0
+offset_bottom = 125.0
+scale = Vector2(0.28775072, 0.31345233)
+text = "Left click to shoot the lever using the arrow"
+horizontal_alignment = 1
+
+[node name="InstructionZone12" type="Area2D" parent="." unique_id=1814050264]
+position = Vector2(1037, 33)
+script = ExtResource("35_vb3gr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InstructionZone12" unique_id=311562458]
+position = Vector2(89, 1)
+scale = Vector2(2.0116494, 0.91818)
+shape = SubResource("RectangleShape2D_mju07")
+
+[node name="InstructionText" type="Label" parent="InstructionZone12" unique_id=1459710126]
+offset_top = -28.000002
+offset_right = 643.0
+offset_bottom = 125.0
+scale = Vector2(0.28775072, 0.31345233)
+text = "Press E to Grapple
+A & D to move 
+SPACE to let go"
+horizontal_alignment = 1

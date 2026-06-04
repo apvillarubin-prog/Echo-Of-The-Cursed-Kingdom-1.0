@@ -28,9 +28,7 @@ using namespace jenova::sdk;
 
 enum HeroType { KNIGHT = 0, ARCHER = 1, PRIEST = 2, WIZARD = 3 };
 
-// ============================================================================
-// 1. C++ CLASS DEFINITION
-// ============================================================================
+
 class PlayerController {
 public:
 	CharacterBody2D* self = nullptr;

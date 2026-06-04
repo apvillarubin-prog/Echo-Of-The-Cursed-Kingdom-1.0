@@ -5,7 +5,7 @@ extends Area2D
 
 func _ready():
 	# Connect the body_entered signal via code so you don't have to do it manually in the editor
-	body_entered.connect(_on_body_entered)
+	body_entered	.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D):
 	# Check if the object entering the portal is your player

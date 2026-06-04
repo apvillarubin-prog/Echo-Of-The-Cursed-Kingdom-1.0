@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cwooywdp5w62n" path="res://asset/character-spritesheet (6).png" id="3_8lpmn"]
 [ext_resource type="Texture2D" uid="uid://o5rqivaukage" path="res://asset/character-spritesheet (7).png" id="4_buwha"]
 [ext_resource type="Texture2D" uid="uid://b874dshg1w5y2" path="res://asset/gro.png" id="4_y2git"]
+[ext_resource type="AudioStream" uid="uid://n1itrrw3suq7" path="res://asset/music/level bg music (mp3cut.net).mp3" id="8_5r8ki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_igyo2"]
 size = Vector2(9.779469, 14.266984)
@@ -996,3 +997,6 @@ max_value = 50.0
 value = 50.0
 show_percentage = false
 metadata/_edit_use_anchors_ = true
+
+[node name="LevelBGM" type="AudioStreamPlayer" parent="." unique_id=374504168]
+stream = ExtResource("8_5r8ki")
