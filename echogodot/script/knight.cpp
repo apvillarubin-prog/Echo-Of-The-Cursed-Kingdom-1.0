@@ -38,7 +38,7 @@ public:
 	ProgressBar* health_bar = nullptr;
 
 	// --- Admin Toggle ---
-	bool admin_mode = false; // <-- SET TO FALSE FOR PRODUCTION
+	bool admin_mode = true; // <-- SET TO FALSE FOR PRODUCTION
 
 	// --- Death Screen Pointers ---
 	Control* death_screen = nullptr;
@@ -313,17 +313,15 @@ public:
 			} else if (scene_name == "level3" || scene_name == "Level3") {
 				unlocked_archer = true; has_sword = true; has_shield = true;
 				unlocked_priest = false; 
-				unlocked_wizard = false; // Kept locked until level 4
+				unlocked_wizard = false;
 			} else if (scene_name == "level4" || scene_name == "Level4") {
 				unlocked_archer = true; 
 				unlocked_priest = true;
 				has_sword = true; 
 				has_shield = true;
-				
-				// --- Wizard Unlocks Upon Reaching Level 4 ---
 				unlocked_wizard = true; 
-				has_summon = true;      // Open summon block ability
-				has_teleport = true;    // Open teleport ability
+				has_summon = true;
+				has_teleport = true;
 				UtilityFunctions::print("[DEBUG] Level 4 Reached: Wizard and Wizard abilities are open!");
 			} else {
 				unlocked_archer = false; unlocked_priest = false; unlocked_wizard = false;
@@ -699,6 +697,7 @@ public:
 
 				if (current_frame >= damage_frame && last_attack_frame < damage_frame) {
 					bool facing_right = !sprite->is_flipped_h();
+
 					if (current_hero == KNIGHT) {
 						TypedArray<Node> enemies_grp = self->get_tree()->get_nodes_in_group("enemy");
 						bool hit_anything = false;
@@ -708,7 +707,6 @@ public:
 								float dist = self->get_global_position().distance_to(enemy->get_global_position());
 								Vector2 dir_to_enemy = enemy->get_global_position() - self->get_global_position();
 								bool is_in_front = facing_right ? (dir_to_enemy.x > 0) : (dir_to_enemy.x < 0);
-
 								if (dist < 45.0f && is_in_front) {
 									enemy->set_meta("pending_damage", knight_damage); 
 									hit_anything = true;
@@ -726,12 +724,11 @@ public:
 							if (arrow_instance) {
 								Node2D* arrow = Object::cast_to<Node2D>(arrow_instance);
 								if (arrow) {
-									Vector2 spawn_offset = facing_right ? Vector2(25, 2) : Vector2(-25, 2);
+									Vector2 spawn_offset = facing_right ? Vector2(25, -15) : Vector2(-25, -15);
 									arrow->set_global_position(self->get_global_position() + spawn_offset);
 									arrow->set_scale(Vector2(0.5f, 0.5f));
 									arrow->set_meta("buffed_damage", buff_active_timer > 0.0f);
-									if (!facing_right) arrow->set_rotation(3.14159f); 
-									else arrow->set_rotation(0.0f);
+									arrow->set_meta("facing_left", !facing_right); // FIX: direction via meta
 									self->get_tree()->get_current_scene()->call_deferred(StringName("add_child"), arrow_instance);
 								}
 							}
