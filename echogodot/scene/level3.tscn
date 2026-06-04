@@ -1,8 +1,9 @@
 [gd_scene format=4 uid="uid://crxpjfue6bd6x"]
 
-[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/knight.tscn" id="1_0yew7"]
+[ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/PlayerEngine.tscn" id="1_0yew7"]
 [ext_resource type="Texture2D" uid="uid://be073d0gxy1jg" path="res://asset/ground.png" id="1_6qyxp"]
 [ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="2_05542"]
+[ext_resource type="PackedScene" uid="uid://dlpy6j6r0ivd" path="res://scene/grapple_point.tscn" id="4_05542"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qhexg"]
 
@@ -458,3 +459,6 @@ limit_right = 9999996
 limit_bottom = 180
 limit_smoothed = true
 position_smoothing_enabled = true
+
+[node name="GrapplePoint" parent="." unique_id=161295692 instance=ExtResource("4_05542")]
+position = Vector2(368, -32)

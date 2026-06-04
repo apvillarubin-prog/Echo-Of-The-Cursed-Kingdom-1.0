@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cw2ytnba4fqu1"]
 
-[ext_resource type="Script" uid="uid://b2ro3gj35k1is" path="res://assetLvl3/enemy_1.gd" id="1_hbhdv"]
+[ext_resource type="Script" uid="uid://bd506u3ft5ikg" path="res://assetLvl3/realenemy.cpp" id="1_25ag2"]
 [ext_resource type="Texture2D" uid="uid://bsa23qeobfbv7" path="res://asset/character-spritesheet (5).png" id="2_aqd53"]
 [ext_resource type="AudioStream" uid="uid://b08ldavy3jkr0" path="res://assetLvl3/ragecore29-htf-flesh-impact-1-480118.mp3" id="3_25ag2"]
 
@@ -173,7 +173,7 @@ animations = [{
 }]
 
 [node name="enemy" type="CharacterBody2D" unique_id=906854867 groups=["enemy"]]
-script = ExtResource("1_hbhdv")
+script = ExtResource("1_25ag2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1809335297]
 position = Vector2(-1.5550807, -1.7993546)
