@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://bu53u1sa3548b"]
 
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
+<<<<<<< Updated upstream
 [ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
 [ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="4_sepwh"]
 <<<<<<< Updated upstream
 [ext_resource type="Texture2D" uid="uid://rjd75masb8tb" path="res://assetLvl3/ZZZZZZ.png" id="5_sepwh"]
 =======
 [ext_resource type="Texture2D" uid="uid://djobtq4nrebgl" path="res://assetLvl3/ZZZZZZ.png" id="5_sepwh"]
+>>>>>>> Stashed changes
+=======
+[ext_resource type="Texture2D" uid="uid://djobtq4nrebgl" path="res://assetLvl3/ZZZZZZ.png" id="2_0iwki"]
+[ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
+[ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="4_sepwh"]
 >>>>>>> Stashed changes
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hxu56"]
@@ -47,6 +53,7 @@ offset_right = 845.0
 offset_bottom = 611.0
 color = Color(0, 0.0627451, 0.11372549, 1)
 
+<<<<<<< Updated upstream
 [node name="Zzzzzz" type="Sprite2D" parent="." unique_id=1907874640]
 position = Vector2(-153, -26)
 =======
@@ -75,6 +82,18 @@ offset_left = -173.0
 offset_top = -132.0
 offset_right = 587.0
 offset_bottom = 332.0
+>>>>>>> Stashed changes
+=======
+[node name="Zzzzzz" type="Sprite2D" parent="." unique_id=1946253885]
+position = Vector2(-160, -30)
+texture = ExtResource("2_0iwki")
+
+[node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
+layout_mode = 1
+offset_left = -162.0
+offset_top = -131.0
+offset_right = 598.0
+offset_bottom = 333.0
 >>>>>>> Stashed changes
 
 [node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
