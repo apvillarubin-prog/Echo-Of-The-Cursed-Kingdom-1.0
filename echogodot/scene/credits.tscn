@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://dd2pk7txt05p6"]
 
 [ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="1_c8jmj"]
+<<<<<<< Updated upstream
+[ext_resource type="Script" uid="uid://cf1jagc1fj0sj" path="res://scene/credits.cpp" id="1_hgo0l"]
+=======
+[ext_resource type="Script" uid="uid://dy6rjdm7jsu1x" path="res://scene/credits.cpp" id="1_hgo0l"]
+>>>>>>> Stashed changes
 
-[node name="Control" type="Control" unique_id=356108934]
+[node name="CreditsScreen" type="Control" unique_id=356108934]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,61 +24,113 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="ColorRect" unique_id=916448781]
+[node name="Label" type="Label" parent="." unique_id=916448781]
+<<<<<<< Updated upstream
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -136.5
+offset_left = -263.5
 offset_top = 72.0
-offset_right = 136.5
-offset_bottom = 121.0
+offset_right = 263.5
+offset_bottom = 183.0
 grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.9019608, 0, 1)
 theme_override_fonts/font = ExtResource("1_c8jmj")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 46
 text = "CREDITS TO THE RIGHTFUL OWNERS 
 OF ALL THE ASSETS WE HAVE USED
 thank you!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="ColorRect" unique_id=1934023703]
+[node name="CreditsContainer" type="HBoxContainer" parent="." unique_id=1991938623]
+=======
 layout_mode = 0
-offset_left = 68.0
-offset_top = 220.0
-offset_right = 1880.0
-offset_bottom = 1603.0
+offset_left = 173.5
+offset_top = 98.0
+offset_right = 1746.5
+offset_bottom = 259.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_fonts/font = ExtResource("1_c8jmj")
+theme_override_font_sizes/font_size = 59
+text = "We would like to acknowledge and credit the
+ rightful owners of all assets used in this project. Thank you."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1871948974]
+layout_mode = 0
+offset_left = 1737.0
+offset_top = 988.0
+offset_right = 1887.0
+offset_bottom = 1055.0
+text = "RETURN"
+
+[node name="CreditsContainer" type="VBoxContainer" parent="." unique_id=687175187]
+>>>>>>> Stashed changes
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+<<<<<<< Updated upstream
+offset_left = -387.0
+offset_top = -271.5
+offset_right = 387.0
+offset_bottom = 271.5
+=======
+offset_left = -790.0
+offset_top = -262.0
+offset_right = 783.0
+offset_bottom = 614.0
+>>>>>>> Stashed changes
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hgo0l")
+
+[node name="Label2" type="Label" parent="CreditsContainer" unique_id=1934023703]
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "* Sprites contributed as part of the Liberated Pixel Cup project from OpenGameArt.org: http://opengameart.org/content/lpc-collection
-*Environment Art: Pixel Fantasy Caves by Szadiart(GameDevMarket)
-*Rogue Fantasy Castle Handcrafted by Szadiart(GameDevMarket)
-*Pixel Castle 2D Platformer Handcrafted by Szadiart(GameDevMarket)
-*Fuzzeke - Without A Care [Game Trailer Music]
-*D&D/Cave Exploration/Music/ 1 Hour
-*D&D/RPG Combat Music Mix | 1 Hour | Royalty Free | Travis Savoie
-*Medieval Village Exterior RPG Tileset v 1.0 - A pixel art asset packby Hypnobius https://hypnobius.itch.io/
-*Free Castle Interior Pixel Background (itch.io)
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-"
+text = "VISUAL ASSETS
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+LPC Collection – OpenGameArt.org
+Szadiart (GameDevMarket)
+Pixel Fantasy Caves
+Rogue Fantasy Castle
+Pixel Castle 2D Platformer
+Hypnobius – Medieval Village Exterior RPG Tileset (itch.io)
+Free Castle Interior – Pixel Background (itch.io)
+<<<<<<< Updated upstream
+
+MUSIC & AUDIO
+\"Without A Care\" – Fuzzeke
+\"RPG Combat Music Mix\" – Travis Savoie
+\"Cave Exploration\" – D&D Music Archives"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1612825336]
+layout_mode = 0
+offset_left = 1618.0
+offset_top = 953.0
+offset_right = 1904.0
+offset_bottom = 1058.0
+theme_override_fonts/font = ExtResource("1_c8jmj")
+theme_override_font_sizes/font_size = 36
+text = "RETURN"
+=======
+Neiljan Lester Sarreño
+
+MUSIC & AUDIO
+
+\"Without A Care\" – Fuzzeke
+\"RPG Combat Music Mix\" – Travis Savoie
+\"Cave Exploration\" – D&D Music Archives
+\"Mugen SFX\""
+horizontal_alignment = 1
+>>>>>>> Stashed changes
