@@ -1,14 +1,16 @@
 [gd_scene format=3 uid="uid://dd2pk7txt05p6"]
 
 [ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="1_c8jmj"]
+[ext_resource type="Script" uid="uid://dy6rjdm7jsu1x" path="res://scene/credits.cpp" id="1_hgo0l"]
 
-[node name="Control" type="Control" unique_id=356108934]
+[node name="CreditsScreen" type="Control" unique_id=356108934]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_hgo0l")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2092662041]
 layout_mode = 1
@@ -19,61 +21,53 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="ColorRect" unique_id=916448781]
+[node name="cd" type="Label" parent="." unique_id=916448781]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -136.5
-offset_top = 72.0
-offset_right = 136.5
-offset_bottom = 121.0
+offset_left = 110.0
+offset_top = 84.0
+offset_right = 870.0
+offset_bottom = 377.0
 grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.8901961, 0, 1)
 theme_override_fonts/font = ExtResource("1_c8jmj")
-theme_override_font_sizes/font_size = 26
-text = "CREDITS TO THE RIGHTFUL OWNERS 
-OF ALL THE ASSETS WE HAVE USED
-thank you!"
+theme_override_font_sizes/font_size = 53
+text = "We would like to acknowledge 
+and credit the rightful owners 
+of all assets used in this project. 
+Thank you."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="ColorRect" unique_id=1934023703]
+[node name="Label" type="Label" parent="." unique_id=1934023703]
 layout_mode = 0
-offset_left = 68.0
-offset_top = 220.0
-offset_right = 1880.0
-offset_bottom = 1603.0
+offset_left = 96.0
+offset_top = 105.0
+offset_right = 870.0
+offset_bottom = 648.0
 theme_override_font_sizes/font_size = 28
-text = "* Sprites contributed as part of the Liberated Pixel Cup project from OpenGameArt.org: http://opengameart.org/content/lpc-collection
-*Environment Art: Pixel Fantasy Caves by Szadiart(GameDevMarket)
-*Rogue Fantasy Castle Handcrafted by Szadiart(GameDevMarket)
-*Pixel Castle 2D Platformer Handcrafted by Szadiart(GameDevMarket)
-*Fuzzeke - Without A Care [Game Trailer Music]
-*D&D/Cave Exploration/Music/ 1 Hour
-*D&D/RPG Combat Music Mix | 1 Hour | Royalty Free | Travis Savoie
-*Medieval Village Exterior RPG Tileset v 1.0 - A pixel art asset packby Hypnobius https://hypnobius.itch.io/
-*Free Castle Interior Pixel Background (itch.io)
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-*
-"
+text = "VISUAL ASSETS
+LPC Collection – OpenGameArt.org
+Szadiart (GameDevMarket)
+Pixel Fantasy Caves
+Rogue Fantasy Castle
+Pixel Castle 2D Platformer
+Hypnobius – Medieval Village Exterior RPG Tileset (itch.io)
+Free Castle Interior – Pixel Background (itch.io)
+
+MUSIC & AUDIO
+\"Without A Care\" – Fuzzeke
+\"RPG Combat Music Mix\" – Travis Savoie
+\"Cave Exploration\" – D&D Music Archives"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=145894728]
+layout_mode = 0
+offset_left = 1604.0
+offset_top = 948.0
+offset_right = 1874.0
+offset_bottom = 1041.0
+theme_override_font_sizes/font_size = 43
+text = "RETURN"
