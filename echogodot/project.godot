@@ -18,8 +18,8 @@ config/features=PackedStringArray("4.6", "Mobile")
 
 MusicManager="*uid://dujbgjmsex0kb"
 TransitionManager="*uid://drf2rb4fht27n"
-Global="*uid://bpb0si42er6yo"
 GameUI="*uid://bipqurx4jthuk"
+Global="*uid://3gkhx1qxixbx"
 
 [display]
 

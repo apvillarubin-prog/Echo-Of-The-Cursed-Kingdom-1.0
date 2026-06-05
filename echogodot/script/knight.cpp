@@ -44,7 +44,7 @@ public:
 	AnimatedSprite2D* sprite = nullptr;
 
 	std::unique_ptr<BaseHero> active_hero;
-	bool admin_mode = true; 
+	bool admin_mode = false; 
 	bool is_dead = false;
 	int player_health = 50;
 	Vector2 start_pos;

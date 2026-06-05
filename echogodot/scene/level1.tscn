@@ -25288,7 +25288,7 @@ color = Color(0.3530626, 0.35306263, 0.35306257, 1)
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_itxqv")]
 z_index = 5
-position = Vector2(-24.992668, -8.074758)
+position = Vector2(-81.975945, -5.046722)
 scale = Vector2(0.5064855, 0.480353)
 
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=138646991]
