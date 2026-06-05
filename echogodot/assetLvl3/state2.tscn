@@ -3436,7 +3436,7 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_40cx6"]
 distance = 196.82214
 
-[node name="Node2D" type="Node2D" unique_id=1334751890]
+[node name="state2" type="Node2D" unique_id=1334751890]
 metadata/_edit_vertical_guides_ = [718.0]
 
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=190975334]

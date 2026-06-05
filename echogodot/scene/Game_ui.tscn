@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://bipqurx4jthuk"]
 
 [ext_resource type="Script" uid="uid://djmsgu2kfgum5" path="res://script/game_ui.cpp" id="1_4sf7q"]
+[ext_resource type="Script" uid="uid://doi51i48dspc1" path="res://scene/volume_slider.cpp" id="2_8ob3j"]
+[ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="2_icxuh"]
+[ext_resource type="Texture2D" uid="uid://c2o800hi6hf6o" path="res://asset/Untitled design (18).png" id="2_yj5c6"]
+[ext_resource type="Texture2D" uid="uid://b3ys8s2tqttja" path="res://asset/Untitled design (17).png" id="3_njd0d"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_biu62"]
 bg_color = Color(0.49938375, 0, 0.043900363, 1)
@@ -8,14 +12,45 @@ bg_color = Color(0.49938375, 0, 0.043900363, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7t8lw"]
 bg_color = Color(0.111018516, 0.33993194, 1.92523e-07, 1)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_njd0d"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(500, 200, 1)
+gravity = Vector3(0, 300, 0)
+scale_min = 0.0
+scale_max = 6.0
+color = Color(3.2944162, 3.243637, 0, 1)
+
+[sub_resource type="Environment" id="Environment_ys563"]
+background_mode = 3
+glow_enabled = true
+glow_blend_mode = 0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8voj"]
+content_margin_top = 10.0
+bg_color = Color(0.66854316, 0.5253471, 0, 1)
+corner_detail = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ob3j"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icxuh"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+corner_detail = 1
+
 [node name="CanvasLayer" type="CanvasLayer" unique_id=94507494]
 script = ExtResource("1_4sf7q")
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1975748975]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 270.0
-offset_bottom = 80.0
+offset_left = 27.0
+offset_top = 47.0
+offset_right = 508.0
+offset_bottom = 165.0
 theme_override_styles/background = SubResource("StyleBoxFlat_biu62")
 theme_override_styles/fill = SubResource("StyleBoxFlat_7t8lw")
 max_value = 50.0
@@ -23,6 +58,7 @@ value = 50.0
 show_percentage = false
 
 [node name="DeathScreen" type="Control" parent="." unique_id=460642288]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,3 +99,92 @@ offset_right = 1074.0
 offset_bottom = 652.0
 theme_override_font_sizes/font_size = 50
 text = "RESPAWN?"
+
+[node name="PauseToggleButton" type="TextureButton" parent="." unique_id=105486857]
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.032
+offset_left = -348.0
+offset_top = -107.0
+offset_right = -174.15808
+offset_bottom = 14.1767235
+grow_horizontal = 0
+scale = Vector2(3.3306103, 2.5363317)
+texture_normal = ExtResource("2_yj5c6")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="PauseMenu" type="Control" parent="." unique_id=1842930746]
+process_mode = 3
+visible = false
+z_index = 100
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -644.0
+offset_top = -379.0
+offset_right = -591.9796
+offset_bottom = -301.3739
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(22.933308, 10.344459)
+mouse_filter = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="PauseMenu" unique_id=472398595]
+position = Vector2(31.5262, 35.091263)
+scale = Vector2(0.109017506, 0.5038827)
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_njd0d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="PauseMenu" unique_id=658452019]
+environment = SubResource("Environment_ys563")
+
+[node name="UntitledDesign(17)" type="Sprite2D" parent="PauseMenu" unique_id=507344015]
+modulate = Color(0.41981313, 0.41981313, 0.4198131, 1)
+position = Vector2(29.869219, 35.477936)
+scale = Vector2(0.08814182, 0.19540738)
+texture = ExtResource("3_njd0d")
+
+[node name="MainMenuButton" type="Button" parent="PauseMenu" unique_id=1801730959]
+process_mode = 3
+layout_mode = 0
+offset_left = 9.505815
+offset_top = 0.48335075
+offset_right = 314.50583
+offset_bottom = 84.48335
+scale = Vector2(0.11285076, 0.30724737)
+theme = ExtResource("2_icxuh")
+theme_override_font_sizes/font_size = 50
+text = "MAIN MENU"
+
+[node name="ResumeButton" type="Button" parent="PauseMenu" unique_id=1329249849]
+process_mode = 3
+layout_mode = 0
+offset_left = 9.549469
+offset_top = 27.550915
+offset_right = 314.54947
+offset_bottom = 111.55092
+scale = Vector2(0.11285076, 0.30724737)
+theme = ExtResource("2_icxuh")
+theme_override_font_sizes/font_size = 50
+text = "RESUME"
+
+[node name="VolumeSlider" type="HSlider" parent="PauseMenu" unique_id=1392801840]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 3.968029
+offset_top = 59.16211
+offset_right = 52.587265
+offset_bottom = 75.16211
+theme_override_styles/slider = SubResource("StyleBoxFlat_e8voj")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_8ob3j")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_icxuh")
+min_value = 0.001
+max_value = 1.0
+step = 0.01
+value = 1.0
+script = ExtResource("2_8ob3j")
