@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://bu53u1sa3548b"]
 
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
-[ext_resource type="Texture2D" uid="uid://djobtq4nrebgl" path="res://assetLvl3/ZZZZZZ.png" id="2_0iwki"]
 [ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
 [ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="4_sepwh"]
+[ext_resource type="Texture2D" uid="uid://djobtq4nrebgl" path="res://assetLvl3/ZZZZZZ.png" id="5_sepwh"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hxu56"]
 particle_flag_disable_z = true
@@ -34,24 +34,24 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3er1b")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1712189433]
-layout_mode = 1
-offset_left = -1206.0
-offset_top = -882.0
-offset_right = 845.0
-offset_bottom = 611.0
+[node name="ColorRect" type="ColorRect" parent="." unique_id=99212210]
+layout_mode = 0
+offset_left = -1443.0
+offset_top = -750.0
+offset_right = 991.0
+offset_bottom = 623.0
 color = Color(0, 0.0627451, 0.11372549, 1)
 
-[node name="Zzzzzz" type="Sprite2D" parent="." unique_id=1927782739]
-position = Vector2(-164, -22)
-texture = ExtResource("2_0iwki")
+[node name="Zzzzzz" type="Sprite2D" parent="." unique_id=1109313667]
+position = Vector2(-165, -35)
+texture = ExtResource("5_sepwh")
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
 layout_mode = 1
 offset_left = -173.0
-offset_top = -135.0
+offset_top = -132.0
 offset_right = 587.0
-offset_bottom = 329.0
+offset_bottom = 332.0
 
 [node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
 texture_filter = 1

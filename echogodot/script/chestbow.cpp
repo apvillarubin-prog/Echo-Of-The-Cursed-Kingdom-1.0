@@ -4,6 +4,7 @@
 #include <Godot/classes/label.hpp>
 #include <Godot/classes/animation_player.hpp>
 #include <Godot/classes/input.hpp>
+#include <Godot/classes/audio_stream_player.hpp>
 #include <Godot/variant/utility_functions.hpp>
 
 using namespace godot;
@@ -16,6 +17,15 @@ bool has_been_opened = false;
 
 void OnReady(Caller* instance) {
 	chest_self = GetSelf<Area2D>(instance);
+	UtilityFunctions::print("[DEBUG-BOW] OnReady fired.");
+	
+	if (chest_self) {
+		if (chest_self->get_node_or_null("AnimationPlayer")) UtilityFunctions::print("[DEBUG-BOW] AnimationPlayer found.");
+		else UtilityFunctions::print("[ERROR-BOW] AnimationPlayer NOT found!");
+		
+		if (chest_self->get_node_or_null("OpenSFX")) UtilityFunctions::print("[DEBUG-BOW] OpenSFX found.");
+		else UtilityFunctions::print("[ERROR-BOW] OpenSFX NOT found! Check node name.");
+	}
 }
 
 void OnPhysicsProcess(Caller* instance, double delta) {
@@ -40,14 +50,25 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 		if (prompt) prompt->set_visible(true);
 		
 		if (Input::get_singleton()->is_action_just_pressed("ui_interact") || Input::get_singleton()->is_key_pressed(Key::KEY_E)) {
+			UtilityFunctions::print("[DEBUG-BOW] E pressed, opening chest!");
 			has_been_opened = true;
 			if (prompt) prompt->set_visible(false);
 			
 			AnimationPlayer* ap = (AnimationPlayer*)chest_self->get_node_or_null("AnimationPlayer");
 			if (ap) ap->play("open");
 			
-			// Unlocks the bow for the archer!
-			if (target_player) target_player->call("unlock_bow");
+			AudioStreamPlayer* open_sfx = Object::cast_to<AudioStreamPlayer>(chest_self->get_node_or_null("OpenSFX"));
+			if (open_sfx) {
+				UtilityFunctions::print("[DEBUG-BOW] Playing OpenSFX...");
+				open_sfx->play();
+			} else {
+				UtilityFunctions::print("[ERROR-BOW] Tried to play OpenSFX but node is missing!");
+			}
+			
+			if (target_player) {
+				UtilityFunctions::print("[DEBUG-BOW] Calling unlock_bow on player!");
+				target_player->call("unlock_bow");
+			}
 		}
 	} else {
 		if (prompt) prompt->set_visible(false);

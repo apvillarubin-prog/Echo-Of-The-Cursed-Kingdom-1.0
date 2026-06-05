@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://0g4r7mo8dhty"]
 
 [ext_resource type="Script" uid="uid://bp0l1ml12frfm" path="res://script/enemy.cpp" id="1_f87vc"]
-[ext_resource type="Texture2D" uid="uid://bsa23qeobfbv7" path="res://asset/asset/character-spritesheet (5).png" id="2_8u16h"]
+[ext_resource type="Texture2D" uid="uid://bsa23qeobfbv7" path="res://asset/character-spritesheet (5).png" id="2_8u16h"]
+[ext_resource type="AudioStream" uid="uid://bo1ss0lhp50ws" path="res://assetLvl3/attack (mp3cut.net) (1).mp3" id="3_8u16h"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_f87vc"]
 polygon = PackedVector2Array(-8, 9, -7, 12, -5, 13, 1, 13, 7, 13, 13, 12, 14, 8, 12, 5, 4, 4, -6, 5, -8, 7, -8, 8)
@@ -213,3 +214,6 @@ allow_greater = true
 allow_lesser = true
 fill_mode = 1
 show_percentage = false
+
+[node name="AttackSFX" type="AudioStreamPlayer" parent="." unique_id=961225732]
+stream = ExtResource("3_8u16h")

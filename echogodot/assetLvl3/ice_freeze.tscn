@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cuyuec58y8gav" path="res://assetLvl3/ice_freeze.cpp" id="1_f8kwm"]
 [ext_resource type="Texture2D" uid="uid://bsfx2p2kv2iyu" path="res://assetLvl3/ice.png" id="2_fxq37"]
+[ext_resource type="AudioStream" uid="uid://cyy6uyya4tfw5" path="res://asset/music/freeze.mp3" id="3_i60j4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i60j4"]
 atlas = ExtResource("2_fxq37")
@@ -82,5 +83,8 @@ frame_progress = 0.521601
 position = Vector2(-3, -2.0000005)
 scale = Vector2(1, 1.0400004)
 shape = SubResource("CircleShape2D_snaxq")
+
+[node name="FreezeSound" type="AudioStreamPlayer2D" parent="." unique_id=233213790]
+stream = ExtResource("3_i60j4")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

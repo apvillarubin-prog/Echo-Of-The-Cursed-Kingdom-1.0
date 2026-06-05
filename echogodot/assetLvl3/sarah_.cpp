@@ -91,7 +91,7 @@ void play_hit_effects() {
 		hit_sound->play(0.0); 
 	}
 	if (sprite) {
-		sprite->set_modulate(Color(10.0f, 2.0f, 2.0f, 1.0f)); 
+		sprite->set_modulate(Color(1.0f, 0.2f, 0.2f, 1.0f));
 		self->set_meta("flash_timer", 0.15f);
 	}
 	update_hp_bar();
