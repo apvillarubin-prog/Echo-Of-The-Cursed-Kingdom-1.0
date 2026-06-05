@@ -1,10 +1,9 @@
 [gd_scene format=3 uid="uid://bu53u1sa3548b"]
 
 [ext_resource type="Script" uid="uid://tpbqm3mrg0ss" path="res://script/button_manager.cpp" id="1_3er1b"]
-[ext_resource type="Texture2D" uid="uid://b3ys8s2tqttja" path="res://asset/Untitled design (17).png" id="2_2fwvj"]
+[ext_resource type="Texture2D" uid="uid://djobtq4nrebgl" path="res://assetLvl3/ZZZZZZ.png" id="2_0iwki"]
 [ext_resource type="Theme" uid="uid://bcenc7t4vban2" path="res://asset/new_theme.tres" id="3_2fwvj"]
 [ext_resource type="FontFile" uid="uid://0jgmuava383o" path="res://assetLvl3/Mantinia Regular.otf" id="4_sepwh"]
-[ext_resource type="Texture2D" uid="uid://prmx7al2day3" path="res://assetLvl3/neiljanart.png" id="5_14wem"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hxu56"]
 particle_flag_disable_z = true
@@ -41,21 +40,18 @@ offset_left = -1206.0
 offset_top = -882.0
 offset_right = 845.0
 offset_bottom = 611.0
-color = Color(0, 0, 0, 1)
+color = Color(0, 0.0627451, 0.11372549, 1)
 
-[node name="UntitledDesign(17)" type="Sprite2D" parent="." unique_id=922140207]
-visible = false
-modulate = Color(0.5132329, 0.5132329, 0.5132329, 1)
-position = Vector2(-167, -32)
-scale = Vector2(1.9959756, 1.9959756)
-texture = ExtResource("2_2fwvj")
+[node name="Zzzzzz" type="Sprite2D" parent="." unique_id=1927782739]
+position = Vector2(-164, -22)
+texture = ExtResource("2_0iwki")
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=1404628379]
 layout_mode = 1
-offset_left = -33.0
-offset_top = -260.0
-offset_right = 727.0
-offset_bottom = 204.0
+offset_left = -173.0
+offset_top = -135.0
+offset_right = 587.0
+offset_bottom = 329.0
 
 [node name="start" type="Button" parent="MenuButtons" unique_id=174596899]
 texture_filter = 1
@@ -93,23 +89,3 @@ process_material = SubResource("ParticleProcessMaterial_hxu56")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=776545516]
 environment = SubResource("Environment_0iwki")
-
-[node name="Neiljanart" type="Sprite2D" parent="." unique_id=21947609]
-position = Vector2(-625, 280)
-scale = Vector2(0.8812597, 0.8812597)
-texture = ExtResource("5_14wem")
-
-[node name="Label" type="Label" parent="." unique_id=1387564887]
-layout_mode = 0
-offset_left = -1037.0
-offset_top = -468.0
-offset_right = -50.0
-offset_bottom = -27.0
-theme_override_colors/font_color = Color(0.92726576, 1.6524335, 1.7695378, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("4_sepwh")
-theme_override_font_sizes/font_size = 165
-text = "Guild of the 
-Getaway"
-horizontal_alignment = 1
-vertical_alignment = 1
