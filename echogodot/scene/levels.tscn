@@ -21,6 +21,13 @@ glow_blend_mode = 0
 [node name="Levels" type="Node2D" unique_id=1692722474]
 position = Vector2(550, 344)
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1641134016]
+offset_left = -726.0
+offset_top = -483.0
+offset_right = 1592.0
+offset_bottom = 1052.0
+color = Color(0, 0, 0, 1)
+
 [node name="UntitledDesign(16)" type="Sprite2D" parent="." unique_id=1260842938]
 position = Vector2(442, 189)
 scale = Vector2(1.9631408, 1.9631408)

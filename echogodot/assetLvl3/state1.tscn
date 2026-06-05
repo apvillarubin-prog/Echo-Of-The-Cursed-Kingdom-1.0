@@ -3584,9 +3584,9 @@ scale = Vector2(0.5064855, 0.480353)
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=184751787]
 scale = Vector2(1.9743901, 2.0818024)
 zoom = Vector2(6, 6)
-limit_left = -10000004
-limit_top = -9999998
-limit_right = 9999996
+limit_left = -1059
+limit_top = -109
+limit_right = 149
 limit_bottom = 180
 limit_smoothed = true
 position_smoothing_enabled = true

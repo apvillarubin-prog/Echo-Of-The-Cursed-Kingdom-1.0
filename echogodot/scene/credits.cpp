@@ -55,7 +55,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 	if (current_pos.y < dynamic_end_y) {
 		if (self && self->get_tree()) {
-			self->get_tree()->change_scene_to_file("res://mainmenu.tscn");
+			self->get_tree()->change_scene_to_file("res://scene//main_menu.tscn");
 		}
 		initialized = false; 
 	}
@@ -64,7 +64,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 void _on_back_button_pressed() {
 	if (self && self->get_tree()) {
-		self->get_tree()->change_scene_to_file("res://scene/main_menu.tscn");
+		self->get_tree()->change_scene_to_file("res://scene//main_menu.tscn");
 	}
 }
 
