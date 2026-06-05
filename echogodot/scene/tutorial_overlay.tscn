@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://pkslniys5j2a"]
+
+[ext_resource type="Script" uid="uid://chtyvquwvy57m" path="res://scene/tutorial_overlay.cpp" id="1_6db1d"]
+[ext_resource type="Texture2D" uid="uid://cfqfkqhrxjifm" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial.png" id="1_v3t0i"]
+[ext_resource type="Texture2D" uid="uid://dqi5k4i0j3tvq" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (1).png" id="2_6db1d"]
+[ext_resource type="Texture2D" uid="uid://cxuq1k6s5bpnk" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (2).png" id="3_4t3d0"]
+[ext_resource type="Texture2D" uid="uid://b21s8ibeg126a" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (3).png" id="4_k0we5"]
+[ext_resource type="Texture2D" uid="uid://c8rl5xb0eu0iv" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (4).png" id="5_4347t"]
+[ext_resource type="Texture2D" uid="uid://byxcepb3trxnd" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (5).png" id="6_id8v7"]
+[ext_resource type="Texture2D" uid="uid://bcgelqoo2qknw" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (7).png" id="7_eax5x"]
+[ext_resource type="Texture2D" uid="uid://gi5soqxo71r6" path="res://assetLvl3/Survival Guide_ Epic Game Tutorial (8).png" id="8_xs5cy"]
+
+[node name="TutorialOverlay" type="Control" unique_id=872858711]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6db1d")
+metadata/slides = [ExtResource("1_v3t0i"), ExtResource("2_6db1d"), ExtResource("3_4t3d0"), ExtResource("4_k0we5"), ExtResource("5_4347t"), ExtResource("6_id8v7"), ExtResource("7_eax5x"), ExtResource("8_xs5cy")]
+
+[node name="BG" type="ColorRect" parent="." unique_id=34843782]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.46800002
+anchor_bottom = 0.437
+offset_left = 497.0
+offset_top = 307.0
+offset_right = 496.43994
+offset_bottom = 307.03998
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.47058824)
+
+[node name="SlideDisplay" type="TextureRect" parent="." unique_id=1745312508]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -0.020019531
+offset_bottom = 0.020019531
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnPrev" type="Button" parent="." unique_id=1432136078]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 498.0
+offset_top = -408.0
+offset_right = 711.0
+offset_bottom = -302.0
+grow_vertical = 0
+text = "BACK"
+
+[node name="BtnNext" type="Button" parent="." unique_id=1760357059]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -747.0
+offset_top = -399.0
+offset_right = -527.0
+offset_bottom = -306.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "NEXT"
+
+[connection signal="pressed" from="BtnPrev" to="." method="_on_btn_prev_pressed"]
+[connection signal="pressed" from="BtnNext" to="." method="_on_btn_next_pressed"]

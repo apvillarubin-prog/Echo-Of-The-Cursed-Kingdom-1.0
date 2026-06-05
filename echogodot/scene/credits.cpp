@@ -1,7 +1,7 @@
 #include <Godot/godot.hpp>
 #include <Godot/classes/control.hpp>
 #include <Godot/classes/label.hpp>
-#include <Godot/classes/button.hpp> // ADDED: Required for Button nodes
+#include <Godot/classes/button.hpp> 
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/window.hpp>
 
@@ -64,7 +64,7 @@ void OnPhysicsProcess(Caller* instance, double delta) {
 
 void _on_back_button_pressed() {
 	if (self && self->get_tree()) {
-		self->get_tree()->change_scene_to_file("res://scene//main_menu.tscn");
+		self->get_tree()->change_scene_to_file("res://scene/main_menu.tscn");
 	}
 }
 

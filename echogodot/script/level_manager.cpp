@@ -5,9 +5,12 @@
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/audio_stream_player.hpp>
 #include <Godot/variant/utility_functions.hpp>
+
 using namespace godot;
 using namespace jenova::sdk;
+
 JENOVA_SCRIPT_BEGIN
+
 void OnReady(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
@@ -23,7 +26,6 @@ void OnReady(Caller* instance)
 	}
 	// ------------------------
 
-	// Safely grab and cast all the buttons
 	Button* lvl1_btn = Object::cast_to<Button>(self->get_node_or_null("Button"));
 	Button* lvl2_btn = Object::cast_to<Button>(self->get_node_or_null("Button2"));
 	Button* lvl3_btn = Object::cast_to<Button>(self->get_node_or_null("Button3"));
@@ -33,13 +35,18 @@ void OnReady(Caller* instance)
 	if (lvl3_btn) lvl3_btn->connect("pressed", Callable(self, "on_lvl3_pressed"));
 	if (lvl4_btn) lvl4_btn->connect("pressed", Callable(self, "on_lvl4_pressed"));
 }
+
 void on_lvl1_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
 	Node* my_global = self->get_node_or_null("/root/Global");
 	if (my_global) my_global->set_meta("next_level", 1);
-	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
+	
+	// Route to the Tutorial instead of the loading screen!
+	// (Update the "res://" path if you placed the tutorial inside your scene folder)
+	self->get_tree()->change_scene_to_file("res://scene//tutorial_level.tscn");
 }
+
 void on_lvl2_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
@@ -47,6 +54,7 @@ void on_lvl2_pressed(Caller* instance)
 	if (my_global) my_global->set_meta("next_level", 2);
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
 }
+
 void on_lvl3_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
@@ -54,6 +62,7 @@ void on_lvl3_pressed(Caller* instance)
 	if (my_global) my_global->set_meta("next_level", 3);
 	self->get_tree()->change_scene_to_file("res://assetLvl3/state1.tscn");
 }
+
 void on_lvl4_pressed(Caller* instance)
 {
 	Node* self = GetSelf<Node>(instance);
@@ -61,4 +70,5 @@ void on_lvl4_pressed(Caller* instance)
 	if (my_global) my_global->set_meta("next_level", 4);
 	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
 }
+
 JENOVA_SCRIPT_END
