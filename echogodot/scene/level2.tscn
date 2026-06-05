@@ -4753,7 +4753,7 @@ tile_set = SubResource("TileSet_lnov8")
 
 [node name="knight" parent="." unique_id=1245913708 instance=ExtResource("1_qhexg")]
 z_index = 5
-position = Vector2(1121, 23)
+position = Vector2(79, 25)
 scale = Vector2(0.5064855, 0.480353)
 
 [node name="Camera2D" type="Camera2D" parent="knight" unique_id=1539870367]

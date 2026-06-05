@@ -103,7 +103,7 @@ void on_yes_pressed(Caller* instance)
 	}
 
 	UtilityFunctions::print("Proceeding to Level 2...");
-	self->get_tree()->change_scene_to_file("res://scene/loading_screen.tscn");
+	self->get_tree()->change_scene_to_file("res://scene/main_menu.tscn");
 }
 
 void on_no_pressed(Caller* instance)
