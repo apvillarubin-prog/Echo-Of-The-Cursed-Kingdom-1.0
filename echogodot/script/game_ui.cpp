@@ -3,6 +3,7 @@
 #include <Godot/classes/progress_bar.hpp>
 #include <Godot/classes/control.hpp>
 #include <Godot/classes/button.hpp>
+#include <Godot/classes/texture_button.hpp> // <-- NEW: Added TextureButton include!
 #include <Godot/classes/scene_tree.hpp>
 #include <Godot/classes/node.hpp>
 #include <Godot/classes/input.hpp>
@@ -10,56 +11,125 @@
 #include <Godot/variant/callable.hpp>
 #include <unordered_map>
 #include <memory>
+
 using namespace godot;
 using namespace jenova::sdk;
+
 class UIManager {
 public:
 	CanvasLayer* self = nullptr;
+	
+	// Existing UI
 	ProgressBar* health_bar = nullptr;
 	Control* death_screen = nullptr;
 	Button* respawn_btn = nullptr;
+	
+	// New Pause Menu UI
+	TextureButton* pause_toggle_btn = nullptr; // <-- CHANGED: Now looks for a TextureButton
+	Control* pause_menu = nullptr;
+	Button* resume_btn = nullptr;
+	Button* main_menu_btn = nullptr;
+
 	void on_ready(CanvasLayer* node) {
 		self = node;
 		if (!self->is_in_group("game_ui")) {
 			self->add_to_group("game_ui", true);
 		}
+
+		// Initialize Existing UI
 		health_bar = Object::cast_to<ProgressBar>(self->get_node_or_null("HealthBar"));
 		death_screen = Object::cast_to<Control>(self->get_node_or_null("DeathScreen"));
+		
 		if (health_bar) health_bar->set_visible(false);
 		if (death_screen) {
 			death_screen->set_visible(false);
 			respawn_btn = Object::cast_to<Button>(death_screen->get_node_or_null("RespawnButton"));
-			if (respawn_btn) {
+			if (respawn_btn && !respawn_btn->is_connected("pressed", Callable((Object*)self, "trigger_respawn"))) {
 				respawn_btn->set_focus_mode(Control::FOCUS_ALL);
-				if (!respawn_btn->is_connected("pressed", Callable((Object*)self, "trigger_respawn"))) {
-					respawn_btn->connect("pressed", Callable((Object*)self, "trigger_respawn"));
-				}
+				respawn_btn->connect("pressed", Callable((Object*)self, "trigger_respawn"));
 			}
-			UtilityFunctions::print("[UI] GameUI Ready and listening.");
 		}
+
+		// Initialize New Pause Menu UI (Settings Gear Icon)
+		pause_toggle_btn = Object::cast_to<TextureButton>(self->get_node_or_null("PauseToggleButton")); // <-- CHANGED: Cast updated
+		pause_menu = Object::cast_to<Control>(self->get_node_or_null("PauseMenu"));
+		
+		if (pause_toggle_btn && !pause_toggle_btn->is_connected("pressed", Callable((Object*)self, "toggle_pause_menu"))) {
+			pause_toggle_btn->connect("pressed", Callable((Object*)self, "toggle_pause_menu"));
+		}
+
+		if (pause_menu) {
+			pause_menu->set_visible(false);
+			resume_btn = Object::cast_to<Button>(pause_menu->get_node_or_null("ResumeButton"));
+			main_menu_btn = Object::cast_to<Button>(pause_menu->get_node_or_null("MainMenuButton"));
+
+			if (resume_btn && !resume_btn->is_connected("pressed", Callable((Object*)self, "toggle_pause_menu"))) {
+				resume_btn->connect("pressed", Callable((Object*)self, "toggle_pause_menu"));
+			}
+			if (main_menu_btn && !main_menu_btn->is_connected("pressed", Callable((Object*)self, "go_to_main_menu"))) {
+				main_menu_btn->connect("pressed", Callable((Object*)self, "go_to_main_menu"));
+			}
+		}
+
+		UtilityFunctions::print("[UI] GameUI Ready and listening.");
+		
+		// Hide the UI instantly so it doesn't show up on the main menu
+		hide_ui();
 	}
-	void show_ui() {
-		if (health_bar) health_bar->set_visible(true);
+
+	// --- Pause Menu Logic ---
+	
+	void toggle_pause_menu() {
+		UtilityFunctions::print("[UI DEBUG] Pause toggle clicked!");
+		if (!self->get_tree()) return;
+		
+		bool is_paused = self->get_tree()->is_paused();
+		self->get_tree()->set_pause(!is_paused); 
+		
+		if (pause_menu) {
+			pause_menu->set_visible(!is_paused); 
+			UtilityFunctions::print(String("[UI DEBUG] Menu visibility set to: ") + String(is_paused ? "Hidden" : "Visible"));
+		} 
 	}
-	void hide_ui() {
-		if (health_bar) health_bar->set_visible(false);
+
+	void go_to_main_menu() {
+		UtilityFunctions::print("[UI DEBUG] Going to Main Menu...");
+		if (!self->get_tree()) return;
+		
+		hide_ui(); // Hide everything before switching scenes
+		
+		self->get_tree()->set_pause(false); 
+		self->get_tree()->change_scene_to_file("res://scene/main_menu.tscn"); 
 	}
-	void update_health(int current_health) {
-		if (health_bar) health_bar->set_value((double)current_health);
+
+	// --- Health/Death/Visibility Logic ---
+	
+	void show_ui() { 
+		if (health_bar) health_bar->set_visible(true); 
+		if (pause_toggle_btn) pause_toggle_btn->set_visible(true);
 	}
-	// NEW: reset health bar back to max value
+	
+	void hide_ui() { 
+		if (health_bar) health_bar->set_visible(false); 
+		if (pause_toggle_btn) pause_toggle_btn->set_visible(false);
+		if (pause_menu) pause_menu->set_visible(false);
+	}
+	
+	void update_health(int current_health) { if (health_bar) health_bar->set_value((double)current_health); }
+	
 	void reset_health_bar() {
 		if (health_bar) {
 			health_bar->set_value(health_bar->get_max());
-			UtilityFunctions::print("[UI] Health bar reset to max.");
 		}
 	}
+	
 	void show_death_screen() {
 		if (death_screen) {
 			death_screen->set_visible(true);
 			Input::get_singleton()->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 		}
 	}
+	
 	void trigger_respawn() {
 		if (death_screen) death_screen->set_visible(false);
 		Node* player = self->get_tree()->get_first_node_in_group("player");
@@ -68,11 +138,14 @@ public:
 			player->call("actually_teleport");
 		}
 	}
+	
 	void on_exit_tree() {
 		UtilityFunctions::print("[UI-FATAL] ALARM! The GameUI Autoload was just deleted from the SceneTree!");
 	}
 };
+
 static std::unordered_map<uint64_t, std::shared_ptr<UIManager>> ui_instances;
+
 std::shared_ptr<UIManager> get_ui(Caller* instance) {
 	if (!instance) return nullptr;
 	CanvasLayer* node = GetSelf<CanvasLayer>(instance);
@@ -81,8 +154,11 @@ std::shared_ptr<UIManager> get_ui(Caller* instance) {
 	if (ui_instances.find(id) == ui_instances.end()) ui_instances[id] = std::make_shared<UIManager>();
 	return ui_instances[id];
 }
+
 JENOVA_SCRIPT_BEGIN
 void OnReady(Caller* instance) { if (auto ui = get_ui(instance)) ui->on_ready(GetSelf<CanvasLayer>(instance)); }
+void toggle_pause_menu(Caller* instance) { if (auto ui = get_ui(instance)) ui->toggle_pause_menu(); }
+void go_to_main_menu(Caller* instance) { if (auto ui = get_ui(instance)) ui->go_to_main_menu(); }
 void show_ui(Caller* instance) { if (auto ui = get_ui(instance)) ui->show_ui(); }
 void hide_ui(Caller* instance) { if (auto ui = get_ui(instance)) ui->hide_ui(); }
 void update_health(Caller* instance, int current_health) { if (auto ui = get_ui(instance)) ui->update_health(current_health); }

@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://c6q6hvypw52ua" path="res://asset/lava_spr_strip45.png" id="4_vobn4"]
 [ext_resource type="PackedScene" uid="uid://bup6sn2txf707" path="res://scene/PlayerEngine.tscn" id="9_cctbn"]
 [ext_resource type="PackedScene" uid="uid://drjgenpdkktfb" path="res://scene/kill.tscn" id="9_lpjod"]
+[ext_resource type="PackedScene" uid="uid://0g4r7mo8dhty" path="res://scene/enemy.tscn" id="9_yutr3"]
+[ext_resource type="Script" uid="uid://2s3ox6g5f1gw" path="res://script/EliteEnemy.cpp" id="10_gduy3"]
 [ext_resource type="Script" uid="uid://dupfo4yjt3wek" path="res://script/instruction_zone.cpp" id="10_lpjod"]
 [ext_resource type="Texture2D" uid="uid://bwv8ev6l7qfd7" path="res://asset/walls_far.png" id="15_1lgmn"]
 [ext_resource type="PackedScene" uid="uid://b87ux3w4h2a5j" path="res://assetLvl3/destructible_wall.tscn" id="19_aatil"]
 [ext_resource type="PackedScene" uid="uid://cvj2xa8wq8ibt" path="res://assetLvl3/light_portal.tscn" id="22_yocug"]
-[ext_resource type="PackedScene" uid="uid://cw2ytnba4fqu1" path="res://assetLvl3/enemy1.tscn" id="28_w3jh0"]
 
 [sub_resource type="Gradient" id="Gradient_cctbn"]
 offsets = PackedFloat32Array(0.22980501, 0.6364902)
@@ -3697,18 +3698,6 @@ offset_right = 718.0
 offset_bottom = 227.0
 metadata/_edit_lock_ = true
 
-[node name="enemy" parent="." unique_id=906854867 instance=ExtResource("28_w3jh0")]
-position = Vector2(-606, 36.000004)
-scale = Vector2(0.8974739, 0.8974739)
-collision_layer = 3
-collision_mask = 3
-
-[node name="enemy2" parent="." unique_id=1635730269 instance=ExtResource("28_w3jh0")]
-position = Vector2(-254, 38)
-scale = Vector2(0.8974739, 0.8974739)
-collision_layer = 3
-collision_mask = 3
-
 [node name="Parallax2D" type="Parallax2D" parent="." unique_id=2025975277]
 scroll_scale = Vector2(0.02, 0.02)
 scroll_offset = Vector2(-781, 88)
@@ -3762,7 +3751,7 @@ offset_bottom = 88.0
 scale = Vector2(0.28775072, 0.31345233)
 text = "These are the WIZARD's abilities 
 and their corresponding inputs:
-Q - Teleport to the selected location, 10 sec CD
+E - Teleport to the selected location, 10 sec CD
 F - Freeze an enemy in place, 30 sec CD
 G - EXPLOSION!!!  60 sec CD"
 horizontal_alignment = 1
@@ -3773,3 +3762,43 @@ position = Vector2(-331, 143)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="kill" unique_id=1296881884]
 position = Vector2(0, 226.09311)
 shape = SubResource("WorldBoundaryShape2D_yutr3")
+
+[node name="EliteEnemy" parent="." unique_id=906854867 instance=ExtResource("9_yutr3")]
+position = Vector2(-45, 23)
+scale = Vector2(1.0002935, 0.990742)
+script = ExtResource("10_gduy3")
+
+[node name="enemy3" parent="." unique_id=286212219 instance=ExtResource("9_yutr3")]
+position = Vector2(-80.71594, 40.00003)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="enemy4" parent="." unique_id=1854729194 instance=ExtResource("9_yutr3")]
+position = Vector2(-114, 40)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="enemy5" parent="." unique_id=741906248 instance=ExtResource("9_yutr3")]
+position = Vector2(-65, 36)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="enemy9" parent="." unique_id=998752855 instance=ExtResource("9_yutr3")]
+position = Vector2(-429.71594, 15.0000305)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="enemy10" parent="." unique_id=309114511 instance=ExtResource("9_yutr3")]
+position = Vector2(-463, 15)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="enemy11" parent="." unique_id=886282175 instance=ExtResource("9_yutr3")]
+position = Vector2(-411.99988, 14)
+scale = Vector2(0.6100395, 0.41125453)
+metadata/attack_range = 15.0
+
+[node name="EliteEnemy2" parent="." unique_id=1224374167 instance=ExtResource("9_yutr3")]
+position = Vector2(-547.00006, 30)
+scale = Vector2(1.0002935, 0.990742)
+script = ExtResource("10_gduy3")

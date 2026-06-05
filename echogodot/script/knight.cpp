@@ -74,7 +74,7 @@ public:
 	bool has_heal = false, has_buff = false, has_summon = false, has_teleport = false;
 	bool has_mouse_teleport = false, has_ice = false, has_fireball = false;
 
-	void play_sfx(AudioStreamPlayer* sfx) { if (sfx) sfx->play(); }
+	void play_sfx(AudioStreamPlayer* sfx) { if (sfx && !sfx->is_playing()) sfx->play(); }
 	void stop_sfx(AudioStreamPlayer* sfx) { if (sfx && sfx->is_playing()) sfx->stop(); }
 
 	void switch_hero(int type); 
@@ -86,7 +86,7 @@ public:
 		
 		player_health -= amount;
 		damage_flash_timer = 0.15f; 
-		if (sprite) sprite->set_modulate(Color(5.0f, 0.3f, 0.3f, 1.0f));
+		if (sprite) sprite->set_modulate(Color(1.0f, 0.2f, 0.2f, 1.0f));
 
 		Node* game_ui = self->get_tree()->get_first_node_in_group("game_ui");
 		if (game_ui) game_ui->call("update_health", player_health);
@@ -220,6 +220,8 @@ public:
 	}
 };
 
+
+
 class Archer : public BaseHero {
 private:
 	float attack_timer = 0.0f;
@@ -253,21 +255,25 @@ public:
 				velocity = Vector2(0, 0); 
 				if (core->sprite) core->sprite->play("archer_grapple_launch");
 				if (grapple_line) grapple_line->set_visible(false);
+				
 				if (grapple_launch_timer <= 0.0f) {
-					grapple_jump_timer = 0.35f;
+					// FIXED: Shortened jump transition so we catch the rope while still moving UP
+					grapple_jump_timer = 0.18f; 
 					Vector2 current_pos = core->self->get_global_position();
 					current_pos.y -= 18.0f; 
 					core->self->set_global_position(current_pos);
 					if (core->sprite) core->sprite->play("archer_jump");
 					
-					velocity = (grapple_target_pos - core->self->get_global_position()).normalized() * 260.0f; 
-					if (velocity.y > -140.0f) velocity.y = -180.0f; 
+					// FIXED: Increased initial yank velocity
+					velocity = (grapple_target_pos - core->self->get_global_position()).normalized() * 320.0f; 
+					if (velocity.y > -200.0f) velocity.y = -250.0f; 
 				}
 			} 
 			else if (grapple_jump_timer > 0.0f) {
 				grapple_jump_timer -= (float)delta;
 				if (core->sprite) core->sprite->play("archer_jump");
-				velocity.y += core->gravity * (float)delta;
+				// FIXED: Removed double gravity here! Main controller already applies it.
+				
 				if (grapple_jump_timer <= 0.0f) grapple_radius = std::max(30.0f, (float)(core->self->get_global_position() - grapple_target_pos).length());
 			}
 			else {
@@ -280,7 +286,8 @@ public:
 					if (core->sprite) core->sprite->play("archer_swing"); 
 				}
 
-				velocity.y += core->gravity * (float)delta;
+				// FIXED: Removed double gravity here! Main controller already applies it.
+
 				Vector2 rope_dir = (core->self->get_global_position() - grapple_target_pos).normalized();
 				Vector2 tangent = Vector2(-rope_dir.y, rope_dir.x).normalized();
 				float swing_input = input->get_axis("ui_left", "ui_right");
@@ -438,7 +445,7 @@ class Wizard : public BaseHero {
 private:
 	float summon_cooldown = 0.0f, teleport_cooldown = 0.0f, q_cooldown = 0.0f, f_cooldown = 0.0f, g_cooldown = 0.0f, action_timer = 0.0f;
 	int last_attack_frame = -1;
-	bool is_summoning = false, is_teleporting = false, is_teleport_stance = false, is_f_primed = false, is_g_primed = false;
+	bool is_summoning = false, is_teleporting = false, is_teleport_stance = false;
 
 public:
 	Wizard(PlayerController* p) : BaseHero(p) {}
@@ -458,13 +465,79 @@ public:
 
 		if (core->key_q_just_pressed && core->has_mouse_teleport) {
 			if (is_teleport_stance) is_teleport_stance = false; 
-			else if (q_cooldown <= 0.0f) { is_teleport_stance = true; is_f_primed = false; is_g_primed = false; }
+			else if (q_cooldown <= 0.0f) { is_teleport_stance = true; }
 		}
+
+		// --- ICE FREEZE (F) - AUTO-TARGETS CLOSEST ENEMY ---
 		if (core->key_f_just_pressed && core->has_ice && f_cooldown <= 0.0f && !is_teleport_stance) {
-			is_f_primed = true; is_g_primed = false;
+			// 1. Spawn Visual Effect
+			Ref<PackedScene> ice_scene = ResourceLoader::get_singleton()->load("res://assetLvl3/ice_freeze.tscn");
+			if (ice_scene.is_valid()) {
+				Node* proj = ice_scene->instantiate();
+				if (proj) {
+					bool facing_right = core->sprite ? !core->sprite->is_flipped_h() : true;
+					Vector2 cast_dir = facing_right ? Vector2(1000.0f, 0.0f) : Vector2(-1000.0f, 0.0f);
+					Object::cast_to<Node2D>(proj)->set_meta("target_pos", core->self->get_global_position() + cast_dir);
+					Object::cast_to<Node2D>(proj)->set_meta("facing_left", !facing_right);
+					core->self->get_tree()->get_current_scene()->add_child(proj);
+					Object::cast_to<Node2D>(proj)->set_global_position(core->self->get_global_position());
+				}
+			}
+			
+			// 2. Instantly Find and Freeze the Closest Enemy
+			TypedArray<Node> enemies = core->self->get_tree()->get_nodes_in_group("enemy");
+			Node2D* closest_enemy = nullptr;
+			float min_dist = 400.0f; // Max freeze range (400 pixels)
+			
+			for (int i = 0; i < enemies.size(); i++) {
+				Node2D* e = Object::cast_to<Node2D>(enemies[i]);
+				if (e) {
+					float d = core->self->get_global_position().distance_to(e->get_global_position());
+					if (d < min_dist) { min_dist = d; closest_enemy = e; }
+				}
+			}
+			if (closest_enemy) {
+				closest_enemy->call("freeze_enemy");
+			}
+
+			f_cooldown = 30.0f;
+			if (core->sprite) core->sprite->play("wizard_cast");
 		}
+
+		// --- FIREBALL (G) - DAMAGES ENEMIES ON X-AXIS ---
 		if (core->key_g_just_pressed && core->has_fireball && g_cooldown <= 0.0f && !is_teleport_stance) {
-			is_g_primed = true; is_f_primed = false;
+			// 1. Spawn Visual Effect
+			Ref<PackedScene> fire_scene = ResourceLoader::get_singleton()->load("res://assetLvl3/fireball.tscn");
+			bool facing_right = core->sprite ? !core->sprite->is_flipped_h() : true;
+			
+			if (fire_scene.is_valid()) {
+				Node* proj = fire_scene->instantiate();
+				if (proj) {
+					Vector2 cast_dir = facing_right ? Vector2(1000.0f, 0.0f) : Vector2(-1000.0f, 0.0f);
+					Object::cast_to<Node2D>(proj)->set_meta("target_pos", core->self->get_global_position() + cast_dir);
+					Object::cast_to<Node2D>(proj)->set_meta("facing_left", !facing_right);
+					core->self->get_tree()->get_current_scene()->add_child(proj);
+					Object::cast_to<Node2D>(proj)->set_global_position(core->self->get_global_position());
+				}
+			}
+			
+			// 2. Instantly Damage ALL enemies in front of the Wizard on the X-Axis
+			TypedArray<Node> enemies = core->self->get_tree()->get_nodes_in_group("enemy");
+			for (int i = 0; i < enemies.size(); i++) {
+				Node2D* e = Object::cast_to<Node2D>(enemies[i]);
+				if (e) {
+					Vector2 diff = e->get_global_position() - core->self->get_global_position();
+					bool in_front = facing_right ? (diff.x > 0) : (diff.x < 0);
+					
+					// If the enemy is in front, within 450 pixels horizontally, and roughly on the same floor level (Y-axis within 60px)
+					if (in_front && std::abs(diff.x) < 150.0f && std::abs(diff.y) < 60.0f) {
+						e->call("take_damage", 20);
+					}
+				}
+			}
+
+			g_cooldown = 70.0f;
+			if (core->sprite) core->sprite->play("wizard_cast");
 		}
 
 		if (core->mouse_left_just_pressed) {
@@ -472,32 +545,6 @@ public:
 				core->self->set_global_position(core->self->get_global_mouse_position()); 
 				is_teleport_stance = false; q_cooldown = 10.0f;                
 			} 
-			else if (is_f_primed) {
-				Ref<PackedScene> ice_scene = ResourceLoader::get_singleton()->load("res://assetLvl3/ice_freeze.tscn");
-				if (ice_scene.is_valid()) {
-					Node* proj = ice_scene->instantiate();
-					if (proj) {
-						Object::cast_to<Node2D>(proj)->set_meta("target_pos", core->self->get_global_mouse_position());
-						core->self->get_tree()->get_current_scene()->add_child(proj);
-						Object::cast_to<Node2D>(proj)->set_global_position(core->self->get_global_position());
-					}
-				}
-				is_f_primed = false; f_cooldown = 30.0f;
-				if (core->sprite) core->sprite->play("wizard_cast");
-			} 
-			else if (is_g_primed) {
-				Ref<PackedScene> fire_scene = ResourceLoader::get_singleton()->load("res://assetLvl3/fireball.tscn");
-				if (fire_scene.is_valid()) {
-					Node* proj = fire_scene->instantiate();
-					if (proj) {
-						Object::cast_to<Node2D>(proj)->set_meta("target_pos", core->self->get_global_mouse_position());
-						core->self->get_tree()->get_current_scene()->add_child(proj);
-						Object::cast_to<Node2D>(proj)->set_global_position(core->self->get_global_position());
-					}
-				}
-				is_g_primed = false; g_cooldown = 60.0f;
-				if (core->sprite) core->sprite->play("wizard_cast");
-			}
 			else if (core->has_summon && summon_cooldown <= 0.0f && !is_action_locked() && core->self->is_on_floor()) {
 				is_summoning = true; action_timer = 1.6f; summon_cooldown = 3.0f; 
 				core->play_sfx(core->sfx_wizard_summon);
@@ -610,14 +657,24 @@ void PlayerController::on_ready(CharacterBody2D* node) {
 		has_grapple = engine->has_meta("save_has_grapple") ? (bool)engine->get_meta("save_has_grapple") : false;
 		
 		String scene_name = self->get_tree()->get_current_scene()->get_name();
+		UtilityFunctions::print("[SCENE DEBUG] The current scene root node name is: ", scene_name);
 		
-		if (scene_name == "level2" || scene_name == "Level2") {
+if (scene_name == "level2" || scene_name == "Level2") {
 			unlocked_archer = true; has_sword = true; has_shield = true;
 			unlocked_priest = false; unlocked_wizard = false;
-		} else if (scene_name == "level3" || scene_name == "Level3") {
+			
+} else if (scene_name == "level3" || scene_name == "Level3" || scene_name == "state1" || scene_name == "state2" || scene_name == "state3") {
 			unlocked_archer = true; has_sword = true; has_shield = true; has_bow = true; has_grapple = true;
 			unlocked_priest = false; unlocked_wizard = true;
-			has_mouse_teleport = true; has_ice = true; has_fireball = true;
+			
+			
+			has_teleport = true;       // E to Teleport
+			has_summon = true;         // Left Click to Summon
+			has_ice = true;            // F for Freeze
+			has_fireball = true;       // G for Explosion
+			has_mouse_teleport = false; // Turned off the weird Q teleport
+			
+			
 		} else if (scene_name == "level4" || scene_name == "Level4") {
 			unlocked_archer = true; unlocked_priest = true; unlocked_wizard = true; 
 			has_sword = true; has_shield = true; has_summon = true; has_teleport = true;
