@@ -14,7 +14,10 @@ Control* self = nullptr;
 Label* credits_label = nullptr;
 Button* back_button = nullptr;
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 float scroll_speed = 65.0f;       
 float dynamic_end_y = 0.0f;       
 bool initialized = false;
@@ -22,6 +25,10 @@ bool initialized = false;
 void OnAwake(Caller* instance) {
 	self = GetSelf<Control>(instance);
 	if (self) {
+<<<<<<< Updated upstream
+=======
+		// Fetch child nodes by their layout names
+>>>>>>> Stashed changes
 		credits_label = Object::cast_to<Label>(self->get_node_or_null("Label"));
 		back_button = Object::cast_to<Button>(self->get_node_or_null("Button"));
 	}
@@ -34,10 +41,19 @@ void OnReady(Caller* instance) {
 		if (window) {
 			screen_height = (float)window->get_size().y;
 		}
+<<<<<<< Updated upstream
+=======
+
+		// Position the label just below the visible screen area
+>>>>>>> Stashed changes
 		Vector2 starting_pos = credits_label->get_position();
 		starting_pos.y = screen_height + 50.0f; 
 		credits_label->set_position(starting_pos);
 
+<<<<<<< Updated upstream
+=======
+		// Calculate when the text fully leaves the screen
+>>>>>>> Stashed changes
 		dynamic_end_y = -(credits_label->get_size().y);
 		
 		initialized = true;
@@ -47,7 +63,10 @@ void OnReady(Caller* instance) {
 void OnPhysicsProcess(Caller* instance, double delta) {
 	if (!credits_label || !initialized) return;
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	Vector2 current_pos = credits_label->get_position();
 	current_pos.y -= scroll_speed * (float)delta;
 	credits_label->set_position(current_pos);
